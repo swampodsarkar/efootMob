@@ -409,6 +409,243 @@
     margin-bottom: 10px;
   }
   
+  /* New styles for the added features */
+  .diamond-balance {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--diamond);
+    box-shadow: 0 0 10px rgba(185, 242, 255, 0.3);
+    z-index: 100;
+  }
+  
+  .diamond-icon {
+    color: var(--diamond);
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: var(--dark-color);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    width: 800px;
+    border: 2px solid var(--primary-color);
+    position: relative;
+  }
+  
+  .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .tabs {
+    display: flex;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--primary-color);
+  }
+  
+  .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: rgba(0, 255, 136, 0.1);
+    border: none;
+    color: var(--light-color);
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .tab.active {
+    background: var(--primary-color);
+    color: var(--dark-color);
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  .player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .player-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+  }
+  
+  .player-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary-color);
+  }
+  
+  .player-name {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  
+  .player-position {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+  
+  .player-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .player-price {
+    color: var(--diamond);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .buy-btn {
+    width: 100%;
+    padding: 8px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    color: var(--dark-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .buy-btn:hover {
+    background: #00e676;
+  }
+  
+  .buy-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+  }
+  
+  .selected-team {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .selected-player {
+    background: rgba(0, 255, 136, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px dashed var(--primary-color);
+  }
+  
+  .tactics-selector {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .tactic-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--light-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .tactic-btn:hover, .tactic-btn.active {
+    background: var(--primary-color);
+    color: var(--dark-color);
+  }
+  
+  .user-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 5px 0;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  
+  .team-power {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid var(--primary-color);
+    z-index: 100;
+  }
+  
+  .power-icon {
+    color: var(--goal-color);
+  }
+  
   @media (max-width: 600px) {
     h1 {
       font-size: 2rem;
@@ -445,12 +682,49 @@
     .leaderboard-trophies {
       min-width: auto;
     }
+    
+    .diamond-balance, .team-power {
+      position: static;
+      margin: 10px auto;
+      width: fit-content;
+    }
+    
+    .player-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .selected-team {
+      grid-template-columns: 1fr;
+    }
+    
+    .tactics-selector {
+      flex-direction: column;
+    }
+    
+    .user-stats-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+      width: 95%;
+      padding: 15px;
+    }
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
+    <div id="diamondBalance" class="diamond-balance">
+      <span class="diamond-icon">💎</span>
+      <span id="diamondAmount">10,000</span>
+    </div>
+    
+    <div id="teamPower" class="team-power" style="display: none;">
+      <span class="power-icon">⚡</span>
+      <span id="powerValue">0</span>
+    </div>
+    
     <h1>1v1 Football Simulation</h1>
     
     <div class="input-group" id="inputGroup">
@@ -472,6 +746,121 @@
       <ul id="leaderboardList">
         <li>Loading leaderboard...</li>
       </ul>
+    </div>
+    
+    <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+      <button onclick="showModal('store')">🏬 Store</button>
+      <button onclick="showModal('team')">⚙️ Team Manager</button>
+      <button onclick="showModal('stats')">🧍‍♂️ User Stats</button>
+    </div>
+  </div>
+  
+  <!-- Modals -->
+  <div id="storeModal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <h2>🏬 Player Store</h2>
+      <p>Buy players to strengthen your team (Top 50 players available)</p>
+      
+      <div class="tabs">
+        <button class="tab active" onclick="changeTab('all-players')">All Players</button>
+        <button class="tab" onclick="changeTab('gk-players')">Goalkeepers</button>
+        <button class="tab" onclick="changeTab('def-players')">Defenders</button>
+        <button class="tab" onclick="changeTab('mid-players')">Midfielders</button>
+        <button class="tab" onclick="changeTab('fw-players')">Forwards</button>
+      </div>
+      
+      <div id="all-players" class="tab-content active">
+        <div class="player-grid" id="allPlayersGrid"></div>
+      </div>
+      <div id="gk-players" class="tab-content">
+        <div class="player-grid" id="gkPlayersGrid"></div>
+      </div>
+      <div id="def-players" class="tab-content">
+        <div class="player-grid" id="defPlayersGrid"></div>
+      </div>
+      <div id="mid-players" class="tab-content">
+        <div class="player-grid" id="midPlayersGrid"></div>
+      </div>
+      <div id="fw-players" class="tab-content">
+        <div class="player-grid" id="fwPlayersGrid"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="teamModal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <h2>⚙️ Team Manager</h2>
+      <p>Select your starting 4 players (GK, DEF, MID, FW)</p>
+      
+      <div class="tactics-selector">
+        <button class="tactic-btn" onclick="selectTactic('attack')">🎯 Attack</button>
+        <button class="tactic-btn active" onclick="selectTactic('balanced')">⚖️ Balanced</button>
+        <button class="tactic-btn" onclick="selectTactic('defend')">🛡️ Defend</button>
+      </div>
+      
+      <div class="selected-team">
+        <div class="selected-player" id="gk-slot">
+          <div class="player-position">Goalkeeper</div>
+          <div id="gk-player">Not selected</div>
+        </div>
+        <div class="selected-player" id="def-slot">
+          <div class="player-position">Defender</div>
+          <div id="def-player">Not selected</div>
+        </div>
+        <div class="selected-player" id="mid-slot">
+          <div class="player-position">Midfielder</div>
+          <div id="mid-player">Not selected</div>
+        </div>
+        <div class="selected-player" id="fw-slot">
+          <div class="player-position">Forward</div>
+          <div id="fw-player">Not selected</div>
+        </div>
+      </div>
+      
+      <h3 style="margin-top: 30px;">Your Squad</h3>
+      <div class="player-grid" id="userSquadGrid"></div>
+    </div>
+  </div>
+  
+  <div id="statsModal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <h2>🧍‍♂️ User Stats</h2>
+      
+      <div class="user-stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Matches</div>
+          <div class="stat-value" id="stat-matches">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Wins</div>
+          <div class="stat-value" id="stat-wins">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Win Rate</div>
+          <div class="stat-value" id="stat-winrate">0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Rating</div>
+          <div class="stat-value" id="stat-rating">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Goals Scored</div>
+          <div class="stat-value" id="stat-goals">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Goals Conceded</div>
+          <div class="stat-value" id="stat-conceded">0</div>
+        </div>
+      </div>
+      
+      <h3 style="margin-top: 30px;">Current Team Power</h3>
+      <div class="stat-value" id="stat-teampower">0</div>
+      <div style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">
+        (Based on your selected players and tactics)
+      </div>
     </div>
   </div>
 
@@ -504,6 +893,67 @@
       DIAMOND: 1500
     };
 
+    // Player data (top 50 players)
+    const TOP_PLAYERS = [
+      // Goalkeepers (10)
+      { id: 1, name: "Manuel Neuer", position: "GK", attack: 20, defense: 95, stamina: 80, price: 500 },
+      { id: 2, name: "Thibaut Courtois", position: "GK", attack: 15, defense: 93, stamina: 85, price: 480 },
+      { id: 3, name: "Alisson Becker", position: "GK", attack: 25, defense: 92, stamina: 82, price: 470 },
+      { id: 4, name: "Ederson", position: "GK", attack: 30, defense: 90, stamina: 84, price: 460 },
+      { id: 5, name: "Jan Oblak", position: "GK", attack: 10, defense: 94, stamina: 78, price: 490 },
+      { id: 6, name: "Marc-André ter Stegen", position: "GK", attack: 22, defense: 91, stamina: 83, price: 465 },
+      { id: 7, name: "Gianluigi Donnarumma", position: "GK", attack: 18, defense: 92, stamina: 86, price: 475 },
+      { id: 8, name: "Keylor Navas", position: "GK", attack: 15, defense: 90, stamina: 85, price: 450 },
+      { id: 9, name: "David de Gea", position: "GK", attack: 12, defense: 91, stamina: 80, price: 455 },
+      { id: 10, name: "Mike Maignan", position: "GK", attack: 20, defense: 89, stamina: 84, price: 440 },
+      
+      // Defenders (10)
+      { id: 11, name: "Virgil van Dijk", position: "DEF", attack: 65, defense: 92, stamina: 85, price: 520 },
+      { id: 12, name: "Rúben Dias", position: "DEF", attack: 60, defense: 90, stamina: 84, price: 510 },
+      { id: 13, name: "Marquinhos", position: "DEF", attack: 70, defense: 91, stamina: 86, price: 515 },
+      { id: 14, name: "Sergio Ramos", position: "DEF", attack: 75, defense: 89, stamina: 82, price: 500 },
+      { id: 15, name: "Trent Alexander-Arnold", position: "DEF", attack: 85, defense: 80, stamina: 88, price: 530 },
+      { id: 16, name: "Jordi Alba", position: "DEF", attack: 82, defense: 83, stamina: 87, price: 505 },
+      { id: 17, name: "Andrew Robertson", position: "DEF", attack: 78, defense: 85, stamina: 89, price: 510 },
+      { id: 18, name: "Matthijs de Ligt", position: "DEF", attack: 65, defense: 88, stamina: 83, price: 495 },
+      { id: 19, name: "Achraf Hakimi", position: "DEF", attack: 80, defense: 78, stamina: 90, price: 520 },
+      { id: 20, name: "João Cancelo", position: "DEF", attack: 83, defense: 82, stamina: 86, price: 525 },
+      
+      // Midfielders (15)
+      { id: 21, name: "Kevin De Bruyne", position: "MID", attack: 92, defense: 70, stamina: 88, price: 600 },
+      { id: 22, name: "Luka Modrić", position: "MID", attack: 88, defense: 75, stamina: 85, price: 580 },
+      { id: 23, name: "N'Golo Kanté", position: "MID", attack: 70, defense: 90, stamina: 95, price: 570 },
+      { id: 24, name: "Joshua Kimmich", position: "MID", attack: 85, defense: 85, stamina: 89, price: 590 },
+      { id: 25, name: "Bruno Fernandes", position: "MID", attack: 90, defense: 65, stamina: 86, price: 580 },
+      { id: 26, name: "Frenkie de Jong", position: "MID", attack: 84, defense: 80, stamina: 87, price: 570 },
+      { id: 27, name: "Toni Kroos", position: "MID", attack: 87, defense: 78, stamina: 82, price: 560 },
+      { id: 28, name: "Casemiro", position: "MID", attack: 75, defense: 88, stamina: 86, price: 500 },
+      { id: 29, name: "Bernardo Silva", position: "MID", attack: 89, defense: 72, stamina: 88, price: 580 },
+      { id: 30, name: "Pedri", position: "MID", attack: 86, defense: 74, stamina: 84, price: 570 },
+      { id: 31, name: "Jorginho", position: "MID", attack: 82, defense: 83, stamina: 83, price: 500 },
+      { id: 32, name: "Marco Verratti", position: "MID", attack: 85, defense: 80, stamina: 85, price: 560 },
+      { id: 33, name: "Declan Rice", position: "MID", attack: 78, defense: 85, stamina: 87, price: 550 },
+      { id: 34, name: "Rodri", position: "MID", attack: 80, defense: 86, stamina: 86, price: 5600 },
+      { id: 35, name: "Ilkay Gündoğan", position: "MID", attack: 87, defense: 75, stamina: 84, price: 500 },
+      
+      // Forwards (15)
+      { id: 36, name: "Lionel Messi", position: "FW", attack: 95, defense: 35, stamina: 80, price: 700 },
+      { id: 37, name: "Cristiano Ronaldo", position: "FW", attack: 94, defense: 40, stamina: 85, price: 600 },
+      { id: 38, name: "Kylian Mbappé", position: "FW", attack: 96, defense: 30, stamina: 90, price: 700 },
+      { id: 39, name: "Robert Lewandowski", position: "FW", attack: 93, defense: 45, stamina: 84, price: 600 },
+      { id: 40, name: "Erling Haaland", position: "FW", attack: 94, defense: 50, stamina: 86, price: 700 },
+      { id: 41, name: "Karim Benzema", position: "FW", attack: 92, defense: 55, stamina: 83, price: 670 },
+      { id: 42, name: "Neymar Jr", position: "FW", attack: 93, defense: 30, stamina: 82, price: 690 },
+      { id: 43, name: "Mohamed Salah", position: "FW", attack: 91, defense: 45, stamina: 88, price: 680 },
+      { id: 44, name: "Harry Kane", position: "FW", attack: 90, defense: 60, stamina: 85, price: 660 },
+      { id: 45, name: "Sadio Mané", position: "FW", attack: 89, defense: 55, stamina: 89, price: 670 },
+      { id: 46, name: "Raheem Sterling", position: "FW", attack: 88, defense: 40, stamina: 87, price: 650 },
+      { id: 47, name: "Son Heung-min", position: "FW", attack: 89, defense: 50, stamina: 86, price: 660 },
+      { id: 48, name: "Lautaro Martínez", position: "FW", attack: 87, defense: 60, stamina: 84, price: 600 },
+      { id: 49, name: "Phil Foden", position: "FW", attack: 88, defense: 55, stamina: 83, price: 600 },
+      { id: 50, name: "Vinícius Júnior", position: "FW", attack: 90, defense: 35, stamina: 89, price: 600 }
+    ];
+
     let playerName = "";
     let roomId = "";
     let isStarter = false;
@@ -512,6 +962,17 @@
     let matchInterval = null;
     let matchRef = null;
     let commentaryRef = null;
+    let diamonds = 10000;
+    let userSquad = [];
+    let selectedPlayers = { GK: null, DEF: null, MID: null, FW: null };
+    let selectedTactic = "balanced";
+    let userStats = {
+      matches: 0,
+      wins: 0,
+      goals: 0,
+      conceded: 0,
+      rating: 0
+    };
 
     const statusDiv = document.getElementById("status");
     const scoreDiv = document.getElementById("score");
@@ -522,6 +983,9 @@
     const logoutBtn = document.getElementById("logoutBtn");
     const userDisplay = document.getElementById("userDisplay");
     const inputGroup = document.getElementById("inputGroup");
+    const diamondAmount = document.getElementById("diamondAmount");
+    const powerValue = document.getElementById("powerValue");
+    const teamPowerDiv = document.getElementById("teamPower");
 
     // Check if username is stored in localStorage
     function checkStoredUser() {
@@ -534,11 +998,55 @@
         logoutBtn.style.display = "block";
         userDisplay.textContent = `Playing as: ${storedUser}`;
         userDisplay.style.display = "block";
+        
+        // Load user data
+        loadUserData();
       }
+    }
+
+    // Load user data from Firebase
+    function loadUserData() {
+      if (!playerName) return;
+      
+      const userRef = db.ref("users/" + encodeKey(playerName));
+      userRef.once("value").then(snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          diamonds = data.diamonds || 10000;
+          diamondAmount.textContent = diamonds.toLocaleString();
+          
+          userSquad = data.squad || [];
+          selectedPlayers = data.selectedPlayers || { GK: null, DEF: null, MID: null, FW: null };
+          selectedTactic = data.tactic || "balanced";
+          userStats = data.stats || userStats;
+          
+          // Update UI
+          updateSelectedPlayersUI();
+          updateUserStatsUI();
+          calculateTeamPower();
+        }
+      });
+    }
+
+    // Save user data to Firebase
+    function saveUserData() {
+      if (!playerName) return;
+      
+      const userRef = db.ref("users/" + encodeKey(playerName));
+      userRef.set({
+        name: playerName,
+        diamonds: diamonds,
+        squad: userSquad,
+        selectedPlayers: selectedPlayers,
+        tactic: selectedTactic,
+        stats: userStats,
+        lastUpdated: firebase.database.ServerValue.TIMESTAMP
+      });
     }
 
     // Logout function
     function logout() {
+      saveUserData();
       localStorage.removeItem('footballSimUsername');
       playerName = "";
       usernameInput.value = "";
@@ -602,7 +1110,7 @@
       "Great save by the keeper! 🧤",
       "What a stop! Unbelievable! 🧤✋",
       "Keeper denies a certain goal! 🧤🚫",
-      "Incredible reflexes to keep it out! 🧤👏",
+      "Incredible reflexes to keep it out! �👏",
       "The goalkeeper comes to the rescue! 🧤💪"
     ];
 
@@ -741,12 +1249,16 @@
         logoutBtn.style.display = "block";
         userDisplay.textContent = `Playing as: ${playerName}`;
         userDisplay.style.display = "block";
+        
+        // Load user data
+        loadUserData();
       }
 
       joinBtn.disabled = true;
       statusDiv.textContent = "Searching for opponent...";
       commentaryDiv.innerHTML = "";
       scoreDiv.textContent = "";
+      teamPowerDiv.style.display = "block";
 
       // Check if this player is already in waiting or any active game
       db.ref("waiting").once("value", snapshot => {
@@ -781,7 +1293,11 @@
 
           // If no one waiting, set yourself as waiting
           if (!waitingPlayer) {
-            db.ref("waiting").set({ name: playerName }).then(() => {
+            db.ref("waiting").set({ 
+              name: playerName,
+              power: calculateTeamPower(),
+              tactic: selectedTactic
+            }).then(() => {
               statusDiv.textContent = "Waiting for another player to join...";
               joinBtn.disabled = true;
               
@@ -817,21 +1333,42 @@
               joinBtn.disabled = false;
               return;
             }
-            createMatch(waitingPlayer.name);
+            createMatch(waitingPlayer.name, waitingPlayer.power, waitingPlayer.tactic);
           }
         });
       });
     }
 
-    function createMatch(opponentName) {
+    function createMatch(opponentName, opponentPower, opponentTactic) {
       roomId = "room_" + Date.now();
+      
+      const playerPower = calculateTeamPower();
+      const powerDifference = Math.abs(playerPower - opponentPower);
+      
+      // Tactics advantage (rock-paper-scissors style)
+      let tacticsAdvantage = 0;
+      if ((selectedTactic === "attack" && opponentTactic === "defend") ||
+          (selectedTactic === "defend" && opponentTactic === "balanced") ||
+          (selectedTactic === "balanced" && opponentTactic === "attack")) {
+        tacticsAdvantage = 0.1; // 10% advantage
+      } else if (selectedTactic === opponentTactic) {
+        tacticsAdvantage = 0; // No advantage
+      } else {
+        tacticsAdvantage = -0.1; // 10% disadvantage
+      }
+      
       db.ref("games/" + roomId).set({
         player1: opponentName,
         player2: playerName,
         score1: 0,
         score2: 0,
         time: 90, // 90 seconds match duration
-        createdAt: firebase.database.ServerValue.TIMESTAMP
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        power1: opponentPower,
+        power2: playerPower,
+        tactic1: opponentTactic,
+        tactic2: selectedTactic,
+        advantage: tacticsAdvantage
       }).then(() => {
         db.ref("waiting").remove();
         isStarter = true;
@@ -842,7 +1379,7 @@
         
         // Add initial commentary
         db.ref("commentary/" + roomId).push().set({
-          text: `The match begins between ${opponentName} and ${playerName}!`,
+          text: `The match begins between ${opponentName} (${opponentPower} power) and ${playerName} (${playerPower} power)!`,
           time: 90
         });
       });
@@ -922,6 +1459,11 @@
           let newCommentary = "";
           let isImportant = false;
           let isGoal = false;
+          
+          // Calculate probability modifiers based on team power and tactics
+          const powerRatio = game.power1 / (game.power1 + game.power2);
+          const p1Prob = 0.05 * (1 + (powerRatio - 0.5) * 0.5 + game.advantage);
+          const p2Prob = 0.05 * (1 + (1 - powerRatio - 0.5) * 0.5 - game.advantage);
 
           // Regular game action (80% chance)
           if (Math.random() < 0.8) {
@@ -929,8 +1471,8 @@
             newCommentary = `${player} ${getRandomAction()}.`;
           }
           
-          // Player 1 scores (5% chance)
-          if (Math.random() < 0.05) {
+          // Player 1 scores
+          if (Math.random() < p1Prob) {
             if (Math.random() < 0.7) { // 70% chance to score
               s1++;
               newCommentary = `${game.player1} ${getRandomGoalPhrase()}`;
@@ -945,8 +1487,8 @@
             }
           }
           
-          // Player 2 scores (5% chance)
-          if (Math.random() < 0.05) {
+          // Player 2 scores
+          if (Math.random() < p2Prob) {
             if (Math.random() < 0.7) { // 70% chance to score
               s2++;
               newCommentary = `${game.player2} ${getRandomGoalPhrase()}`;
@@ -1033,6 +1575,26 @@
         </div>
       `;
 
+      // Update user stats if this player was in the match
+      if (game.player1 === playerName || game.player2 === playerName) {
+        const isWinner = (game.player1 === playerName && game.score1 > game.score2) || 
+                         (game.player2 === playerName && game.score2 > game.score1);
+        
+        userStats.matches += 1;
+        if (isWinner) userStats.wins += 1;
+        userStats.goals += (game.player1 === playerName ? game.score1 : game.score2);
+        userStats.conceded += (game.player1 === playerName ? game.score2 : game.score1);
+        userStats.rating = userStats.matches > 0 ? Math.round((userStats.wins / userStats.matches) * 100) : 0;
+        
+        // Award diamonds for playing (more for winning)
+        diamonds += isWinner ? 50 : 20;
+        diamondAmount.textContent = diamonds.toLocaleString();
+        
+        // Update UI
+        updateUserStatsUI();
+        saveUserData();
+      }
+
       // Reset game state
       joinBtn.disabled = false;
       joinedGame = false;
@@ -1104,10 +1666,262 @@
       return key.replace(/[\.\#\$\[\]\/]/g, "_");
     }
 
+    // Modal functions
+    function showModal(modalType) {
+      if (!playerName) {
+        alert("Please enter your name first!");
+        return;
+      }
+      
+      document.getElementById(modalType + "Modal").style.display = "flex";
+      
+      if (modalType === "store") {
+        renderPlayerStore();
+      } else if (modalType === "team") {
+        renderTeamManager();
+      } else if (modalType === "stats") {
+        updateUserStatsUI();
+      }
+    }
+    
+    function closeModal() {
+      document.querySelectorAll(".modal").forEach(modal => {
+        modal.style.display = "none";
+      });
+      saveUserData();
+    }
+    
+    function changeTab(tabId) {
+      // Hide all tab contents and deactivate all tabs
+      document.querySelectorAll(".tab-content").forEach(content => {
+        content.classList.remove("active");
+      });
+      document.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.remove("active");
+      });
+      
+      // Show selected tab content and activate tab
+      document.getElementById(tabId).classList.add("active");
+      event.target.classList.add("active");
+    }
+    
+    // Render player store
+    function renderPlayerStore() {
+      const allPlayersGrid = document.getElementById("allPlayersGrid");
+      const gkPlayersGrid = document.getElementById("gkPlayersGrid");
+      const defPlayersGrid = document.getElementById("defPlayersGrid");
+      const midPlayersGrid = document.getElementById("midPlayersGrid");
+      const fwPlayersGrid = document.getElementById("fwPlayersGrid");
+      
+      // Clear existing content
+      allPlayersGrid.innerHTML = "";
+      gkPlayersGrid.innerHTML = "";
+      defPlayersGrid.innerHTML = "";
+      midPlayersGrid.innerHTML = "";
+      fwPlayersGrid.innerHTML = "";
+      
+      // Filter out players already in squad
+      const availablePlayers = TOP_PLAYERS.filter(player => 
+        !userSquad.some(p => p.id === player.id)
+      );
+      
+      availablePlayers.forEach(player => {
+        const card = createPlayerCard(player);
+        
+        // Add to all players grid
+        allPlayersGrid.appendChild(card.cloneNode(true));
+        
+        // Add to position-specific grid
+        if (player.position === "GK") {
+          gkPlayersGrid.appendChild(card.cloneNode(true));
+        } else if (player.position === "DEF") {
+          defPlayersGrid.appendChild(card.cloneNode(true));
+        } else if (player.position === "MID") {
+          midPlayersGrid.appendChild(card.cloneNode(true));
+        } else if (player.position === "FW") {
+          fwPlayersGrid.appendChild(card.cloneNode(true));
+        }
+      });
+    }
+    
+    function createPlayerCard(player) {
+      const card = document.createElement("div");
+      card.className = "player-card";
+      
+      const owned = userSquad.some(p => p.id === player.id);
+      
+      card.innerHTML = `
+        <div class="player-name">${player.name}</div>
+        <div class="player-position">${player.position}</div>
+        <div class="player-stats">
+          <span>⚔️ ${player.attack}</span>
+          <span>🛡️ ${player.defense}</span>
+          <span>🏃 ${player.stamina}</span>
+        </div>
+        <div class="player-price">
+          <span class="diamond-icon">💎</span>
+          ${player.price.toLocaleString()}
+        </div>
+        <button class="buy-btn" onclick="buyPlayer(${player.id})" ${owned || diamonds < player.price ? 'disabled' : ''}>
+          ${owned ? 'Owned' : 'Buy'}
+        </button>
+      `;
+      
+      return card;
+    }
+    
+    // Buy player function
+    function buyPlayer(playerId) {
+      const player = TOP_PLAYERS.find(p => p.id === playerId);
+      if (!player) return;
+      
+      if (diamonds >= player.price) {
+        diamonds -= player.price;
+        userSquad.push(player);
+        diamondAmount.textContent = diamonds.toLocaleString();
+        
+        // Update store UI
+        renderPlayerStore();
+        // Update team manager UI
+        renderTeamManager();
+        // Update team power
+        calculateTeamPower();
+        
+        saveUserData();
+      } else {
+        alert("Not enough diamonds!");
+      }
+    }
+    
+    // Render team manager
+    function renderTeamManager() {
+      const squadGrid = document.getElementById("userSquadGrid");
+      squadGrid.innerHTML = "";
+      
+      userSquad.forEach(player => {
+        const card = document.createElement("div");
+        card.className = "player-card";
+        
+        const isSelected = Object.values(selectedPlayers).some(p => p && p.id === player.id);
+        
+        card.innerHTML = `
+          <div class="player-name">${player.name}</div>
+          <div class="player-position">${player.position}</div>
+          <div class="player-stats">
+            <span>⚔️ ${player.attack}</span>
+            <span>🛡️ ${player.defense}</span>
+            <span>🏃 ${player.stamina}</span>
+          </div>
+          <button class="buy-btn" onclick="selectPlayerForPosition(${player.id}, '${player.position}')" ${isSelected ? 'disabled' : ''}>
+            ${isSelected ? 'Selected' : 'Select'}
+          </button>
+        `;
+        
+        squadGrid.appendChild(card);
+      });
+      
+      updateSelectedPlayersUI();
+    }
+    
+    // Select player for position
+    function selectPlayerForPosition(playerId, position) {
+      const player = userSquad.find(p => p.id === playerId);
+      if (!player) return;
+      
+      // Check if player is already selected in another position
+      for (const pos in selectedPlayers) {
+        if (selectedPlayers[pos] && selectedPlayers[pos].id === playerId) {
+          alert("This player is already selected as your " + pos);
+          return;
+        }
+      }
+      
+      // Assign to the appropriate position
+      if (position === "GK") {
+        selectedPlayers.GK = player;
+      } else if (position === "DEF") {
+        selectedPlayers.DEF = player;
+      } else if (position === "MID") {
+        selectedPlayers.MID = player;
+      } else if (position === "FW") {
+        selectedPlayers.FW = player;
+      }
+      
+      // Update UI
+      renderTeamManager();
+      calculateTeamPower();
+    }
+    
+    // Update selected players UI
+    function updateSelectedPlayersUI() {
+      document.getElementById("gk-player").textContent = selectedPlayers.GK ? selectedPlayers.GK.name : "Not selected";
+      document.getElementById("def-player").textContent = selectedPlayers.DEF ? selectedPlayers.DEF.name : "Not selected";
+      document.getElementById("mid-player").textContent = selectedPlayers.MID ? selectedPlayers.MID.name : "Not selected";
+      document.getElementById("fw-player").textContent = selectedPlayers.FW ? selectedPlayers.FW.name : "Not selected";
+    }
+    
+    // Select tactic
+    function selectTactic(tactic) {
+      selectedTactic = tactic;
+      
+      // Update UI
+      document.querySelectorAll(".tactic-btn").forEach(btn => {
+        btn.classList.remove("active");
+      });
+      event.target.classList.add("active");
+      
+      calculateTeamPower();
+    }
+    
+    // Calculate team power
+    function calculateTeamPower() {
+      let power = 0;
+      let count = 0;
+      
+      // Calculate average of selected players' stats
+      for (const pos in selectedPlayers) {
+        if (selectedPlayers[pos]) {
+          const player = selectedPlayers[pos];
+          power += (player.attack + player.defense + player.stamina) / 3;
+          count++;
+        }
+      }
+      
+      // Apply tactic modifier
+      let tacticModifier = 1;
+      if (selectedTactic === "attack") tacticModifier = 1.1; // +10% attack, -10% defense
+      if (selectedTactic === "defend") tacticModifier = 0.9; // -10% attack, +10% defense
+      
+      power = count > 0 ? Math.round((power / count) * 100 * tacticModifier) : 0;
+      
+      // Update UI
+      powerValue.textContent = power;
+      document.getElementById("stat-teampower").textContent = power;
+      
+      return power;
+    }
+    
+    // Update user stats UI
+    function updateUserStatsUI() {
+      document.getElementById("stat-matches").textContent = userStats.matches;
+      document.getElementById("stat-wins").textContent = userStats.wins;
+      document.getElementById("stat-winrate").textContent = userStats.rating + "%";
+      document.getElementById("stat-rating").textContent = userStats.rating;
+      document.getElementById("stat-goals").textContent = userStats.goals;
+      document.getElementById("stat-conceded").textContent = userStats.conceded;
+    }
+
     // Initialize the app
     function init() {
       checkStoredUser();
       updateLeaderboard();
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (event) => {
+        if (event.target.classList.contains('modal')) {
+          closeModal();
+        }
+      });
     }
 
     // Load leaderboard initially
@@ -1130,6 +1944,8 @@
       
       if (commentaryRef) commentaryRef.off();
       if (matchRef) matchRef.off();
+      
+      saveUserData();
     });
 
     // Allow pressing Enter to join match
