@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>efootmob beta</title>
+<style>
+  /* --- CSS Styling --- */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #fff;
+    text-align: center;
+    padding: 30px 10px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #00ffea;
+  }
+  #username {
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    border: none;
+    width: 220px;
+    margin-bottom: 15px;
+    outline: none;
+  }
+  button {
+    padding: 10px 25px;
+    font-size: 1.1rem;
+    background: #00ffea;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #003344;
+    transition: background 0.3s ease;
+    margin-bottom: 20px;
+  }
+  button:hover {
+    background: #00c8b5;
+  }
+  #status, #score, #commentary {
+    margin: 10px auto;
+    max-width: 400px;
+    background: rgba(255,255,255,0.1);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #00ffea88;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  #commentary {
+    height: 120px;
+    overflow-y: auto;
+    text-align: left;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+  #leaderboard {
+    margin-top: 30px;
+    max-width: 400px;
+    background: rgba(0, 255, 234, 0.15);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: #003344;
+  }
+  #leaderboard h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #00ffea;
+    text-shadow: 0 0 5px #00c8b5;
+  }
+  #leaderboard ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  #leaderboard li {
+    padding: 8px 0;
+    border-bottom: 1px solid #00ffea44;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+  <h1>Efootmob(beta)</h1>
+  <input type="text" id="username" placeholder="Enter your name" autocomplete="off" />
+  <button onclick="joinMatch()" id="joinBtn">Join Match</button>
+
+  <div id="status">Please enter your name and join a match.</div>
+  <div id="score"></div>
+  <div id="commentary"></div>
+
+  <div id="leaderboard">
+    <h2>Leaderboard</h2>
+    <ul id="leaderboardList">
+      <li>No matches played yet.</li>
+    </ul>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDX7Z8o5xVJa8cSHvaurZg4FkJvN8mJuto",
+      authDomain: "free-fire-kingdom.firebaseapp.com",
+      databaseURL: "https://free-fire-kingdom-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "free-fire-kingdom",
+      storageBucket: "free-fire-kingdom.firebasestorage.app",
+      messagingSenderId: "889375613179",
+      appId: "1:889375613179:web:b36bd72dd208b101e0d05e",
+      measurementId: "G-0EWSZ3SFX1"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let playerName = "";
+    let roomId = "";
+    let isStarter = false;
+    let gameStarted = false;
+    let joinedGame = false;
+
+    const statusDiv = document.getElementById("status");
+    const scoreDiv = document.getElementById("score");
+    const commentaryDiv = document.getElementById("commentary");
+    const joinBtn = document.getElementById("joinBtn");
+    const leaderboardList = document.getElementById("leaderboardList");
+
+    function addCommentary(text) {
+      const p = document.createElement("p");
+      p.textContent = text;
+      commentaryDiv.appendChild(p);
+      commentaryDiv.scrollTop = commentaryDiv.scrollHeight;
+    }
+
+    // To update the leaderboard
+    function updateLeaderboard() {
+      db.ref("leaderboard").orderByChild("wins").limitToLast(10).once("value", snap => {
+        const data = snap.val();
+        leaderboardList.innerHTML = "";
+        if (!data) {
+          leaderboardList.innerHTML = "<li>No matches played yet.</li>";
+          return;
+        }
+        // Sort descending by wins
+        let sorted = Object.entries(data).sort((a,b) => b[1].wins - a[1].wins);
+        sorted.forEach(([key, val], i) => {
+          let li = document.createElement("li");
+          li.textContent = `${val.name} - Wins: ${val.wins}, Matches: ${val.matches}`;
+          leaderboardList.appendChild(li);
+        });
+      });
+    }
+
+    function joinMatch() {
+      if (joinedGame) {
+        alert("You are already in a match!");
+        return;
+      }
+      playerName = document.getElementById("username").value.trim();
+      if (!playerName) return alert("Enter your name!");
+
+      joinBtn.disabled = true;
+      statusDiv.textContent = "Searching for opponent...";
+      commentaryDiv.innerHTML = "";
+
+      // Check if this player is already in waiting or any active game
+      db.ref("waiting").once("value", snapshot => {
+        const waitingPlayer = snapshot.val();
+        if (waitingPlayer && waitingPlayer.name === playerName) {
+          statusDiv.textContent = "You are already waiting for an opponent...";
+          joinBtn.disabled = false;
+          return;
+        }
+
+        // Also check if player is already in a game running
+        db.ref("games").orderByChild("time").startAt(1).once("value", snap => {
+          let activeGameFound = false;
+          snap.forEach(gameSnap => {
+            const game = gameSnap.val();
+            if (game.player1 === playerName || game.player2 === playerName) {
+              activeGameFound = true;
+              roomId = gameSnap.key;
+              isStarter = false;
+              setupMatchListener();
+              statusDiv.textContent = "Reconnected to your active match.";
+              joinBtn.disabled = true;
+              joinedGame = true;
+              return true;
+            }
+          });
+
+          if (activeGameFound) return;
+
+          // If no one waiting, set yourself as waiting
+          if (!waitingPlayer) {
+            db.ref("waiting").set({ name: playerName }).then(() => {
+              statusDiv.textContent = "Waiting for another player to join...";
+              joinBtn.disabled = true;
+              // Listen for a new game with this player
+              db.ref("games").on("child_added", snap => {
+                const game = snap.val();
+                if ((game.player1 === playerName || game.player2 === playerName) && !joinedGame) {
+                  roomId = snap.key;
+                  isStarter = false;
+                  setupMatchListener();
+                  joinedGame = true;
+                  joinBtn.disabled = true;
+                  statusDiv.textContent = "Opponent found! Match starting...";
+                }
+              });
+            });
+          } else {
+            // Someone is waiting, create a match
+            if (waitingPlayer.name === playerName) {
+              statusDiv.textContent = "You are already waiting for an opponent...";
+              joinBtn.disabled = false;
+              return;
+            }
+            createMatch(waitingPlayer.name);
+          }
+        });
+      });
+    }
+
+    function createMatch(opponentName) {
+      roomId = "room_" + Date.now();
+      db.ref("games/" + roomId).set({
+        player1: opponentName,
+        player2: playerName,
+        score1: 0,
+        score2: 0,
+        time: 60
+      }).then(() => {
+        db.ref("waiting").remove();
+        isStarter = true;
+        joinedGame = true;
+        statusDiv.textContent = "Match Started!";
+        joinBtn.disabled = true;
+        setupMatchListener();
+      });
+    }
+
+    function setupMatchListener() {
+      const matchRef = db.ref("games/" + roomId);
+      matchRef.on("value", snap => {
+        const game = snap.val();
+        if (!game) return;
+
+        gameStarted = true;
+
+        scoreDiv.textContent = `${game.player1} ${game.score1} - ${game.score2} ${game.player2} (Time Left: ${game.time}s)`;
+
+        if (game.time <= 0) {
+          matchEnd(game);
+          return;
+        }
+
+        statusDiv.textContent = "Match in progress...";
+      });
+
+      if (isStarter) {
+        simulateMatch(matchRef);
+      }
+    }
+
+    function simulateMatch(ref) {
+      const interval = setInterval(() => {
+        ref.once("value", snap => {
+          const game = snap.val();
+          if (!game || game.time <= 0) {
+            clearInterval(interval);
+            return;
+          }
+
+          let s1 = game.score1;
+          let s2 = game.score2;
+          let newCommentary = "";
+
+          if (Math.random() < 0.05) {
+            s1++;
+            newCommentary = `${game.player1} scores a GOAL! ⚽️`;
+          }
+          if (Math.random() < 0.05) {
+            s2++;
+            newCommentary = `${game.player2} scores a GOAL! ⚽️`;
+          }
+
+          if (newCommentary) addCommentary(newCommentary);
+
+          ref.update({
+            score1: s1,
+            score2: s2,
+            time: game.time - 1
+          });
+        });
+      }, 1000);
+    }
+
+    function matchEnd(game) {
+      let winner = "Draw!";
+      if (game.score1 > game.score2) winner = game.player1 + " Wins!";
+      else if (game.score2 > game.score1) winner = game.player2 + " Wins!";
+
+      statusDiv.textContent = "Match Over! " + winner;
+      addCommentary("Match has ended.");
+      scoreDiv.textContent = `${game.player1} ${game.score1} - ${game.score2} ${game.player2}`;
+
+      joinBtn.disabled = false;
+      joinedGame = false;
+
+      // Update leaderboard
+      updateLeaderboardDB(game);
+    }
+
+    function updateLeaderboardDB(game) {
+      // Update matches count for player1
+      const p1Ref = db.ref("leaderboard/" + encodeKey(game.player1));
+      p1Ref.transaction(current => {
+        if (current === null) return { name: game.player1, wins: 0, matches: 1 };
+        current.matches = (current.matches || 0) + 1;
+        if (game.score1 > game.score2) current.wins = (current.wins || 0) + 1;
+        return current;
+      });
+
+      // Update matches count for player2
+      const p2Ref = db.ref("leaderboard/" + encodeKey(game.player2));
+      p2Ref.transaction(current => {
+        if (current === null) return { name: game.player2, wins: 0, matches: 1 };
+        current.matches = (current.matches || 0) + 1;
+        if (game.score2 > game.score1) current.wins = (current.wins || 0) + 1;
+        return current;
+      });
+
+      // Refresh leaderboard UI
+      setTimeout(updateLeaderboard, 1000);
+    }
+
+    // Helper to encode Firebase keys
+    function encodeKey(key) {
+      return key.replace(/\./g, "_dot_");
+    }
+
+    // Load leaderboard initially
+    updateLeaderboard();
+
+  </script>
+</body>
+</html>
