@@ -3,105 +3,270 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>efootmob beta</title>
+<title>Efootmob 1v1 </title>
 <style>
-  /* --- CSS Styling --- */
+  /* --- Enhanced Twinlik CSS Styling --- */
+  :root {
+    --primary-color: #00ffea;
+    --secondary-color: #1e3c72;
+    --dark-color: #003344;
+    --light-color: #ffffff;
+    --success-color: #4caf50;
+    --danger-color: #f44336;
+    --commentary-bg: rgba(0, 0, 0, 0.3);
+  }
+  
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: #fff;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--secondary-color), #2a5298);
+    color: var(--light-color);
     text-align: center;
-    padding: 30px 10px;
+    padding: 20px 10px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0;
   }
+  
+  .container {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+  }
+  
   h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    text-shadow: 0 0 10px #00ffea;
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px var(--primary-color);
+    font-weight: 700;
+    background: linear-gradient(to right, var(--primary-color), #00c8b5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
+  
+  .input-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
   #username {
-    padding: 10px 15px;
+    padding: 12px 20px;
     font-size: 1.1rem;
     border-radius: 8px;
-    border: none;
-    width: 220px;
-    margin-bottom: 15px;
-    outline: none;
+    border: 2px solid var(--primary-color);
+    width: 280px;
+    max-width: 100%;
+    background: rgba(255,255,255,0.9);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
   }
+  
+  #username:focus {
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color);
+    transform: scale(1.02);
+  }
+  
   button {
-    padding: 10px 25px;
+    padding: 12px 30px;
     font-size: 1.1rem;
-    background: #00ffea;
+    background: var(--primary-color);
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-    color: #003344;
-    transition: background 0.3s ease;
-    margin-bottom: 20px;
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+  
   button:hover {
     background: #00c8b5;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   }
+  
+  button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+  
   #status, #score, #commentary {
-    margin: 10px auto;
-    max-width: 400px;
+    margin: 0;
+    width: 100%;
     background: rgba(255,255,255,0.1);
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px #00ffea88;
+    padding: 18px 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 234, 0.3);
     font-weight: 600;
     font-size: 1.1rem;
+    backdrop-filter: blur(5px);
   }
+  
+  #score {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .score-team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .score-number {
+    font-size: 2rem;
+    font-weight: 800;
+  }
+  
   #commentary {
-    height: 120px;
+    height: 200px;
     overflow-y: auto;
     text-align: left;
-    font-size: 0.9rem;
-    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.5;
+    background: var(--commentary-bg);
+    border: 1px solid rgba(0, 255, 234, 0.2);
   }
+  
+  .commentary-entry {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .commentary-time {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-right: 8px;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  #commentary::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  #commentary::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 3px;
+  }
+  
   #leaderboard {
     margin-top: 30px;
-    max-width: 400px;
+    width: 100%;
+    max-width: 500px;
     background: rgba(0, 255, 234, 0.15);
     border-radius: 12px;
-    padding: 15px 20px;
-    color: #003344;
+    padding: 20px;
+    color: var(--light-color);
+    border: 1px solid rgba(0, 255, 234, 0.3);
+    backdrop-filter: blur(5px);
   }
+  
   #leaderboard h2 {
     margin-top: 0;
-    margin-bottom: 15px;
-    color: #00ffea;
+    margin-bottom: 20px;
+    color: var(--primary-color);
     text-shadow: 0 0 5px #00c8b5;
+    font-size: 1.8rem;
   }
+  
   #leaderboard ul {
     list-style: none;
     padding-left: 0;
+    margin: 0;
   }
+  
   #leaderboard li {
-    padding: 8px 0;
-    border-bottom: 1px solid #00ffea44;
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(0, 255, 234, 0.3);
     font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #leaderboard li:first-child {
+    font-weight: 700;
+    color: var(--primary-color);
+    background: rgba(0, 255, 234, 0.1);
+    border-radius: 6px;
+  }
+  
+  .pulse {
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 234, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 255, 234, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 234, 0); }
+  }
+  
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .game-info {
+      max-width: 100%;
+    }
+    
+    #username {
+      width: 100%;
+    }
+    
+    #score {
+      flex-direction: column;
+      gap: 10px;
+    }
   }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Efootmob(beta)</h1>
-  <input type="text" id="username" placeholder="Enter your name" autocomplete="off" />
-  <button onclick="joinMatch()" id="joinBtn">Join Match</button>
+  <div class="container">
+    <h1>Efootmob(beta)</h1>
+    
+    <div class="input-group">
+      <input type="text" id="username" placeholder="Enter your name" autocomplete="off" required />
+      <button onclick="joinMatch()" id="joinBtn">Join Match</button>
+    </div>
 
-  <div id="status">Please enter your name and join a match.</div>
-  <div id="score"></div>
-  <div id="commentary"></div>
+    <div class="game-info">
+      <div id="status">Please enter your name to start a match.</div>
+      <div id="score"></div>
+      <div id="commentary"></div>
+    </div>
 
-  <div id="leaderboard">
-    <h2>Leaderboard</h2>
-    <ul id="leaderboardList">
-      <li>No matches played yet.</li>
-    </ul>
+    <div id="leaderboard">
+      <h2>Leaderboard</h2>
+      <ul id="leaderboardList">
+        <li>Loading leaderboard...</li>
+      </ul>
+    </div>
   </div>
 
   <!-- Firebase Scripts -->
@@ -121,146 +286,243 @@
       measurementId: "G-0EWSZ3SFX1"
     };
 
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    // Game state variables
     let playerName = "";
     let roomId = "";
     let isStarter = false;
     let gameStarted = false;
     let joinedGame = false;
+    let matchInterval = null;
+    let waitingRef = null;
+    let matchRef = null;
+    let commentaryRef = null;
+    let waitingListener = null;
 
+    // DOM elements
     const statusDiv = document.getElementById("status");
     const scoreDiv = document.getElementById("score");
     const commentaryDiv = document.getElementById("commentary");
     const joinBtn = document.getElementById("joinBtn");
     const leaderboardList = document.getElementById("leaderboardList");
+    const usernameInput = document.getElementById("username");
 
-    function addCommentary(text) {
-      const p = document.createElement("p");
-      p.textContent = text;
-      commentaryDiv.appendChild(p);
-      commentaryDiv.scrollTop = commentaryDiv.scrollHeight;
+    // Initialize the app
+    function init() {
+      updateLeaderboard();
     }
 
-    // To update the leaderboard
+    // Add commentary to the match
+    function addCommentary(text, timestamp) {
+      const entry = document.createElement("div");
+      entry.className = "commentary-entry";
+      
+      const timeSpan = document.createElement("span");
+      timeSpan.className = "commentary-time";
+      const minutes = Math.floor(timestamp / 60);
+      const seconds = timestamp % 60;
+      timeSpan.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      
+      const textSpan = document.createElement("span");
+      textSpan.textContent = text;
+      
+      entry.appendChild(timeSpan);
+      entry.appendChild(textSpan);
+      
+      commentaryDiv.insertBefore(entry, commentaryDiv.firstChild);
+      
+      // Limit to 50 commentary entries
+      if (commentaryDiv.children.length > 50) {
+        commentaryDiv.removeChild(commentaryDiv.lastChild);
+      }
+    }
+
+    // Update leaderboard UI
     function updateLeaderboard() {
       db.ref("leaderboard").orderByChild("wins").limitToLast(10).once("value", snap => {
         const data = snap.val();
         leaderboardList.innerHTML = "";
-        if (!data) {
+        
+        if (!data || Object.keys(data).length === 0) {
           leaderboardList.innerHTML = "<li>No matches played yet.</li>";
           return;
         }
-        // Sort descending by wins
-        let sorted = Object.entries(data).sort((a,b) => b[1].wins - a[1].wins);
-        sorted.forEach(([key, val], i) => {
-          let li = document.createElement("li");
-          li.textContent = `${val.name} - Wins: ${val.wins}, Matches: ${val.matches}`;
+        
+        // Convert to array and sort by wins
+        const sorted = Object.entries(data).map(([key, val]) => ({ key, ...val }))
+          .sort((a, b) => (b.wins || 0) - (a.wins || 0));
+        
+        sorted.forEach((player, index) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <span>${index + 1}. ${player.name || 'Unknown'}</span>
+            <span>W: ${player.wins || 0} | M: ${player.matches || 0}</span>
+          `;
           leaderboardList.appendChild(li);
         });
       });
     }
 
+    // Join matchmaking queue
     function joinMatch() {
       if (joinedGame) {
-        alert("You are already in a match!");
+        alert("Please finish your current match before joining a new one!");
         return;
       }
-      playerName = document.getElementById("username").value.trim();
-      if (!playerName) return alert("Enter your name!");
+      
+      playerName = usernameInput.value.trim();
+      if (!playerName) {
+        alert("Please enter your name!");
+        usernameInput.focus();
+        return;
+      }
 
       joinBtn.disabled = true;
       statusDiv.textContent = "Searching for opponent...";
       commentaryDiv.innerHTML = "";
+      scoreDiv.textContent = "";
 
-      // Check if this player is already in waiting or any active game
+      // Check if there's already a waiting player
       db.ref("waiting").once("value", snapshot => {
         const waitingPlayer = snapshot.val();
-        if (waitingPlayer && waitingPlayer.name === playerName) {
-          statusDiv.textContent = "You are already waiting for an opponent...";
-          joinBtn.disabled = false;
-          return;
+        
+        if (waitingPlayer && waitingPlayer.name !== playerName) {
+          // Found an opponent - create a match
+          createMatch(waitingPlayer.name);
+        } else {
+          // No opponent found - add yourself to waiting list
+          addToWaitingList();
         }
+      });
+    }
 
-        // Also check if player is already in a game running
-        db.ref("games").orderByChild("time").startAt(1).once("value", snap => {
-          let activeGameFound = false;
-          snap.forEach(gameSnap => {
-            const game = gameSnap.val();
-            if (game.player1 === playerName || game.player2 === playerName) {
-              activeGameFound = true;
-              roomId = gameSnap.key;
-              isStarter = false;
-              setupMatchListener();
-              statusDiv.textContent = "Reconnected to your active match.";
-              joinBtn.disabled = true;
-              joinedGame = true;
-              return true;
+    // Add player to waiting list
+    function addToWaitingList() {
+      // Remove any existing waiting player with same name
+      db.ref("waiting").remove();
+      
+      // Add new waiting player
+      waitingRef = db.ref("waiting");
+      waitingRef.set({
+        name: playerName,
+        timestamp: Date.now()
+      });
+      
+      statusDiv.textContent = "Waiting for another player to join...";
+      
+      // Listen for changes in waiting list
+      waitingListener = db.ref("waiting").on("value", snap => {
+        const waitingPlayer = snap.val();
+        
+        if (!waitingPlayer) {
+          // We were removed from waiting (matched or cancelled)
+          if (!joinedGame) {
+            statusDiv.textContent = "Matchmaking cancelled.";
+            joinBtn.disabled = false;
+          }
+          if (waitingListener) {
+            db.ref("waiting").off("value", waitingListener);
+            waitingListener = null;
+          }
+        }
+      });
+      
+      // Set timeout to remove from waiting after 30 seconds
+      setTimeout(() => {
+        if (!joinedGame && waitingRef) {
+          db.ref("waiting").once("value", snap => {
+            if (snap.exists() && snap.val().name === playerName) {
+              waitingRef.remove();
+              statusDiv.textContent = "No opponent found. Please try again.";
+              joinBtn.disabled = false;
             }
           });
+        }
+      }, 30000);
+    }
 
-          if (activeGameFound) return;
-
-          // If no one waiting, set yourself as waiting
-          if (!waitingPlayer) {
-            db.ref("waiting").set({ name: playerName }).then(() => {
-              statusDiv.textContent = "Waiting for another player to join...";
-              joinBtn.disabled = true;
-              // Listen for a new game with this player
-              db.ref("games").on("child_added", snap => {
-                const game = snap.val();
-                if ((game.player1 === playerName || game.player2 === playerName) && !joinedGame) {
-                  roomId = snap.key;
-                  isStarter = false;
-                  setupMatchListener();
-                  joinedGame = true;
-                  joinBtn.disabled = true;
-                  statusDiv.textContent = "Opponent found! Match starting...";
-                }
-              });
-            });
-          } else {
-            // Someone is waiting, create a match
-            if (waitingPlayer.name === playerName) {
-              statusDiv.textContent = "You are already waiting for an opponent...";
-              joinBtn.disabled = false;
-              return;
-            }
-            createMatch(waitingPlayer.name);
-          }
+    // Create a new match with opponent
+    function createMatch(opponentName) {
+      // Remove both players from waiting
+      db.ref("waiting").remove();
+      
+      // Create game room
+      roomId = "match_" + Date.now();
+      matchRef = db.ref("games/" + roomId);
+      
+      // Set initial match data
+      matchRef.set({
+        player1: isStarter ? playerName : opponentName,
+        player2: isStarter ? opponentName : playerName,
+        score1: 0,
+        score2: 0,
+        time: 90, // 90 seconds for a match
+        status: "active",
+        createdAt: Date.now()
+      }).then(() => {
+        isStarter = true;
+        joinedGame = true;
+        statusDiv.textContent = "Match Started!";
+        setupMatchListener();
+        
+        // Update UI with opponent info
+        updateScoreDisplay({
+          player1: isStarter ? playerName : opponentName,
+          player2: isStarter ? opponentName : playerName,
+          score1: 0,
+          score2: 0,
+          time: 90
         });
       });
     }
 
-    function createMatch(opponentName) {
-      roomId = "room_" + Date.now();
-      db.ref("games/" + roomId).set({
-        player1: opponentName,
-        player2: playerName,
-        score1: 0,
-        score2: 0,
-        time: 60
-      }).then(() => {
-        db.ref("waiting").remove();
-        isStarter = true;
-        joinedGame = true;
-        statusDiv.textContent = "Match Started!";
-        joinBtn.disabled = true;
-        setupMatchListener();
-      });
+    // Update score display
+    function updateScoreDisplay(game) {
+      scoreDiv.innerHTML = `
+        <div class="score-team">
+          <div>${game.player1}</div>
+          <div class="score-number">${game.score1}</div>
+        </div>
+        <div>vs</div>
+        <div class="score-team">
+          <div>${game.player2}</div>
+          <div class="score-number">${game.score2}</div>
+        </div>
+        <div style="width: 100%; margin-top: 10px; text-align: center;">
+          Time: ${game.time}'
+        </div>
+      `;
     }
 
+    // Setup match event listeners
     function setupMatchListener() {
-      const matchRef = db.ref("games/" + roomId);
+      // Clean up any existing listeners
+      if (matchRef) matchRef.off();
+      if (commentaryRef) commentaryRef.off();
+      
+      commentaryRef = db.ref("commentary/" + roomId);
+      
+      // Listen for match updates
       matchRef.on("value", snap => {
         const game = snap.val();
-        if (!game) return;
+        if (!game) {
+          // Game was deleted (probably by opponent leaving)
+          if (joinedGame) {
+            statusDiv.textContent = "Opponent left the match";
+            addCommentary("Match ended because opponent disconnected.", 0);
+            endMatch(null, true);
+          }
+          return;
+        }
 
         gameStarted = true;
-
-        scoreDiv.textContent = `${game.player1} ${game.score1} - ${game.score2} ${game.player2} (Time Left: ${game.time}s)`;
-
+        
+        // Update score display
+        updateScoreDisplay(game);
+        
         if (game.time <= 0) {
           matchEnd(game);
           return;
@@ -269,36 +531,68 @@
         statusDiv.textContent = "Match in progress...";
       });
 
+      // Listen for new commentary
+      commentaryRef.limitToLast(1).on("child_added", snap => {
+        const comment = snap.val();
+        if (comment) {
+          addCommentary(comment.text, comment.time);
+        }
+      });
+
       if (isStarter) {
-        simulateMatch(matchRef);
+        simulateMatch();
       }
     }
 
-    function simulateMatch(ref) {
-      const interval = setInterval(() => {
-        ref.once("value", snap => {
+    // Simulate match events
+    function simulateMatch() {
+      if (matchInterval) clearInterval(matchInterval);
+      
+      matchInterval = setInterval(() => {
+        matchRef.once("value", snap => {
           const game = snap.val();
           if (!game || game.time <= 0) {
-            clearInterval(interval);
+            clearInterval(matchInterval);
             return;
           }
 
           let s1 = game.score1;
           let s2 = game.score2;
           let newCommentary = "";
-
-          if (Math.random() < 0.05) {
+          
+          // Random goal events
+          if (Math.random() < 0.04) {
             s1++;
-            newCommentary = `${game.player1} scores a GOAL! ⚽️`;
+            newCommentary = `${game.player1} scores a GOAL! ⚽ (${s1}-${s2})`;
           }
-          if (Math.random() < 0.05) {
+          
+          if (Math.random() < 0.04) {
             s2++;
-            newCommentary = `${game.player2} scores a GOAL! ⚽️`;
+            newCommentary = `${game.player2} scores a GOAL! ⚽ (${s1}-${s2})`;
+          }
+          
+          if (!newCommentary) {
+            // Other match events
+            const events = [
+              `${game.player1} makes a great pass!`,
+              `${game.player2} attempts a shot but misses.`,
+              `Corner kick for ${Math.random() < 0.5 ? game.player1 : game.player2}`,
+              `Free kick in a dangerous position!`,
+              `Great save by the goalkeeper!`,
+              `The crowd is cheering loudly!`
+            ];
+            newCommentary = events[Math.floor(Math.random() * events.length)];
           }
 
-          if (newCommentary) addCommentary(newCommentary);
+          if (newCommentary) {
+            // Add commentary to Firebase for both players to see
+            db.ref("commentary/" + roomId).push().set({
+              text: newCommentary,
+              time: game.time
+            });
+          }
 
-          ref.update({
+          matchRef.update({
             score1: s1,
             score2: s2,
             time: game.time - 1
@@ -307,38 +601,95 @@
       }, 1000);
     }
 
+    // Handle match end
     function matchEnd(game) {
+      // Clear any existing intervals
+      if (matchInterval) {
+        clearInterval(matchInterval);
+        matchInterval = null;
+      }
+      
+      // Determine winner
       let winner = "Draw!";
-      if (game.score1 > game.score2) winner = game.player1 + " Wins!";
-      else if (game.score2 > game.score1) winner = game.player2 + " Wins!";
+      let winnerName = null;
+      
+      if (game.score1 > game.score2) {
+        winner = `${game.player1} Wins!`;
+        winnerName = game.player1;
+      } else if (game.score2 > game.score1) {
+        winner = `${game.player2} Wins!`;
+        winnerName = game.player2;
+      }
 
       statusDiv.textContent = "Match Over! " + winner;
-      addCommentary("Match has ended.");
-      scoreDiv.textContent = `${game.player1} ${game.score1} - ${game.score2} ${game.player2}`;
-
-      joinBtn.disabled = false;
-      joinedGame = false;
+      addCommentary("Final whistle! " + winner, 0);
+      
+      // Update score display with winner
+      scoreDiv.innerHTML = `
+        <div class="score-team">
+          <div>${game.player1}</div>
+          <div class="score-number">${game.score1}</div>
+        </div>
+        <div>vs</div>
+        <div class="score-team">
+          <div>${game.player2}</div>
+          <div class="score-number">${game.score2}</div>
+        </div>
+        <div style="width: 100%; margin-top: 10px; text-align: center; font-weight: 700; color: var(--primary-color)">
+          ${winner}
+        </div>
+      `;
 
       // Update leaderboard
-      updateLeaderboardDB(game);
+      updateLeaderboardDB(game.player1, game.player2, winnerName);
+      
+      // Remove the game after a delay
+      setTimeout(() => {
+        if (matchRef) {
+          matchRef.remove();
+          matchRef = null;
+        }
+      }, 30000);
+      
+      // Reset game state
+      joinBtn.disabled = false;
+      joinedGame = false;
+      gameStarted = false;
+      isStarter = false;
+      roomId = "";
     }
 
-    function updateLeaderboardDB(game) {
-      // Update matches count for player1
-      const p1Ref = db.ref("leaderboard/" + encodeKey(game.player1));
+    // Update leaderboard in database
+    function updateLeaderboardDB(player1, player2, winner) {
+      // Update player1 stats
+      const p1Ref = db.ref("leaderboard/" + encodeKey(player1));
       p1Ref.transaction(current => {
-        if (current === null) return { name: game.player1, wins: 0, matches: 1 };
+        if (current === null) {
+          return { 
+            name: player1,
+            wins: winner === player1 ? 1 : 0,
+            matches: 1
+          };
+        }
         current.matches = (current.matches || 0) + 1;
-        if (game.score1 > game.score2) current.wins = (current.wins || 0) + 1;
+        if (winner === player1) current.wins = (current.wins || 0) + 1;
+        current.name = player1;
         return current;
       });
 
-      // Update matches count for player2
-      const p2Ref = db.ref("leaderboard/" + encodeKey(game.player2));
+      // Update player2 stats
+      const p2Ref = db.ref("leaderboard/" + encodeKey(player2));
       p2Ref.transaction(current => {
-        if (current === null) return { name: game.player2, wins: 0, matches: 1 };
+        if (current === null) {
+          return { 
+            name: player2,
+            wins: winner === player2 ? 1 : 0,
+            matches: 1
+          };
+        }
         current.matches = (current.matches || 0) + 1;
-        if (game.score2 > game.score1) current.wins = (current.wins || 0) + 1;
+        if (winner === player2) current.wins = (current.wins || 0) + 1;
+        current.name = player2;
         return current;
       });
 
@@ -346,13 +697,80 @@
       setTimeout(updateLeaderboard, 1000);
     }
 
-    // Helper to encode Firebase keys
-    function encodeKey(key) {
-      return key.replace(/\./g, "_dot_");
+    // End match prematurely (when opponent leaves)
+    function endMatch(game, opponentLeft = false) {
+      clearInterval(matchInterval);
+      
+      if (opponentLeft) {
+        // Give win to current player if opponent left
+        updateLeaderboardDB(playerName, "Opponent", playerName);
+      }
+      
+      // Remove the game
+      if (matchRef) {
+        matchRef.remove();
+        matchRef = null;
+      }
+      
+      // Show button to return to lobby
+      const returnBtn = document.createElement("button");
+      returnBtn.className = "btn-success";
+      returnBtn.textContent = "Return to Lobby";
+      returnBtn.onclick = () => {
+        showLobby();
+      };
+      commentaryDiv.appendChild(returnBtn);
     }
 
-    // Load leaderboard initially
-    updateLeaderboard();
+    // Helper to encode Firebase keys
+    function encodeKey(key) {
+      return key.replace(/[\.\#\$\[\]\/]/g, "_");
+    }
+
+    // Show lobby screen
+    function showLobby() {
+      // Reset UI
+      statusDiv.textContent = "Please enter your name to start a match.";
+      scoreDiv.textContent = "";
+      commentaryDiv.innerHTML = "";
+      joinBtn.disabled = false;
+      
+      // Reset game state
+      joinedGame = false;
+      gameStarted = false;
+      isStarter = false;
+      roomId = "";
+      
+      // Update leaderboard
+      updateLeaderboard();
+    }
+
+    // Initialize the app when loaded
+    window.onload = init;
+
+    // Cleanup when page unloads
+    window.addEventListener('beforeunload', () => {
+      // Remove from waiting list if still there
+      if (playerName && waitingRef) {
+        db.ref("waiting").once("value", snap => {
+          if (snap.exists() && snap.val().name === playerName) {
+            waitingRef.remove();
+          }
+        });
+      }
+      
+      // Remove unfinished game if starter
+      if (roomId && isStarter && !gameStarted) {
+        db.ref("games/" + roomId).remove();
+      }
+      
+      // Clean up listeners
+      if (waitingListener) {
+        db.ref("waiting").off("value", waitingListener);
+      }
+      if (matchRef) matchRef.off();
+      if (commentaryRef) commentaryRef.off();
+    });
 
   </script>
 </body>
