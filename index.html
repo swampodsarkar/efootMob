@@ -76,6 +76,7 @@
     flex-direction: column;
     align-items: center;
     gap: 15px;
+    position: relative;
   }
   
   #username {
@@ -234,7 +235,7 @@
   #leaderboard {
     margin-top: 30px;
     width: 100%;
-    max-width: 500px;
+    max-width: 650px;
     background: rgba(0, 0, 0, 0.4);
     border-radius: 12px;
     padding: 20px;
@@ -318,7 +319,7 @@
   }
   
   .leaderboard-trophies {
-    min-width: 80px;
+    min-width: 100px;
     text-align: right;
     font-weight: 700;
   }
@@ -342,14 +343,14 @@
     color: white;
     padding: 3px 15px;
     border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 700;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     z-index: 1;
   }
   
   .countdown {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-family: monospace;
     color: var(--goal-color);
   }
@@ -385,6 +386,29 @@
     text-align: center;
   }
   
+  .logout-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  
+  .logout-btn:hover {
+    opacity: 1;
+  }
+  
+  .username-display {
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+  }
+  
   @media (max-width: 600px) {
     h1 {
       font-size: 2rem;
@@ -417,6 +441,10 @@
       width: 100%;
       justify-content: space-between;
     }
+    
+    .leaderboard-trophies {
+      min-width: auto;
+    }
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -425,10 +453,13 @@
   <div class="container">
     <h1>1v1 Football Simulation</h1>
     
-    <div class="input-group">
+    <div class="input-group" id="inputGroup">
       <input type="text" id="username" placeholder="Enter your name" autocomplete="off" required />
       <button onclick="joinMatch()" id="joinBtn">Join Match</button>
+      <button class="logout-btn" id="logoutBtn" style="display: none;" onclick="logout()">⎋</button>
     </div>
+    
+    <div id="userDisplay" class="username-display" style="display: none;"></div>
 
     <div class="game-info">
       <div id="status">Please enter your name to start a match.</div>
@@ -488,6 +519,57 @@
     const joinBtn = document.getElementById("joinBtn");
     const leaderboardList = document.getElementById("leaderboardList");
     const usernameInput = document.getElementById("username");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userDisplay = document.getElementById("userDisplay");
+    const inputGroup = document.getElementById("inputGroup");
+
+    // Check if username is stored in localStorage
+    function checkStoredUser() {
+      const storedUser = localStorage.getItem('footballSimUsername');
+      if (storedUser) {
+        playerName = storedUser;
+        usernameInput.value = storedUser;
+        usernameInput.disabled = true;
+        joinBtn.textContent = "Play Again";
+        logoutBtn.style.display = "block";
+        userDisplay.textContent = `Playing as: ${storedUser}`;
+        userDisplay.style.display = "block";
+      }
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('footballSimUsername');
+      playerName = "";
+      usernameInput.value = "";
+      usernameInput.disabled = false;
+      joinBtn.textContent = "Join Match";
+      logoutBtn.style.display = "none";
+      userDisplay.style.display = "none";
+      statusDiv.textContent = "Please enter your name to start a match.";
+      
+      // Clean up any active game
+      if (roomId) {
+        if (matchRef) matchRef.off();
+        if (commentaryRef) commentaryRef.off();
+        db.ref("games/" + roomId).remove();
+        roomId = "";
+      }
+      
+      // Remove from waiting list if there
+      db.ref("waiting").once("value", snap => {
+        const waitingPlayer = snap.val();
+        if (waitingPlayer && waitingPlayer.name === playerName) {
+          db.ref("waiting").remove();
+        }
+      });
+      
+      // Reset game state
+      gameStarted = false;
+      joinedGame = false;
+      isStarter = false;
+      matchInterval = null;
+    }
 
     // Football action phrases
     const footballActions = [
@@ -643,11 +725,22 @@
         return;
       }
       
-      playerName = usernameInput.value.trim();
-      if (!playerName) {
+      const inputName = usernameInput.value.trim();
+      if (!inputName) {
         alert("Please enter your name!");
         usernameInput.focus();
         return;
+      }
+      
+      // Store the username if not already stored
+      if (!playerName) {
+        playerName = inputName;
+        localStorage.setItem('footballSimUsername', playerName);
+        usernameInput.disabled = true;
+        joinBtn.textContent = "Play Again";
+        logoutBtn.style.display = "block";
+        userDisplay.textContent = `Playing as: ${playerName}`;
+        userDisplay.style.display = "block";
       }
 
       joinBtn.disabled = true;
@@ -1011,8 +1104,14 @@
       return key.replace(/[\.\#\$\[\]\/]/g, "_");
     }
 
+    // Initialize the app
+    function init() {
+      checkStoredUser();
+      updateLeaderboard();
+    }
+
     // Load leaderboard initially
-    updateLeaderboard();
+    init();
 
     // Cleanup any waiting player when page unloads
     window.addEventListener('beforeunload', () => {
