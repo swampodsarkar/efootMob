@@ -3,22 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Efootbmob 1v1 Football Simulation</title>
+<title>1v1 Football Simulation</title>
 <style>
-  /* --- Enhanced Twinlik CSS Styling --- */
+  /* --- Football Themed CSS --- */
   :root {
-    --primary-color: #00ffea;
-    --secondary-color: #1e3c72;
-    --dark-color: #003344;
+    --primary-color: #00ff88;
+    --secondary-color: #005f73;
+    --dark-color: #001219;
     --light-color: #ffffff;
-    --success-color: #4caf50;
-    --danger-color: #f44336;
-    --commentary-bg: rgba(0, 0, 0, 0.3);
+    --pitch-green: #2a8c3a;
+    --goal-color: #ff6d00;
+    --commentary-bg: rgba(0, 0, 0, 0.5);
+    --card-bg: rgba(255, 255, 255, 0.1);
   }
   
   body {
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, var(--secondary-color), #2a5298);
+    background: var(--pitch-green);
+    background-image: 
+      linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
     color: var(--light-color);
     text-align: center;
     padding: 20px 10px;
@@ -38,11 +43,26 @@
   h1 {
     font-size: 2.8rem;
     margin-bottom: 20px;
-    text-shadow: 0 0 10px var(--primary-color);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
     font-weight: 700;
     background: linear-gradient(to right, var(--primary-color), #00c8b5);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    position: relative;
+  }
+  
+  h1::after {
+    content: "⚽";
+    position: absolute;
+    right: -10px;
+    top: -15px;
+    font-size: 1.5rem;
+    animation: spin 5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   
   .input-group {
@@ -56,13 +76,14 @@
   #username {
     padding: 12px 20px;
     font-size: 1.1rem;
-    border-radius: 8px;
+    border-radius: 50px;
     border: 2px solid var(--primary-color);
     width: 280px;
     max-width: 100%;
     background: rgba(255,255,255,0.9);
     color: var(--dark-color);
     transition: all 0.3s ease;
+    text-align: center;
   }
   
   #username:focus {
@@ -76,16 +97,18 @@
     font-size: 1.1rem;
     background: var(--primary-color);
     border: none;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
     font-weight: 600;
     color: var(--dark-color);
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   
   button:hover {
-    background: #00c8b5;
+    background: #00e676;
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   }
@@ -109,13 +132,14 @@
   #status, #score, #commentary {
     margin: 0;
     width: 100%;
-    background: rgba(255,255,255,0.1);
+    background: var(--card-bg);
     padding: 18px 25px;
     border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 255, 234, 0.3);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     font-weight: 600;
     font-size: 1.1rem;
     backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   #score {
@@ -125,31 +149,48 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  #score::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
   }
   
   .score-team {
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 1;
+    padding: 10px;
   }
   
   .score-number {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 800;
+    margin: 5px 0;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
   }
   
   #commentary {
-    height: 200px;
+    height: 250px;
     overflow-y: auto;
     text-align: left;
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.5;
     background: var(--commentary-bg);
-    border: 1px solid rgba(0, 255, 234, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.3);
   }
   
   .commentary-entry {
-    padding: 8px 0;
+    padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     animation: fadeIn 0.3s ease;
   }
@@ -158,6 +199,17 @@
     color: var(--primary-color);
     font-weight: 600;
     margin-right: 8px;
+    font-family: monospace;
+  }
+  
+  .goal {
+    color: var(--goal-color);
+    font-weight: 700;
+  }
+  
+  .important {
+    color: var(--primary-color);
+    font-weight: 700;
   }
   
   @keyframes fadeIn {
@@ -178,11 +230,11 @@
     margin-top: 30px;
     width: 100%;
     max-width: 500px;
-    background: rgba(0, 255, 234, 0.15);
+    background: rgba(0, 0, 0, 0.4);
     border-radius: 12px;
     padding: 20px;
     color: var(--light-color);
-    border: 1px solid rgba(0, 255, 234, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
   }
   
@@ -190,8 +242,18 @@
     margin-top: 0;
     margin-bottom: 20px;
     color: var(--primary-color);
-    text-shadow: 0 0 5px #00c8b5;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
     font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  #leaderboard h2::before, #leaderboard h2::after {
+    content: "⚽";
+    font-size: 1rem;
+    opacity: 0.7;
   }
   
   #leaderboard ul {
@@ -201,18 +263,53 @@
   }
   
   #leaderboard li {
-    padding: 10px 15px;
-    border-bottom: 1px solid rgba(0, 255, 234, 0.3);
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     font-weight: 600;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  
+  #leaderboard li:hover {
+    background: rgba(0, 255, 136, 0.1);
   }
   
   #leaderboard li:first-child {
     font-weight: 700;
     color: var(--primary-color);
-    background: rgba(0, 255, 234, 0.1);
-    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  #leaderboard li:first-child::after {
+    content: "👑";
+    position: absolute;
+    right: 10px;
+  }
+  
+  .leaderboard-name {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .leaderboard-stats {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .leaderboard-wins {
+    color: var(--primary-color);
+    min-width: 50px;
+    text-align: right;
+  }
+  
+  .leaderboard-matches {
+    color: #aaa;
+    min-width: 50px;
+    text-align: right;
   }
   
   .pulse {
@@ -220,9 +317,22 @@
   }
   
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 255, 234, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(0, 255, 234, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 255, 234, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+  }
+  
+  .match-time {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark-color);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
   }
   
   @media (max-width: 600px) {
@@ -242,13 +352,28 @@
       flex-direction: column;
       gap: 10px;
     }
+    
+    .score-number {
+      font-size: 2rem;
+    }
+    
+    #leaderboard li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+    
+    .leaderboard-stats {
+      width: 100%;
+      justify-content: space-between;
+    }
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
-    <h1>efootbmob 1v1 Football Simulation</h1>
+    <h1>1v1 Football Simulation</h1>
     
     <div class="input-group">
       <input type="text" id="username" placeholder="Enter your name" autocomplete="off" required />
@@ -305,7 +430,66 @@
     const leaderboardList = document.getElementById("leaderboardList");
     const usernameInput = document.getElementById("username");
 
-    function addCommentary(text, timestamp) {
+    // Football action phrases
+    const footballActions = [
+      "makes a great pass",
+      "dribbles past the defender",
+      "takes a powerful shot",
+      "attempts a long range effort",
+      "makes a skillful move",
+      "plays a one-two with an invisible teammate",
+      "crosses the ball into the box",
+      "controls the ball beautifully",
+      "makes a sliding tackle",
+      "intercepts the pass",
+      "sprints down the wing",
+      "curves the ball towards goal",
+      "chips the goalkeeper",
+      "heads the ball towards goal",
+      "volleys the ball"
+    ];
+
+    const goalPhrases = [
+      "GOAL! What a strike! ⚽🔥",
+      "GOOOOAL! Fantastic finish! ⚽🎯",
+      "HE SCORES! Brilliant! ⚽✨",
+      "WHAT A GOAL! Incredible! ⚽💥",
+      "GOAL! The crowd goes wild! ⚽🙌"
+    ];
+
+    const savePhrases = [
+      "Great save by the keeper! 🧤",
+      "What a stop! Unbelievable! 🧤✋",
+      "Keeper denies a certain goal! 🧤🚫",
+      "Incredible reflexes to keep it out! 🧤👏",
+      "The goalkeeper comes to the rescue! 🧤💪"
+    ];
+
+    const missPhrases = [
+      "Just wide of the post! 😮",
+      "Over the bar! What a miss! 😲",
+      "Off target! Could have scored! 😫",
+      "Hits the crossbar! So close! ⛔",
+      "The ball goes high into the stands! 🙈"
+    ];
+
+    function getRandomAction() {
+      return footballActions[Math.floor(Math.random() * footballActions.length)];
+    }
+
+    function getRandomGoalPhrase() {
+      return goalPhrases[Math.floor(Math.random() * goalPhrases.length)];
+    }
+
+    function getRandomSavePhrase() {
+      return savePhrases[Math.floor(Math.random() * savePhrases.length)];
+    }
+
+    function getRandomMissPhrase() {
+      return missPhrases[Math.floor(Math.random() * missPhrases.length)];
+    }
+
+    function addCommentary(text, timestamp, isImportant = false, isGoal = false) {
       const entry = document.createElement("div");
       entry.className = "commentary-entry";
       
@@ -317,6 +501,8 @@
       
       const textSpan = document.createElement("span");
       textSpan.textContent = text;
+      if (isGoal) textSpan.className = "goal";
+      else if (isImportant) textSpan.className = "important";
       
       entry.appendChild(timeSpan);
       entry.appendChild(textSpan);
@@ -345,8 +531,11 @@
         sorted.forEach(([key, val], i) => {
           const li = document.createElement("li");
           li.innerHTML = `
-            <span>${val.name || 'Unknown'}</span>
-            <span>W: ${val.wins || 0} | M: ${val.matches || 0}</span>
+            <span class="leaderboard-name">${val.name || 'Unknown'}</span>
+            <div class="leaderboard-stats">
+              <span class="leaderboard-wins">W: ${val.wins || 0}</span>
+              <span class="leaderboard-matches">M: ${val.matches || 0}</span>
+            </div>
           `;
           leaderboardList.appendChild(li);
         });
@@ -453,7 +642,7 @@
         player2: playerName,
         score1: 0,
         score2: 0,
-        time: 60,
+        time: 90, // 90 seconds match duration
         createdAt: firebase.database.ServerValue.TIMESTAMP
       }).then(() => {
         db.ref("waiting").remove();
@@ -462,6 +651,12 @@
         statusDiv.textContent = "Match Started!";
         joinBtn.disabled = true;
         setupMatchListener();
+        
+        // Add initial commentary
+        db.ref("commentary/" + roomId).push().set({
+          text: `The match begins between ${opponentName} and ${playerName}!`,
+          time: 90
+        });
       });
     }
 
@@ -482,6 +677,7 @@
 
         // Update score display
         scoreDiv.innerHTML = `
+          <div class="match-time">${game.time}s</div>
           <div class="score-team">
             <div>${game.player1}</div>
             <div class="score-number">${game.score1}</div>
@@ -490,9 +686,6 @@
           <div class="score-team">
             <div>${game.player2}</div>
             <div class="score-number">${game.score2}</div>
-          </div>
-          <div style="width: 100%; margin-top: 10px; text-align: center;">
-            Time: ${game.time}s
           </div>
         `;
 
@@ -508,7 +701,9 @@
       commentaryRef.limitToLast(1).on("child_added", snap => {
         const comment = snap.val();
         if (comment) {
-          addCommentary(comment.text, comment.time);
+          const isGoal = comment.text.includes("GOAL") || comment.text.includes("scores");
+          const isImportant = isGoal || comment.text.includes("save") || comment.text.includes("miss");
+          addCommentary(comment.text, comment.time, isImportant, isGoal);
         }
       });
 
@@ -531,14 +726,51 @@
           let s1 = game.score1;
           let s2 = game.score2;
           let newCommentary = "";
+          let isImportant = false;
+          let isGoal = false;
 
-          if (Math.random() < 0.05) {
-            s1++;
-            newCommentary = `${game.player1} scores a GOAL! ⚽️`;
+          // Regular game action (80% chance)
+          if (Math.random() < 0.8) {
+            const player = Math.random() < 0.5 ? game.player1 : game.player2;
+            newCommentary = `${player} ${getRandomAction()}.`;
           }
+          
+          // Player 1 scores (5% chance)
           if (Math.random() < 0.05) {
-            s2++;
-            newCommentary = `${game.player2} scores a GOAL! ⚽️`;
+            if (Math.random() < 0.7) { // 70% chance to score
+              s1++;
+              newCommentary = `${game.player1} ${getRandomGoalPhrase()}`;
+              isGoal = true;
+              isImportant = true;
+            } else if (Math.random() < 0.5) { // 15% chance to save
+              newCommentary = getRandomSavePhrase();
+              isImportant = true;
+            } else { // 15% chance to miss
+              newCommentary = `${game.player1} ${getRandomMissPhrase()}`;
+              isImportant = true;
+            }
+          }
+          
+          // Player 2 scores (5% chance)
+          if (Math.random() < 0.05) {
+            if (Math.random() < 0.7) { // 70% chance to score
+              s2++;
+              newCommentary = `${game.player2} ${getRandomGoalPhrase()}`;
+              isGoal = true;
+              isImportant = true;
+            } else if (Math.random() < 0.5) { // 15% chance to save
+              newCommentary = getRandomSavePhrase();
+              isImportant = true;
+            } else { // 15% chance to miss
+              newCommentary = `${game.player2} ${getRandomMissPhrase()}`;
+              isImportant = true;
+            }
+          }
+
+          // Half-time commentary
+          if (game.time === 45) {
+            newCommentary = `Half-time! The score is ${s1}-${s2}.`;
+            isImportant = true;
           }
 
           if (newCommentary) {
@@ -569,11 +801,22 @@
       matchRef.remove();
       
       // Add final commentary
+      const finalScore = `${game.score1}-${game.score2}`;
+      let finalCommentary = `Full time! Final score: ${finalScore}. `;
+      
+      if (game.score1 > game.score2) {
+        finalCommentary += `${game.player1} wins the match!`;
+      } else if (game.score2 > game.score1) {
+        finalCommentary += `${game.player2} wins the match!`;
+      } else {
+        finalCommentary += "It's a draw!";
+      }
+      
       db.ref("commentary/" + roomId).push().set({
-        text: "Match has ended!",
+        text: finalCommentary,
         time: 0
       });
-      
+
       // Determine winner
       let winner = "Draw!";
       if (game.score1 > game.score2) winner = game.player1 + " Wins!";
@@ -581,6 +824,7 @@
 
       statusDiv.textContent = "Match Over! " + winner;
       scoreDiv.innerHTML = `
+        <div class="match-time">FINAL</div>
         <div class="score-team">
           <div>${game.player1}</div>
           <div class="score-number">${game.score1}</div>
@@ -616,12 +860,16 @@
           return { 
             name: game.player1, 
             wins: game.score1 > game.score2 ? 1 : 0, 
-            matches: 1 
+            matches: 1,
+            goals: game.score1,
+            conceded: game.score2
           };
         }
         current.matches = (current.matches || 0) + 1;
         if (game.score1 > game.score2) current.wins = (current.wins || 0) + 1;
         current.name = game.player1;
+        current.goals = (current.goals || 0) + game.score1;
+        current.conceded = (current.conceded || 0) + game.score2;
         return current;
       });
 
@@ -632,12 +880,16 @@
           return { 
             name: game.player2, 
             wins: game.score2 > game.score1 ? 1 : 0, 
-            matches: 1 
+            matches: 1,
+            goals: game.score2,
+            conceded: game.score1
           };
         }
         current.matches = (current.matches || 0) + 1;
         if (game.score2 > game.score1) current.wins = (current.wins || 0) + 1;
         current.name = game.player2;
+        current.goals = (current.goals || 0) + game.score2;
+        current.conceded = (current.conceded || 0) + game.score1;
         return current;
       });
 
@@ -672,6 +924,12 @@
       if (matchRef) matchRef.off();
     });
 
+    // Allow pressing Enter to join match
+    usernameInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        joinMatch();
+      }
+    });
   </script>
 </body>
 </html>
