@@ -20,6 +20,8 @@
     --gold: #ffd700;
     --platinum: #e5e4e2;
     --diamond: #b9f2ff;
+    --notice-color: #ffcc00;
+    --error-color: #ff3333;
   }
   
   body {
@@ -68,6 +70,131 @@
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+  
+  .header-notice {
+    background-color: var(--notice-color);
+    color: var(--dark-color);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    animation: pulseNotice 2s infinite;
+    display: none;
+  }
+  
+  @keyframes pulseNotice {
+    0% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 204, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 204, 0, 0); }
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .header-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .notification-btn {
+    background: none;
+    border: none;
+    color: var(--light-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--error-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+  }
+  
+  .notification-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--dark-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 2000;
+    display: none;
+  }
+  
+  .notification-panel h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+  }
+  
+  .notification-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+  }
+  
+  .notification-time {
+    font-size: 0.8rem;
+    color: #aaa;
+  }
+  
+  .close-notifications {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .promo-container {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  
+  .promo-input {
+    flex: 1;
+    padding: 8px 15px;
+    border-radius: 50px;
+    border: 2px solid var(--primary-color);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--dark-color);
+  }
+  
+  .promo-btn {
+    padding: 8px 15px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50px;
+    color: var(--dark-color);
+    font-weight: 600;
+    cursor: pointer;
   }
   
   .input-group {
@@ -411,9 +538,6 @@
   
   /* New styles for the added features */
   .diamond-balance {
-    position: fixed;
-    top: 20px;
-    right: 20px;
     background: rgba(0, 0, 0, 0.6);
     padding: 8px 15px;
     border-radius: 20px;
@@ -423,7 +547,6 @@
     gap: 5px;
     border: 1px solid var(--diamond);
     box-shadow: 0 0 10px rgba(185, 242, 255, 0.3);
-    z-index: 100;
   }
   
   .diamond-icon {
@@ -470,6 +593,7 @@
     display: flex;
     margin-bottom: 15px;
     border-bottom: 1px solid var(--primary-color);
+    overflow-x: auto;
   }
   
   .tab {
@@ -480,6 +604,7 @@
     color: var(--light-color);
     font-weight: 600;
     transition: all 0.3s;
+    white-space: nowrap;
   }
   
   .tab.active {
@@ -628,9 +753,6 @@
   }
   
   .team-power {
-    position: absolute;
-    top: 20px;
-    left: 20px;
     background: rgba(0, 0, 0, 0.6);
     padding: 8px 15px;
     border-radius: 20px;
@@ -639,16 +761,32 @@
     align-items: center;
     gap: 5px;
     border: 1px solid var(--primary-color);
-    z-index: 100;
   }
   
   .power-icon {
     color: var(--goal-color);
   }
   
+  .ban-message {
+    color: var(--error-color);
+    font-weight: 700;
+    margin-top: 10px;
+    display: none;
+  }
+  
   @media (max-width: 600px) {
     h1 {
       font-size: 2rem;
+    }
+    
+    .header-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .header-right {
+      width: 100%;
+      justify-content: space-between;
     }
     
     .game-info {
@@ -683,12 +821,6 @@
       min-width: auto;
     }
     
-    .diamond-balance, .team-power {
-      position: static;
-      margin: 10px auto;
-      width: fit-content;
-    }
-    
     .player-grid {
       grid-template-columns: 1fr;
     }
@@ -709,20 +841,41 @@
       width: 95%;
       padding: 15px;
     }
+    
+    .tabs {
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+    
+    .tab {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
-    <div id="diamondBalance" class="diamond-balance">
-      <span class="diamond-icon">💎</span>
-      <span id="diamondAmount">10,000</span>
-    </div>
+    <div class="header-notice" id="globalNotice"></div>
     
-    <div id="teamPower" class="team-power" style="display: none;">
-      <span class="power-icon">⚡</span>
-      <span id="powerValue">0</span>
+    <div class="header-container">
+      <div class="team-power" id="teamPower" style="display: none;">
+        <span class="power-icon">⚡</span>
+        <span id="powerValue">0</span>
+      </div>
+      
+      <div class="header-right">
+        <div class="diamond-balance" id="diamondBalance">
+          <span class="diamond-icon">💎</span>
+          <span id="diamondAmount">10,000</span>
+        </div>
+        
+        <button class="notification-btn" id="notificationBtn" onclick="toggleNotifications()">
+          🔔
+          <span class="notification-badge" id="notificationBadge"></span>
+        </button>
+      </div>
     </div>
     
     <h1>1v1 Football Simulation</h1>
@@ -731,6 +884,7 @@
       <input type="text" id="username" placeholder="Enter your name" autocomplete="off" required />
       <button onclick="joinMatch()" id="joinBtn">Join Match</button>
       <button class="logout-btn" id="logoutBtn" style="display: none;" onclick="logout()">⎋</button>
+      <div class="ban-message" id="banMessage"></div>
     </div>
     
     <div id="userDisplay" class="username-display" style="display: none;"></div>
@@ -753,6 +907,18 @@
       <button onclick="showModal('team')">⚙️ Team Manager</button>
       <button onclick="showModal('stats')">🧍‍♂️ User Stats</button>
     </div>
+    
+    <div class="promo-container">
+      <input type="text" id="promoCode" class="promo-input" placeholder="Enter promo code">
+      <button class="promo-btn" onclick="redeemPromo()">Apply</button>
+    </div>
+  </div>
+  
+  <!-- Notification Panel -->
+  <div class="notification-panel" id="notificationPanel">
+    <button class="close-notifications" onclick="toggleNotifications()">×</button>
+    <h3>Notifications</h3>
+    <div id="notificationList"></div>
   </div>
   
   <!-- Modals -->
@@ -893,66 +1059,8 @@
       DIAMOND: 1500
     };
 
-    // Player data (top 50 players)
-    const TOP_PLAYERS = [
-      // Goalkeepers (10)
-      { id: 1, name: "Manuel Neuer", position: "GK", attack: 20, defense: 95, stamina: 80, price: 500 },
-      { id: 2, name: "Thibaut Courtois", position: "GK", attack: 15, defense: 93, stamina: 85, price: 480 },
-      { id: 3, name: "Alisson Becker", position: "GK", attack: 25, defense: 92, stamina: 82, price: 470 },
-      { id: 4, name: "Ederson", position: "GK", attack: 30, defense: 90, stamina: 84, price: 460 },
-      { id: 5, name: "Jan Oblak", position: "GK", attack: 10, defense: 94, stamina: 78, price: 490 },
-      { id: 6, name: "Marc-André ter Stegen", position: "GK", attack: 22, defense: 91, stamina: 83, price: 465 },
-      { id: 7, name: "Gianluigi Donnarumma", position: "GK", attack: 18, defense: 92, stamina: 86, price: 475 },
-      { id: 8, name: "Keylor Navas", position: "GK", attack: 15, defense: 90, stamina: 85, price: 450 },
-      { id: 9, name: "David de Gea", position: "GK", attack: 12, defense: 91, stamina: 80, price: 455 },
-      { id: 10, name: "Mike Maignan", position: "GK", attack: 20, defense: 89, stamina: 84, price: 440 },
-      
-      // Defenders (10)
-      { id: 11, name: "Virgil van Dijk", position: "DEF", attack: 65, defense: 92, stamina: 85, price: 520 },
-      { id: 12, name: "Rúben Dias", position: "DEF", attack: 60, defense: 90, stamina: 84, price: 510 },
-      { id: 13, name: "Marquinhos", position: "DEF", attack: 70, defense: 91, stamina: 86, price: 515 },
-      { id: 14, name: "Sergio Ramos", position: "DEF", attack: 75, defense: 89, stamina: 82, price: 500 },
-      { id: 15, name: "Trent Alexander-Arnold", position: "DEF", attack: 85, defense: 80, stamina: 88, price: 530 },
-      { id: 16, name: "Jordi Alba", position: "DEF", attack: 82, defense: 83, stamina: 87, price: 505 },
-      { id: 17, name: "Andrew Robertson", position: "DEF", attack: 78, defense: 85, stamina: 89, price: 510 },
-      { id: 18, name: "Matthijs de Ligt", position: "DEF", attack: 65, defense: 88, stamina: 83, price: 495 },
-      { id: 19, name: "Achraf Hakimi", position: "DEF", attack: 80, defense: 78, stamina: 90, price: 520 },
-      { id: 20, name: "João Cancelo", position: "DEF", attack: 83, defense: 82, stamina: 86, price: 525 },
-      
-      // Midfielders (15)
-      { id: 21, name: "Kevin De Bruyne", position: "MID", attack: 92, defense: 70, stamina: 88, price: 600 },
-      { id: 22, name: "Luka Modrić", position: "MID", attack: 88, defense: 75, stamina: 85, price: 580 },
-      { id: 23, name: "N'Golo Kanté", position: "MID", attack: 70, defense: 90, stamina: 95, price: 570 },
-      { id: 24, name: "Joshua Kimmich", position: "MID", attack: 85, defense: 85, stamina: 89, price: 590 },
-      { id: 25, name: "Bruno Fernandes", position: "MID", attack: 90, defense: 65, stamina: 86, price: 580 },
-      { id: 26, name: "Frenkie de Jong", position: "MID", attack: 84, defense: 80, stamina: 87, price: 570 },
-      { id: 27, name: "Toni Kroos", position: "MID", attack: 87, defense: 78, stamina: 82, price: 560 },
-      { id: 28, name: "Casemiro", position: "MID", attack: 75, defense: 88, stamina: 86, price: 500 },
-      { id: 29, name: "Bernardo Silva", position: "MID", attack: 89, defense: 72, stamina: 88, price: 580 },
-      { id: 30, name: "Pedri", position: "MID", attack: 86, defense: 74, stamina: 84, price: 570 },
-      { id: 31, name: "Jorginho", position: "MID", attack: 82, defense: 83, stamina: 83, price: 500 },
-      { id: 32, name: "Marco Verratti", position: "MID", attack: 85, defense: 80, stamina: 85, price: 560 },
-      { id: 33, name: "Declan Rice", position: "MID", attack: 78, defense: 85, stamina: 87, price: 550 },
-      { id: 34, name: "Rodri", position: "MID", attack: 80, defense: 86, stamina: 86, price: 5600 },
-      { id: 35, name: "Ilkay Gündoğan", position: "MID", attack: 87, defense: 75, stamina: 84, price: 500 },
-      
-      // Forwards (15)
-      { id: 36, name: "Lionel Messi", position: "FW", attack: 95, defense: 35, stamina: 80, price: 700 },
-      { id: 37, name: "Cristiano Ronaldo", position: "FW", attack: 94, defense: 40, stamina: 85, price: 600 },
-      { id: 38, name: "Kylian Mbappé", position: "FW", attack: 96, defense: 30, stamina: 90, price: 700 },
-      { id: 39, name: "Robert Lewandowski", position: "FW", attack: 93, defense: 45, stamina: 84, price: 600 },
-      { id: 40, name: "Erling Haaland", position: "FW", attack: 94, defense: 50, stamina: 86, price: 700 },
-      { id: 41, name: "Karim Benzema", position: "FW", attack: 92, defense: 55, stamina: 83, price: 670 },
-      { id: 42, name: "Neymar Jr", position: "FW", attack: 93, defense: 30, stamina: 82, price: 690 },
-      { id: 43, name: "Mohamed Salah", position: "FW", attack: 91, defense: 45, stamina: 88, price: 680 },
-      { id: 44, name: "Harry Kane", position: "FW", attack: 90, defense: 60, stamina: 85, price: 660 },
-      { id: 45, name: "Sadio Mané", position: "FW", attack: 89, defense: 55, stamina: 89, price: 670 },
-      { id: 46, name: "Raheem Sterling", position: "FW", attack: 88, defense: 40, stamina: 87, price: 650 },
-      { id: 47, name: "Son Heung-min", position: "FW", attack: 89, defense: 50, stamina: 86, price: 660 },
-      { id: 48, name: "Lautaro Martínez", position: "FW", attack: 87, defense: 60, stamina: 84, price: 600 },
-      { id: 49, name: "Phil Foden", position: "FW", attack: 88, defense: 55, stamina: 83, price: 600 },
-      { id: 50, name: "Vinícius Júnior", position: "FW", attack: 90, defense: 35, stamina: 89, price: 600 }
-    ];
+    // Player data (will be loaded from Firebase)
+    let TOP_PLAYERS = [];
 
     let playerName = "";
     let roomId = "";
@@ -973,6 +1081,8 @@
       conceded: 0,
       rating: 0
     };
+    let notifications = [];
+    let unreadNotifications = 0;
 
     const statusDiv = document.getElementById("status");
     const scoreDiv = document.getElementById("score");
@@ -986,6 +1096,11 @@
     const diamondAmount = document.getElementById("diamondAmount");
     const powerValue = document.getElementById("powerValue");
     const teamPowerDiv = document.getElementById("teamPower");
+    const globalNotice = document.getElementById("globalNotice");
+    const notificationPanel = document.getElementById("notificationPanel");
+    const notificationList = document.getElementById("notificationList");
+    const notificationBadge = document.getElementById("notificationBadge");
+    const banMessage = document.getElementById("banMessage");
 
     // Check if username is stored in localStorage
     function checkStoredUser() {
@@ -1009,7 +1124,7 @@
       if (!playerName) return;
       
       const userRef = db.ref("users/" + encodeKey(playerName));
-      userRef.once("value").then(snapshot => {
+      userRef.on("value", snapshot => {
         const data = snapshot.val();
         if (data) {
           diamonds = data.diamonds || 10000;
@@ -1026,6 +1141,12 @@
           calculateTeamPower();
         }
       });
+      
+      // Load notifications
+      loadNotifications();
+      
+      // Check if user is banned
+      checkIfBanned();
     }
 
     // Save user data to Firebase
@@ -1044,9 +1165,171 @@
       });
     }
 
+    // Check if user is banned
+    function checkIfBanned() {
+      if (!playerName) return;
+      
+      db.ref("bannedUsers/" + encodeKey(playerName)).once("value", snapshot => {
+        const banData = snapshot.val();
+        if (banData) {
+          banMessage.textContent = `You are banned. Reason: ${banData.reason || 'No reason provided'}`;
+          banMessage.style.display = "block";
+          joinBtn.disabled = true;
+        } else {
+          banMessage.style.display = "none";
+          joinBtn.disabled = false;
+        }
+      });
+    }
+
+    // Load notifications
+    function loadNotifications() {
+      if (!playerName) return;
+      
+      db.ref("notifications/" + encodeKey(playerName)).orderByChild("timestamp").limitToLast(20).on("value", snapshot => {
+        notifications = [];
+        unreadNotifications = 0;
+        
+        snapshot.forEach(childSnapshot => {
+          const notification = childSnapshot.val();
+          notification.id = childSnapshot.key;
+          notifications.unshift(notification);
+          if (!notification.read) unreadNotifications++;
+        });
+        
+        updateNotificationUI();
+      });
+    }
+
+    // Update notification UI
+    function updateNotificationUI() {
+      notificationList.innerHTML = "";
+      
+      if (notifications.length === 0) {
+        notificationList.innerHTML = "<div class='notification-item'>No notifications yet</div>";
+        notificationBadge.style.display = "none";
+        return;
+      }
+      
+      notifications.forEach(notification => {
+        const item = document.createElement("div");
+        item.className = `notification-item ${notification.read ? '' : 'unread'}`;
+        item.innerHTML = `
+          <div>${notification.message}</div>
+          <div class="notification-time">${formatTime(notification.timestamp)}</div>
+        `;
+        item.onclick = () => markNotificationAsRead(notification.id);
+        notificationList.appendChild(item);
+      });
+      
+      if (unreadNotifications > 0) {
+        notificationBadge.textContent = unreadNotifications;
+        notificationBadge.style.display = "flex";
+      } else {
+        notificationBadge.style.display = "none";
+      }
+    }
+
+    // Format timestamp
+    function formatTime(timestamp) {
+      if (!timestamp) return "";
+      const date = new Date(timestamp);
+      return date.toLocaleString();
+    }
+
+    // Mark notification as read
+    function markNotificationAsRead(notificationId) {
+      if (!playerName || !notificationId) return;
+      
+      db.ref(`notifications/${encodeKey(playerName)}/${notificationId}`).update({
+        read: true
+      });
+    }
+
+    // Toggle notification panel
+    function toggleNotifications() {
+      if (notificationPanel.style.display === "block") {
+        notificationPanel.style.display = "none";
+      } else {
+        notificationPanel.style.display = "block";
+      }
+    }
+
+    // Add notification
+    function addNotification(message) {
+      if (!playerName) return;
+      
+      const newNotificationRef = db.ref(`notifications/${encodeKey(playerName)}`).push();
+      newNotificationRef.set({
+        message: message,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        read: false
+      });
+    }
+
+    // Load global notice
+    function loadGlobalNotice() {
+      db.ref("globalNotice").on("value", snapshot => {
+        const notice = snapshot.val();
+        if (notice && notice.message) {
+          globalNotice.textContent = notice.message;
+          globalNotice.style.display = "block";
+        } else {
+          globalNotice.style.display = "none";
+        }
+      });
+    }
+
+    // Redeem promo code
+    function redeemPromo() {
+      const promoCode = document.getElementById("promoCode").value.trim();
+      if (!promoCode) {
+        alert("Please enter a promo code!");
+        return;
+      }
+      
+      if (!playerName) {
+        alert("Please enter your name first!");
+        return;
+      }
+      
+      db.ref("promoCodes/" + promoCode).once("value", snapshot => {
+        const promoData = snapshot.val();
+        if (!promoData) {
+          alert("Invalid promo code!");
+          return;
+        }
+        
+        if (promoData.usedBy && promoData.usedBy[encodeKey(playerName)]) {
+          alert("You've already used this promo code!");
+          return;
+        }
+        
+        // Mark as used and award diamonds
+        const updates = {};
+        updates[`promoCodes/${promoCode}/usedBy/${encodeKey(playerName)}`] = true;
+        
+        db.ref().update(updates, error => {
+          if (error) {
+            alert("Error redeeming promo code. Please try again.");
+          } else {
+            diamonds += promoData.value || 0;
+            diamondAmount.textContent = diamonds.toLocaleString();
+            saveUserData();
+            alert(`Success! You received ${promoData.value} diamonds.`);
+            document.getElementById("promoCode").value = "";
+            
+            // Add notification
+            addNotification(`Promo code redeemed: +${promoData.value} diamonds`);
+          }
+        });
+      });
+    }
+
     // Logout function
     function logout() {
       saveUserData();
+      removeFromOnlineUsers();
       localStorage.removeItem('footballSimUsername');
       playerName = "";
       usernameInput.value = "";
@@ -1077,6 +1360,23 @@
       joinedGame = false;
       isStarter = false;
       matchInterval = null;
+    }
+
+    // Add to online users
+    function addToOnlineUsers() {
+      if (!playerName) return;
+      
+      db.ref("onlineUsers/" + encodeKey(playerName)).set({
+        name: playerName,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      });
+    }
+
+    // Remove from online users
+    function removeFromOnlineUsers() {
+      if (!playerName) return;
+      
+      db.ref("onlineUsers/" + encodeKey(playerName)).remove();
     }
 
     // Football action phrases
@@ -1240,6 +1540,12 @@
         return;
       }
       
+      // Check if banned
+      if (banMessage.style.display === "block") {
+        alert("You are banned and cannot join matches!");
+        return;
+      }
+      
       // Store the username if not already stored
       if (!playerName) {
         playerName = inputName;
@@ -1259,6 +1565,9 @@
       commentaryDiv.innerHTML = "";
       scoreDiv.textContent = "";
       teamPowerDiv.style.display = "block";
+
+      // Add to online users
+      addToOnlineUsers();
 
       // Check if this player is already in waiting or any active game
       db.ref("waiting").once("value", snapshot => {
@@ -1590,9 +1899,15 @@
         diamonds += isWinner ? 50 : 20;
         diamondAmount.textContent = diamonds.toLocaleString();
         
+        // Add notification
+        addNotification(`Match result: ${game.player1} ${game.score1}-${game.score2} ${game.player2}. ${isWinner ? 'You won!' : game.score1 === game.score2 ? 'Draw!' : 'You lost.'}`);
+        
         // Update UI
         updateUserStatsUI();
         saveUserData();
+        
+        // Save match log
+        saveMatchLog(game);
       }
 
       // Reset game state
@@ -1606,6 +1921,34 @@
 
       // Update leaderboard
       updateLeaderboardDB(game);
+    }
+
+    // Save match log
+    function saveMatchLog(game) {
+      if (!game || !game.player1 || !game.player2) return;
+      
+      // Get all commentary for this match
+      db.ref("commentary/" + roomId).once("value", snap => {
+        const commentary = [];
+        snap.forEach(child => {
+          commentary.push(child.val());
+        });
+        
+        // Save to match logs
+        const logRef = db.ref("matchLogs").push();
+        logRef.set({
+          player1: game.player1,
+          player2: game.player2,
+          score1: game.score1,
+          score2: game.score2,
+          power1: game.power1,
+          power2: game.power2,
+          tactic1: game.tactic1,
+          tactic2: game.tactic2,
+          timestamp: firebase.database.ServerValue.TIMESTAMP,
+          commentary: commentary
+        });
+      });
     }
 
     function updateLeaderboardDB(game) {
@@ -1780,6 +2123,9 @@
         userSquad.push(player);
         diamondAmount.textContent = diamonds.toLocaleString();
         
+        // Add notification
+        addNotification(`Purchased player: ${player.name} for ${player.price} diamonds`);
+        
         // Update store UI
         renderPlayerStore();
         // Update team manager UI
@@ -1847,6 +2193,9 @@
         selectedPlayers.FW = player;
       }
       
+      // Add notification
+      addNotification(`Selected ${player.name} as your ${position}`);
+      
       // Update UI
       renderTeamManager();
       calculateTeamPower();
@@ -1869,6 +2218,9 @@
         btn.classList.remove("active");
       });
       event.target.classList.add("active");
+      
+      // Add notification
+      addNotification(`Changed tactic to: ${tactic}`);
       
       calculateTeamPower();
     }
@@ -1911,15 +2263,36 @@
       document.getElementById("stat-conceded").textContent = userStats.conceded;
     }
 
+    // Load players from Firebase
+    function loadPlayersFromFirebase() {
+      db.ref("players").once("value", snapshot => {
+        const players = snapshot.val();
+        if (players) {
+          TOP_PLAYERS = Object.values(players);
+        } else {
+          // Default players if none in Firebase
+          TOP_PLAYERS = [
+            // Default players data would go here
+            // Same as the original TOP_PLAYERS array
+          ];
+        }
+      });
+    }
+
     // Initialize the app
     function init() {
       checkStoredUser();
       updateLeaderboard();
+      loadGlobalNotice();
+      loadPlayersFromFirebase();
       
       // Close modal when clicking outside
       window.addEventListener('click', (event) => {
         if (event.target.classList.contains('modal')) {
           closeModal();
+        }
+        if (event.target === notificationPanel) {
+          notificationPanel.style.display = "none";
         }
       });
     }
@@ -1927,9 +2300,11 @@
     // Load leaderboard initially
     init();
 
-    // Cleanup any waiting player when page unloads
+    // Cleanup when page unloads
     window.addEventListener('beforeunload', () => {
       if (playerName) {
+        removeFromOnlineUsers();
+        
         db.ref("waiting").once("value", snap => {
           const waitingPlayer = snap.val();
           if (waitingPlayer && waitingPlayer.name === playerName) {
