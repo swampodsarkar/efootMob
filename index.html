@@ -24,6 +24,113 @@
     --error-color: #ff3333;
   }
   
+  /* Loading Screen */
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
+  }
+  
+  .loading-logo {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    animation: spin 2s linear infinite;
+  }
+  
+  .loading-bar {
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  
+  .loading-progress {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+  }
+  
+  /* Login Page */
+  .login-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1551958219-acbc608c6377?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+    background-size: cover;
+    z-index: 1000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-box {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+  }
+  
+  .login-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 50px;
+    border: 2px solid var(--primary-color);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--dark-color);
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50px;
+    color: var(--dark-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  
+  .login-btn:hover {
+    background: #00e676;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Main Game Styles */
   body {
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--pitch-green);
@@ -45,6 +152,7 @@
     max-width: 800px;
     width: 100%;
     padding: 20px;
+    display: none; /* Initially hidden until login */
   }
   
   h1 {
@@ -338,6 +446,7 @@
   .goal {
     color: var(--goal-color);
     font-weight: 700;
+    animation: flash 0.5s;
   }
   
   .important {
@@ -348,6 +457,25 @@
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes flash {
+    0% { opacity: 0; }
+    50% { opacity: 1; text-shadow: 0 0 10px var(--goal-color); }
+    100% { opacity: 1; }
+  }
+  
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
   }
   
   #commentary::-webkit-scrollbar {
@@ -514,26 +642,137 @@
   }
   
   .logout-btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: transparent;
-    border: none;
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
     color: var(--primary-color);
-    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
     cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.3s;
+    transition: all 0.3s;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .logout-btn:hover {
-    opacity: 1;
+    background: var(--primary-color);
+    color: var(--dark-color);
+    transform: rotate(90deg);
   }
   
   .username-display {
     font-weight: bold;
     color: var(--primary-color);
     margin-bottom: 10px;
+  }
+  
+  /* Reaction buttons */
+  .reaction-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .reaction-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .reaction-btn:hover {
+    transform: scale(1.2);
+    background: rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Top-up modal */
+  .topup-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .topup-content {
+    background: var(--dark-color);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    width: 400px;
+    border: 2px solid var(--primary-color);
+    position: relative;
+  }
+  
+  .topup-title {
+    color: var(--primary-color);
+    margin-top: 0;
+    text-align: center;
+  }
+  
+  .topup-info {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .topup-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  .topup-submit {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    color: var(--dark-color);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  /* Confetti effect */
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #f00;
+    opacity: 0;
+    z-index: 999;
+    animation: confetti 5s ease-in-out;
+  }
+  
+  @keyframes confetti {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
   }
   
   /* New styles for the added features */
@@ -774,6 +1013,13 @@
     display: none;
   }
   
+  .team-error {
+    color: var(--error-color);
+    font-weight: 600;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
   @media (max-width: 600px) {
     h1 {
       font-size: 2rem;
@@ -851,12 +1097,41 @@
       padding: 8px 12px;
       font-size: 0.9rem;
     }
+    
+    .login-box {
+      padding: 20px;
+      width: 90%;
+    }
+    
+    .login-title {
+      font-size: 1.5rem;
+    }
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-logo">⚽</div>
+    <h2 style="color: white;">Loading Football Simulator...</h2>
+    <div class="loading-bar">
+      <div class="loading-progress" id="loadingProgress"></div>
+    </div>
+  </div>
+  
+  <!-- Login Page -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-box">
+      <h1 class="login-title">1v1 Football Simulation</h1>
+      <input type="text" class="login-input" id="loginUsername" placeholder="Enter your username" autocomplete="off">
+      <button class="login-btn" onclick="login()">Login & Play</button>
+      <div class="ban-message" id="loginBanMessage"></div>
+    </div>
+  </div>
+  
+  <!-- Main Game Container -->
+  <div class="container" id="gameContainer">
     <div class="header-notice" id="globalNotice"></div>
     
     <div class="header-container">
@@ -881,18 +1156,23 @@
     <h1>1v1 Football Simulation</h1>
     
     <div class="input-group" id="inputGroup">
-      <input type="text" id="username" placeholder="Enter your name" autocomplete="off" required />
       <button onclick="joinMatch()" id="joinBtn">Join Match</button>
-      <button class="logout-btn" id="logoutBtn" style="display: none;" onclick="logout()">⎋</button>
       <div class="ban-message" id="banMessage"></div>
+      <div class="team-error" id="teamError" style="display: none;"></div>
     </div>
     
     <div id="userDisplay" class="username-display" style="display: none;"></div>
 
     <div class="game-info">
-      <div id="status">Please enter your name to start a match.</div>
+      <div id="status">Welcome to 1v1 Football Simulation!</div>
       <div id="score"></div>
       <div id="commentary"></div>
+      <div class="reaction-buttons" id="reactionButtons" style="display: none;">
+        <button class="reaction-btn" onclick="sendReaction('🔥')">🔥</button>
+        <button class="reaction-btn" onclick="sendReaction('😮')">😮</button>
+        <button class="reaction-btn" onclick="sendReaction('😢')">😢</button>
+        <button class="reaction-btn" onclick="sendReaction('💪')">💪</button>
+      </div>
     </div>
 
     <div id="leaderboard">
@@ -906,6 +1186,7 @@
       <button onclick="showModal('store')">🏬 Store</button>
       <button onclick="showModal('team')">⚙️ Team Manager</button>
       <button onclick="showModal('stats')">🧍‍♂️ User Stats</button>
+      <button onclick="showTopupModal()">💰 Request Top-Up</button>
     </div>
     
     <div class="promo-container">
@@ -919,6 +1200,24 @@
     <button class="close-notifications" onclick="toggleNotifications()">×</button>
     <h3>Notifications</h3>
     <div id="notificationList"></div>
+  </div>
+  
+  <!-- Top-up Modal -->
+  <div class="topup-modal" id="topupModal">
+    <div class="topup-content">
+      <button class="close-modal" onclick="closeTopupModal()">×</button>
+      <h2 class="topup-title">💰 Diamond Top-Up</h2>
+      
+      <div class="topup-info">
+        <p>Send payment to:</p>
+        <p style="font-weight: bold; font-size: 1.2rem;">bKash Personal: 01XXXXXXXXX</p>
+        <p>Then fill the form below:</p>
+      </div>
+      
+      <input type="number" class="topup-input" id="topupAmount" placeholder="Amount (BDT)">
+      <input type="text" class="topup-input" id="topupTrxId" placeholder="bKash Transaction ID">
+      <button class="topup-submit" onclick="submitTopupRequest()">Submit Request</button>
+    </div>
   </div>
   
   <!-- Modals -->
@@ -1089,7 +1388,6 @@
     const commentaryDiv = document.getElementById("commentary");
     const joinBtn = document.getElementById("joinBtn");
     const leaderboardList = document.getElementById("leaderboardList");
-    const usernameInput = document.getElementById("username");
     const logoutBtn = document.getElementById("logoutBtn");
     const userDisplay = document.getElementById("userDisplay");
     const inputGroup = document.getElementById("inputGroup");
@@ -1101,22 +1399,85 @@
     const notificationList = document.getElementById("notificationList");
     const notificationBadge = document.getElementById("notificationBadge");
     const banMessage = document.getElementById("banMessage");
+    const loadingScreen = document.getElementById("loadingScreen");
+    const loadingProgress = document.getElementById("loadingProgress");
+    const loginContainer = document.getElementById("loginContainer");
+    const gameContainer = document.getElementById("gameContainer");
+    const loginUsername = document.getElementById("loginUsername");
+    const loginBanMessage = document.getElementById("loginBanMessage");
+    const reactionButtons = document.getElementById("reactionButtons");
+    const topupModal = document.getElementById("topupModal");
+    const teamError = document.getElementById("teamError");
 
-    // Check if username is stored in localStorage
-    function checkStoredUser() {
-      const storedUser = localStorage.getItem('footballSimUsername');
-      if (storedUser) {
-        playerName = storedUser;
-        usernameInput.value = storedUser;
-        usernameInput.disabled = true;
-        joinBtn.textContent = "Play Again";
-        logoutBtn.style.display = "block";
-        userDisplay.textContent = `Playing as: ${storedUser}`;
-        userDisplay.style.display = "block";
+    // Simulate loading progress
+    function simulateLoading() {
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 10 + Math.random() * 20; // Faster progress
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+          setTimeout(showLoginScreen, 500);
+        }
+        loadingProgress.style.width = `${progress}%`;
+      }, 200);
+      
+      // Ensure loading completes in 2 seconds even if progress isn't 100%
+      setTimeout(() => {
+        clearInterval(interval);
+        loadingProgress.style.width = "100%";
+        setTimeout(showLoginScreen, 500);
+      }, 2000);
+    }
+
+    // Show login screen
+    function showLoginScreen() {
+      loadingScreen.style.opacity = "0";
+      setTimeout(() => {
+        loadingScreen.style.display = "none";
+        loginContainer.style.display = "flex";
         
-        // Load user data
-        loadUserData();
+        // Check if user is banned
+        checkIfBannedOnLogin();
+      }, 500);
+    }
+
+    // Login function
+    function login() {
+      const username = loginUsername.value.trim();
+      if (!username) {
+        alert("Please enter a username!");
+        return;
       }
+      
+      playerName = username;
+      localStorage.setItem('footballSimUsername', playerName);
+      
+      // Hide login screen and show game
+      loginContainer.style.display = "none";
+      gameContainer.style.display = "block";
+      logoutBtn.style.display = "block";
+      userDisplay.textContent = `Playing as: ${playerName}`;
+      userDisplay.style.display = "block";
+      
+      // Load user data
+      loadUserData();
+    }
+
+    // Check if user is banned on login
+    function checkIfBannedOnLogin() {
+      const username = loginUsername.value.trim();
+      if (!username) return;
+      
+      db.ref("bannedUsers/" + encodeKey(username)).once("value", snapshot => {
+        const banData = snapshot.val();
+        if (banData) {
+          loginBanMessage.textContent = `You are banned. Reason: ${banData.reason || 'No reason provided'}`;
+          loginBanMessage.style.display = "block";
+        } else {
+          loginBanMessage.style.display = "none";
+        }
+      });
     }
 
     // Load user data from Firebase
@@ -1332,12 +1693,10 @@
       removeFromOnlineUsers();
       localStorage.removeItem('footballSimUsername');
       playerName = "";
-      usernameInput.value = "";
-      usernameInput.disabled = false;
-      joinBtn.textContent = "Join Match";
+      loginUsername.value = "";
       logoutBtn.style.display = "none";
       userDisplay.style.display = "none";
-      statusDiv.textContent = "Please enter your name to start a match.";
+      statusDiv.textContent = "Please login to start a match.";
       
       // Clean up any active game
       if (roomId) {
@@ -1360,6 +1719,10 @@
       joinedGame = false;
       isStarter = false;
       matchInterval = null;
+      
+      // Show login screen
+      gameContainer.style.display = "none";
+      loginContainer.style.display = "flex";
     }
 
     // Add to online users
@@ -1410,7 +1773,7 @@
       "Great save by the keeper! 🧤",
       "What a stop! Unbelievable! 🧤✋",
       "Keeper denies a certain goal! 🧤🚫",
-      "Incredible reflexes to keep it out! �👏",
+      "Incredible reflexes to keep it out! 🧤👏",
       "The goalkeeper comes to the rescue! 🧤💪"
     ];
 
@@ -1420,6 +1783,20 @@
       "Off target! Could have scored! 😫",
       "Hits the crossbar! So close! ⛔",
       "The ball goes high into the stands! 🙈"
+    ];
+
+    const injuryPhrases = [
+      "Oh no! {player} seems to have pulled a muscle!",
+      "Medical staff attending to {player} after a rough tackle!",
+      "{player} is down injured! This doesn't look good...",
+      "The referee stops play as {player} needs treatment."
+    ];
+
+    const substitutionPhrases = [
+      "Substitution: {injuredPlayer} is replaced by {substitutePlayer} due to injury.",
+      "The manager makes a change: {substitutePlayer} comes on for the injured {injuredPlayer}.",
+      "Due to injury, {injuredPlayer} makes way for {substitutePlayer}.",
+      "Tactical change: {substitutePlayer} replaces the injured {injuredPlayer}."
     ];
 
     function getRandomAction() {
@@ -1436,6 +1813,14 @@
 
     function getRandomMissPhrase() {
       return missPhrases[Math.floor(Math.random() * missPhrases.length)];
+    }
+
+    function getRandomInjuryPhrase() {
+      return injuryPhrases[Math.floor(Math.random() * injuryPhrases.length)];
+    }
+
+    function getRandomSubstitutionPhrase() {
+      return substitutionPhrases[Math.floor(Math.random() * substitutionPhrases.length)];
     }
 
     function getTrophyIcon(trophies) {
@@ -1489,6 +1874,53 @@
       if (commentaryDiv.children.length > 50) {
         commentaryDiv.removeChild(commentaryDiv.lastChild);
       }
+      
+      // Play sound for goal
+      if (isGoal) {
+        playGoalSound();
+        createConfetti();
+        scoreDiv.style.animation = "bounce 0.5s";
+        setTimeout(() => {
+          scoreDiv.style.animation = "";
+        }, 500);
+      }
+    }
+
+    // Play goal sound
+    function playGoalSound() {
+      const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3');
+      audio.volume = 0.3;
+      audio.play().catch(e => console.log("Audio play failed:", e));
+    }
+
+    // Create confetti effect
+    function createConfetti() {
+      const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+      
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = Math.random() * 10 + 5 + 'px';
+        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
+
+    // Send reaction
+    function sendReaction(emoji) {
+      if (!playerName || !roomId) return;
+      
+      db.ref("commentary/" + roomId).push().set({
+        text: `${playerName} reacted: ${emoji}`,
+        time: 90 - Math.floor((Date.now() - matchStartTime) / 1000)
+      });
     }
 
     function updateLeaderboard() {
@@ -1533,38 +1965,28 @@
         return;
       }
       
-      const inputName = usernameInput.value.trim();
-      if (!inputName) {
-        alert("Please enter your name!");
-        usernameInput.focus();
-        return;
-      }
-      
       // Check if banned
       if (banMessage.style.display === "block") {
         alert("You are banned and cannot join matches!");
         return;
       }
       
-      // Store the username if not already stored
-      if (!playerName) {
-        playerName = inputName;
-        localStorage.setItem('footballSimUsername', playerName);
-        usernameInput.disabled = true;
-        joinBtn.textContent = "Play Again";
-        logoutBtn.style.display = "block";
-        userDisplay.textContent = `Playing as: ${playerName}`;
-        userDisplay.style.display = "block";
-        
-        // Load user data
-        loadUserData();
+      // Check if team is complete
+      if (!selectedPlayers.GK || !selectedPlayers.DEF || !selectedPlayers.MID || !selectedPlayers.FW) {
+        teamError.textContent = "Please select all 4 players in Team Manager first!";
+        teamError.style.display = "block";
+        setTimeout(() => {
+          teamError.style.display = "none";
+        }, 3000);
+        return;
       }
-
+      
       joinBtn.disabled = true;
       statusDiv.textContent = "Searching for opponent...";
       commentaryDiv.innerHTML = "";
       scoreDiv.textContent = "";
       teamPowerDiv.style.display = "block";
+      reactionButtons.style.display = "none";
 
       // Add to online users
       addToOnlineUsers();
@@ -1648,8 +2070,11 @@
       });
     }
 
+    let matchStartTime = 0;
+
     function createMatch(opponentName, opponentPower, opponentTactic) {
       roomId = "room_" + Date.now();
+      matchStartTime = Date.now();
       
       const playerPower = calculateTeamPower();
       const powerDifference = Math.abs(playerPower - opponentPower);
@@ -1684,6 +2109,7 @@
         joinedGame = true;
         statusDiv.textContent = "Match Started!";
         joinBtn.disabled = true;
+        reactionButtons.style.display = "flex";
         setupMatchListener();
         
         // Add initial commentary
@@ -1742,7 +2168,8 @@
         const comment = snap.val();
         if (comment) {
           const isGoal = comment.text.includes("GOAL") || comment.text.includes("scores");
-          const isImportant = isGoal || comment.text.includes("save") || comment.text.includes("miss");
+          const isImportant = isGoal || comment.text.includes("save") || comment.text.includes("miss") || 
+                            comment.text.includes("injured") || comment.text.includes("replaced");
           addCommentary(comment.text, comment.time, isImportant, isGoal);
         }
       });
@@ -1754,6 +2181,9 @@
 
     function simulateMatch() {
       if (matchInterval) clearInterval(matchInterval);
+      
+      // Track injured players
+      let injuredPlayers = [];
       
       matchInterval = setInterval(() => {
         matchRef.once("value", snap => {
@@ -1774,14 +2204,30 @@
           const p1Prob = 0.05 * (1 + (powerRatio - 0.5) * 0.5 + game.advantage);
           const p2Prob = 0.05 * (1 + (1 - powerRatio - 0.5) * 0.5 - game.advantage);
 
+          // Random injury event (2% chance per minute)
+          if (Math.random() < 0.02 && game.time % 60 === 0) {
+            const teams = [game.player1, game.player2];
+            const injuredTeam = teams[Math.floor(Math.random() * teams.length)];
+            const injuredPlayer = `${injuredTeam}'s player`;
+            
+            newCommentary = getRandomInjuryPhrase().replace("{player}", injuredPlayer);
+            isImportant = true;
+            
+            // Add to injured players
+            injuredPlayers.push({
+              team: injuredTeam,
+              time: game.time
+            });
+          }
+          
           // Regular game action (80% chance)
-          if (Math.random() < 0.8) {
+          if (Math.random() < 0.8 && !newCommentary) {
             const player = Math.random() < 0.5 ? game.player1 : game.player2;
             newCommentary = `${player} ${getRandomAction()}.`;
           }
           
           // Player 1 scores
-          if (Math.random() < p1Prob) {
+          if (Math.random() < p1Prob && !newCommentary) {
             if (Math.random() < 0.7) { // 70% chance to score
               s1++;
               newCommentary = `${game.player1} ${getRandomGoalPhrase()}`;
@@ -1797,7 +2243,7 @@
           }
           
           // Player 2 scores
-          if (Math.random() < p2Prob) {
+          if (Math.random() < p2Prob && !newCommentary) {
             if (Math.random() < 0.7) { // 70% chance to score
               s2++;
               newCommentary = `${game.player2} ${getRandomGoalPhrase()}`;
@@ -1908,6 +2354,11 @@
         
         // Save match log
         saveMatchLog(game);
+        
+        // Show confetti for winner
+        if (isWinner) {
+          createConfetti();
+        }
       }
 
       // Reset game state
@@ -1918,6 +2369,7 @@
       roomId = "";
       matchRef = null;
       commentaryRef = null;
+      reactionButtons.style.display = "none";
 
       // Update leaderboard
       updateLeaderboardDB(game);
@@ -2012,7 +2464,7 @@
     // Modal functions
     function showModal(modalType) {
       if (!playerName) {
-        alert("Please enter your name first!");
+        alert("Please login first!");
         return;
       }
       
@@ -2032,6 +2484,51 @@
         modal.style.display = "none";
       });
       saveUserData();
+    }
+    
+    // Top-up modal functions
+    function showTopupModal() {
+      if (!playerName) {
+        alert("Please login first!");
+        return;
+      }
+      topupModal.style.display = "flex";
+    }
+    
+    function closeTopupModal() {
+      topupModal.style.display = "none";
+    }
+    
+    function submitTopupRequest() {
+      const amount = document.getElementById("topupAmount").value.trim();
+      const trxId = document.getElementById("topupTrxId").value.trim();
+      
+      if (!amount || isNaN(amount)) {
+        alert("Please enter a valid amount!");
+        return;
+      }
+      
+      if (!trxId) {
+        alert("Please enter your transaction ID!");
+        return;
+      }
+      
+      const requestRef = db.ref("topupRequests").push();
+      requestRef.set({
+        username: playerName,
+        amount: parseInt(amount),
+        trxId: trxId,
+        status: "pending",
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      }, error => {
+        if (error) {
+          alert("Error submitting request. Please try again.");
+        } else {
+          alert("Top-up request submitted successfully! It will be processed soon.");
+          closeTopupModal();
+          addNotification(`Top-up request submitted for ${amount} BDT. Transaction ID: ${trxId}`);
+        }
+      });
     }
     
     function changeTab(tabId) {
@@ -2272,8 +2769,16 @@
         } else {
           // Default players if none in Firebase
           TOP_PLAYERS = [
-            // Default players data would go here
-            // Same as the original TOP_PLAYERS array
+            { id: 1, name: "David De Gea", position: "GK", attack: 60, defense: 90, stamina: 80, price: 5000 },
+            { id: 2, name: "Virgil van Dijk", position: "DEF", attack: 70, defense: 95, stamina: 85, price: 8000 },
+            { id: 3, name: "Kevin De Bruyne", position: "MID", attack: 95, defense: 75, stamina: 90, price: 10000 },
+            { id: 4, name: "Lionel Messi", position: "FW", attack: 99, defense: 60, stamina: 85, price: 12000 },
+            { id: 5, name: "N'Golo Kanté", position: "MID", attack: 75, defense: 90, stamina: 95, price: 8500 },
+            { id: 6, name: "Robert Lewandowski", position: "FW", attack: 95, defense: 65, stamina: 85, price: 11000 },
+            { id: 7, name: "Sergio Ramos", position: "DEF", attack: 80, defense: 90, stamina: 85, price: 9000 },
+            { id: 8, name: "Mohamed Salah", position: "FW", attack: 92, defense: 65, stamina: 90, price: 10500 },
+            { id: 9, name: "Manuel Neuer", position: "GK", attack: 70, defense: 92, stamina: 85, price: 7000 },
+            { id: 10, name: "Kylian Mbappé", position: "FW", attack: 97, defense: 60, stamina: 95, price: 11500 }
           ];
         }
       });
@@ -2281,7 +2786,7 @@
 
     // Initialize the app
     function init() {
-      checkStoredUser();
+      simulateLoading();
       updateLeaderboard();
       loadGlobalNotice();
       loadPlayersFromFirebase();
@@ -2290,11 +2795,25 @@
       window.addEventListener('click', (event) => {
         if (event.target.classList.contains('modal')) {
           closeModal();
+          closeTopupModal();
         }
         if (event.target === notificationPanel) {
           notificationPanel.style.display = "none";
         }
       });
+      
+      // Allow pressing Enter to login
+      loginUsername.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          login();
+        }
+      });
+      
+      // Check for saved username
+      const savedUsername = localStorage.getItem('footballSimUsername');
+      if (savedUsername) {
+        loginUsername.value = savedUsername;
+      }
     }
 
     // Load leaderboard initially
@@ -2321,13 +2840,6 @@
       if (matchRef) matchRef.off();
       
       saveUserData();
-    });
-
-    // Allow pressing Enter to join match
-    usernameInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        joinMatch();
-      }
     });
   </script>
 </body>
