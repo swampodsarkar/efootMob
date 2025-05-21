@@ -24,113 +24,6 @@
     --error-color: #ff3333;
   }
   
-  /* Loading Screen */
-  .loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--dark-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.5s ease-out;
-  }
-  
-  .loading-logo {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 20px;
-    animation: spin 2s linear infinite;
-  }
-  
-  .loading-bar {
-    width: 200px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-top: 20px;
-  }
-  
-  .loading-progress {
-    height: 100%;
-    width: 0%;
-    background: var(--primary-color);
-    transition: width 0.3s ease;
-  }
-  
-  /* Login Page */
-  .login-container {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://images.unsplash.com/photo-1551958219-acbc608c6377?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
-    background-size: cover;
-    z-index: 1000;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .login-box {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 40px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    border: 2px solid var(--primary-color);
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-  }
-  
-  .login-title {
-    font-size: 2rem;
-    margin-bottom: 30px;
-    color: var(--primary-color);
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-  }
-  
-  .login-input {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 50px;
-    border: 2px solid var(--primary-color);
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--dark-color);
-    font-size: 1rem;
-    text-align: center;
-    outline: none;
-  }
-  
-  .login-btn {
-    width: 100%;
-    padding: 15px;
-    background: var(--primary-color);
-    border: none;
-    border-radius: 50px;
-    color: var(--dark-color);
-    font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-transform: uppercase;
-  }
-  
-  .login-btn:hover {
-    background: #00e676;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Main Game Styles */
   body {
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--pitch-green);
@@ -146,13 +39,127 @@
     flex-direction: column;
     align-items: center;
     margin: 0;
+    overflow-x: hidden;
   }
   
+  /* Loading Screen Styles */
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+  }
+  
+  .loading-logo {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    animation: spin 2s linear infinite;
+  }
+  
+  .loading-bar {
+    width: 200px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  
+  .loading-progress {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-color);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  
+  /* Login Page Styles */
+  .login-container {
+    display: none;
+    max-width: 400px;
+    width: 90%;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border: 2px solid var(--primary-color);
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  .login-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    background: linear-gradient(to right, var(--primary-color), #00c8b5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+  }
+  
+  .login-title::after {
+    content: "⚽";
+    position: absolute;
+    right: -10px;
+    top: -15px;
+    font-size: 1.5rem;
+    animation: spin 5s linear infinite;
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 50px;
+    border: 2px solid var(--primary-color);
+    background: rgba(255,255,255,0.9);
+    color: var(--dark-color);
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .login-input:focus {
+    outline: none;
+    box-shadow: 0 0 15px var(--primary-color);
+    transform: scale(1.02);
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50px;
+    color: var(--dark-color);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .login-btn:hover {
+    background: #00e676;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  /* Game Container */
   .container {
     max-width: 800px;
     width: 100%;
     padding: 20px;
-    display: none; /* Initially hidden until login */
+    display: none;
   }
   
   h1 {
@@ -173,11 +180,6 @@
     top: -15px;
     font-size: 1.5rem;
     animation: spin 5s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
   }
   
   .header-notice {
@@ -446,7 +448,7 @@
   .goal {
     color: var(--goal-color);
     font-weight: 700;
-    animation: flash 0.5s;
+    animation: goalFlash 0.5s;
   }
   
   .important {
@@ -454,17 +456,28 @@
     font-weight: 700;
   }
   
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* Goal Flash Animation */
+  @keyframes goalFlash {
+    0% { color: white; }
+    20% { color: var(--goal-color); transform: scale(1.2); }
+    40% { color: white; }
+    60% { color: var(--goal-color); }
+    80% { color: white; }
+    100% { color: var(--goal-color); }
   }
   
-  @keyframes flash {
-    0% { opacity: 0; }
-    50% { opacity: 1; text-shadow: 0 0 10px var(--goal-color); }
-    100% { opacity: 1; }
+  /* Score Bounce Animation */
+  @keyframes scoreBounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
   }
   
+  .bounce {
+    animation: scoreBounce 0.5s;
+  }
+  
+  /* Shake Animation */
   @keyframes shake {
     0% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
@@ -473,9 +486,18 @@
     100% { transform: translateX(0); }
   }
   
-  @keyframes bounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+  .shake {
+    animation: shake 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   
   #commentary::-webkit-scrollbar {
@@ -591,7 +613,7 @@
   
   .match-time {
     position: absolute;
-    top: -10px;
+    top: 5px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--dark-color);
@@ -642,28 +664,20 @@
   }
   
   .logout-btn {
-    position: fixed;
-    right: 20px;
-    top: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid var(--primary-color);
-    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+    border: none;
     color: var(--primary-color);
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     cursor: pointer;
-    transition: all 0.3s;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.3s;
   }
   
   .logout-btn:hover {
-    background: var(--primary-color);
-    color: var(--dark-color);
-    transform: rotate(90deg);
+    opacity: 1;
   }
   
   .username-display {
@@ -672,107 +686,29 @@
     margin-bottom: 10px;
   }
   
-  /* Reaction buttons */
+  /* Reaction Buttons */
   .reaction-buttons {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
+    flex-wrap: wrap;
   }
   
   .reaction-btn {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.1);
     border: none;
     border-radius: 50%;
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
   }
   
   .reaction-btn:hover {
     transform: scale(1.2);
-    background: rgba(255, 255, 255, 0.3);
-  }
-  
-  /* Top-up modal */
-  .topup-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .topup-content {
-    background: var(--dark-color);
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 90%;
-    width: 400px;
-    border: 2px solid var(--primary-color);
-    position: relative;
-  }
-  
-  .topup-title {
-    color: var(--primary-color);
-    margin-top: 0;
-    text-align: center;
-  }
-  
-  .topup-info {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-  }
-  
-  .topup-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid var(--primary-color);
-    background: rgba(255, 255, 255, 0.9);
-  }
-  
-  .topup-submit {
-    width: 100%;
-    padding: 12px;
-    background: var(--primary-color);
-    border: none;
-    border-radius: 5px;
-    color: var(--dark-color);
-    font-weight: 600;
-    cursor: pointer;
-  }
-  
-  /* Confetti effect */
-  .confetti {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background-color: #f00;
-    opacity: 0;
-    z-index: 999;
-    animation: confetti 5s ease-in-out;
-  }
-  
-  @keyframes confetti {
-    0% {
-      transform: translateY(0) rotate(0deg);
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(100vh) rotate(720deg);
-      opacity: 0;
-    }
+    background: rgba(255,255,255,0.2);
   }
   
   /* New styles for the added features */
@@ -1013,11 +949,61 @@
     display: none;
   }
   
-  .team-error {
-    color: var(--error-color);
+  /* Top-up Modal Styles */
+  .topup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .topup-form input {
+    padding: 12px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+    background: rgba(255,255,255,0.9);
+    color: var(--dark-color);
+    font-size: 1rem;
+  }
+  
+  .topup-form label {
+    text-align: left;
     font-weight: 600;
-    margin-top: 10px;
-    text-align: center;
+    margin-bottom: -10px;
+  }
+  
+  .topup-info {
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  .topup-info p {
+    margin: 5px 0;
+  }
+  
+  /* Confetti Effect */
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #f00;
+    opacity: 0;
+    z-index: 9999;
+    animation: confettiFall 5s ease-in-out;
+  }
+  
+  @keyframes confettiFall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
   }
   
   @media (max-width: 600px) {
@@ -1098,13 +1084,15 @@
       font-size: 0.9rem;
     }
     
-    .login-box {
-      padding: 20px;
+    /* Login page mobile styles */
+    .login-container {
       width: 90%;
+      padding: 20px;
     }
     
     .login-title {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
     }
   }
 </style>
@@ -1114,7 +1102,7 @@
   <!-- Loading Screen -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-logo">⚽</div>
-    <h2 style="color: white;">Loading Football Simulator...</h2>
+    <h2>Loading Football Simulation...</h2>
     <div class="loading-bar">
       <div class="loading-progress" id="loadingProgress"></div>
     </div>
@@ -1122,15 +1110,13 @@
   
   <!-- Login Page -->
   <div class="login-container" id="loginContainer">
-    <div class="login-box">
-      <h1 class="login-title">1v1 Football Simulation</h1>
-      <input type="text" class="login-input" id="loginUsername" placeholder="Enter your username" autocomplete="off">
-      <button class="login-btn" onclick="login()">Login & Play</button>
-      <div class="ban-message" id="loginBanMessage"></div>
-    </div>
+    <h1 class="login-title">Football Simulation</h1>
+    <input type="text" id="loginUsername" class="login-input" placeholder="Enter your username" autocomplete="off" required />
+    <button class="login-btn" id="loginBtn">Login & Play</button>
+    <div class="ban-message" id="loginBanMessage"></div>
   </div>
   
-  <!-- Main Game Container -->
+  <!-- Game Container -->
   <div class="container" id="gameContainer">
     <div class="header-notice" id="globalNotice"></div>
     
@@ -1157,14 +1143,14 @@
     
     <div class="input-group" id="inputGroup">
       <button onclick="joinMatch()" id="joinBtn">Join Match</button>
+      <button class="logout-btn" id="logoutBtn" onclick="logout()">⎋</button>
       <div class="ban-message" id="banMessage"></div>
-      <div class="team-error" id="teamError" style="display: none;"></div>
     </div>
     
-    <div id="userDisplay" class="username-display" style="display: none;"></div>
+    <div id="userDisplay" class="username-display"></div>
 
     <div class="game-info">
-      <div id="status">Welcome to 1v1 Football Simulation!</div>
+      <div id="status">Welcome to Football Simulation!</div>
       <div id="score"></div>
       <div id="commentary"></div>
       <div class="reaction-buttons" id="reactionButtons" style="display: none;">
@@ -1186,7 +1172,7 @@
       <button onclick="showModal('store')">🏬 Store</button>
       <button onclick="showModal('team')">⚙️ Team Manager</button>
       <button onclick="showModal('stats')">🧍‍♂️ User Stats</button>
-      <button onclick="showTopupModal()">💰 Request Top-Up</button>
+      <button onclick="showModal('topup')">💰 Request Top-Up</button>
     </div>
     
     <div class="promo-container">
@@ -1200,24 +1186,6 @@
     <button class="close-notifications" onclick="toggleNotifications()">×</button>
     <h3>Notifications</h3>
     <div id="notificationList"></div>
-  </div>
-  
-  <!-- Top-up Modal -->
-  <div class="topup-modal" id="topupModal">
-    <div class="topup-content">
-      <button class="close-modal" onclick="closeTopupModal()">×</button>
-      <h2 class="topup-title">💰 Diamond Top-Up</h2>
-      
-      <div class="topup-info">
-        <p>Send payment to:</p>
-        <p style="font-weight: bold; font-size: 1.2rem;">bKash Personal: 01XXXXXXXXX</p>
-        <p>Then fill the form below:</p>
-      </div>
-      
-      <input type="number" class="topup-input" id="topupAmount" placeholder="Amount (BDT)">
-      <input type="text" class="topup-input" id="topupTrxId" placeholder="bKash Transaction ID">
-      <button class="topup-submit" onclick="submitTopupRequest()">Submit Request</button>
-    </div>
   </div>
   
   <!-- Modals -->
@@ -1328,6 +1296,30 @@
       </div>
     </div>
   </div>
+  
+  <!-- Top-up Modal -->
+  <div id="topupModal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeModal()">×</button>
+      <h2>💰 Request Top-Up</h2>
+      
+      <div class="topup-info">
+        <p><strong>Send money to:</strong> bKash Personal: 01XXXXXXXXX</p>
+        <p><strong>Rate:</strong> 100 diamonds = 10 BDT</p>
+        <p>After sending money, fill the form below with transaction details.</p>
+      </div>
+      
+      <div class="topup-form">
+        <label for="topupAmount">Amount (BDT)</label>
+        <input type="number" id="topupAmount" placeholder="Enter amount in BDT">
+        
+        <label for="topupTxId">Transaction ID</label>
+        <input type="text" id="topupTxId" placeholder="Enter bKash transaction ID">
+        
+        <button class="login-btn" onclick="submitTopupRequest()">Submit Request</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -1369,6 +1361,7 @@
     let matchInterval = null;
     let matchRef = null;
     let commentaryRef = null;
+    let reactionRef = null;
     let diamonds = 10000;
     let userSquad = [];
     let selectedPlayers = { GK: null, DEF: null, MID: null, FW: null };
@@ -1382,7 +1375,16 @@
     };
     let notifications = [];
     let unreadNotifications = 0;
+    let lastGoalTime = 0;
 
+    // DOM elements
+    const loadingScreen = document.getElementById("loadingScreen");
+    const loadingProgress = document.getElementById("loadingProgress");
+    const loginContainer = document.getElementById("loginContainer");
+    const loginUsername = document.getElementById("loginUsername");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginBanMessage = document.getElementById("loginBanMessage");
+    const gameContainer = document.getElementById("gameContainer");
     const statusDiv = document.getElementById("status");
     const scoreDiv = document.getElementById("score");
     const commentaryDiv = document.getElementById("commentary");
@@ -1399,21 +1401,13 @@
     const notificationList = document.getElementById("notificationList");
     const notificationBadge = document.getElementById("notificationBadge");
     const banMessage = document.getElementById("banMessage");
-    const loadingScreen = document.getElementById("loadingScreen");
-    const loadingProgress = document.getElementById("loadingProgress");
-    const loginContainer = document.getElementById("loginContainer");
-    const gameContainer = document.getElementById("gameContainer");
-    const loginUsername = document.getElementById("loginUsername");
-    const loginBanMessage = document.getElementById("loginBanMessage");
     const reactionButtons = document.getElementById("reactionButtons");
-    const topupModal = document.getElementById("topupModal");
-    const teamError = document.getElementById("teamError");
 
     // Simulate loading progress
     function simulateLoading() {
       let progress = 0;
       const interval = setInterval(() => {
-        progress += 10 + Math.random() * 20; // Faster progress
+        progress += Math.random() * 10;
         if (progress >= 100) {
           progress = 100;
           clearInterval(interval);
@@ -1421,27 +1415,24 @@
         }
         loadingProgress.style.width = `${progress}%`;
       }, 200);
-      
-      // Ensure loading completes in 2 seconds even if progress isn't 100%
-      setTimeout(() => {
-        clearInterval(interval);
-        loadingProgress.style.width = "100%";
-        setTimeout(showLoginScreen, 500);
-      }, 2000);
     }
-
+    
     // Show login screen
     function showLoginScreen() {
       loadingScreen.style.opacity = "0";
       setTimeout(() => {
         loadingScreen.style.display = "none";
-        loginContainer.style.display = "flex";
-        
-        // Check if user is banned
-        checkIfBannedOnLogin();
+        loginContainer.style.display = "block";
       }, 500);
     }
-
+    
+    // Show game screen
+    function showGameScreen() {
+      loginContainer.style.display = "none";
+      gameContainer.style.display = "block";
+      updateLeaderboard();
+    }
+    
     // Login function
     function login() {
       const username = loginUsername.value.trim();
@@ -1450,34 +1441,64 @@
         return;
       }
       
-      playerName = username;
-      localStorage.setItem('footballSimUsername', playerName);
-      
-      // Hide login screen and show game
-      loginContainer.style.display = "none";
-      gameContainer.style.display = "block";
-      logoutBtn.style.display = "block";
-      userDisplay.textContent = `Playing as: ${playerName}`;
-      userDisplay.style.display = "block";
-      
-      // Load user data
-      loadUserData();
-    }
-
-    // Check if user is banned on login
-    function checkIfBannedOnLogin() {
-      const username = loginUsername.value.trim();
-      if (!username) return;
-      
+      // Check if banned
       db.ref("bannedUsers/" + encodeKey(username)).once("value", snapshot => {
         const banData = snapshot.val();
         if (banData) {
           loginBanMessage.textContent = `You are banned. Reason: ${banData.reason || 'No reason provided'}`;
           loginBanMessage.style.display = "block";
-        } else {
-          loginBanMessage.style.display = "none";
+          loginBtn.disabled = true;
+          return;
+        }
+        
+        // Set player name and show game screen
+        playerName = username;
+        localStorage.setItem('footballSimUsername', playerName);
+        userDisplay.textContent = `Playing as: ${playerName}`;
+        
+        // Load user data
+        loadUserData();
+        showGameScreen();
+      });
+    }
+    
+    // Logout function
+    function logout() {
+      saveUserData();
+      removeFromOnlineUsers();
+      localStorage.removeItem('footballSimUsername');
+      playerName = "";
+      userDisplay.textContent = "";
+      
+      // Clean up any active game
+      if (roomId) {
+        if (matchRef) matchRef.off();
+        if (commentaryRef) commentaryRef.off();
+        if (reactionRef) reactionRef.off();
+        db.ref("games/" + roomId).remove();
+        roomId = "";
+      }
+      
+      // Remove from waiting list if there
+      db.ref("waiting").once("value", snap => {
+        const waitingPlayer = snap.val();
+        if (waitingPlayer && waitingPlayer.name === playerName) {
+          db.ref("waiting").remove();
         }
       });
+      
+      // Reset game state
+      gameStarted = false;
+      joinedGame = false;
+      isStarter = false;
+      matchInterval = null;
+      
+      // Show login screen
+      gameContainer.style.display = "none";
+      loginContainer.style.display = "block";
+      loginUsername.value = "";
+      loginBanMessage.style.display = "none";
+      loginBtn.disabled = false;
     }
 
     // Load user data from Firebase
@@ -1505,9 +1526,6 @@
       
       // Load notifications
       loadNotifications();
-      
-      // Check if user is banned
-      checkIfBanned();
     }
 
     // Save user data to Firebase
@@ -1523,23 +1541,6 @@
         tactic: selectedTactic,
         stats: userStats,
         lastUpdated: firebase.database.ServerValue.TIMESTAMP
-      });
-    }
-
-    // Check if user is banned
-    function checkIfBanned() {
-      if (!playerName) return;
-      
-      db.ref("bannedUsers/" + encodeKey(playerName)).once("value", snapshot => {
-        const banData = snapshot.val();
-        if (banData) {
-          banMessage.textContent = `You are banned. Reason: ${banData.reason || 'No reason provided'}`;
-          banMessage.style.display = "block";
-          joinBtn.disabled = true;
-        } else {
-          banMessage.style.display = "none";
-          joinBtn.disabled = false;
-        }
       });
     }
 
@@ -1650,7 +1651,7 @@
       }
       
       if (!playerName) {
-        alert("Please enter your name first!");
+        alert("Please login first!");
         return;
       }
       
@@ -1685,44 +1686,6 @@
           }
         });
       });
-    }
-
-    // Logout function
-    function logout() {
-      saveUserData();
-      removeFromOnlineUsers();
-      localStorage.removeItem('footballSimUsername');
-      playerName = "";
-      loginUsername.value = "";
-      logoutBtn.style.display = "none";
-      userDisplay.style.display = "none";
-      statusDiv.textContent = "Please login to start a match.";
-      
-      // Clean up any active game
-      if (roomId) {
-        if (matchRef) matchRef.off();
-        if (commentaryRef) commentaryRef.off();
-        db.ref("games/" + roomId).remove();
-        roomId = "";
-      }
-      
-      // Remove from waiting list if there
-      db.ref("waiting").once("value", snap => {
-        const waitingPlayer = snap.val();
-        if (waitingPlayer && waitingPlayer.name === playerName) {
-          db.ref("waiting").remove();
-        }
-      });
-      
-      // Reset game state
-      gameStarted = false;
-      joinedGame = false;
-      isStarter = false;
-      matchInterval = null;
-      
-      // Show login screen
-      gameContainer.style.display = "none";
-      loginContainer.style.display = "flex";
     }
 
     // Add to online users
@@ -1786,17 +1749,11 @@
     ];
 
     const injuryPhrases = [
-      "Oh no! {player} seems to have pulled a muscle!",
-      "Medical staff attending to {player} after a rough tackle!",
-      "{player} is down injured! This doesn't look good...",
-      "The referee stops play as {player} needs treatment."
-    ];
-
-    const substitutionPhrases = [
-      "Substitution: {injuredPlayer} is replaced by {substitutePlayer} due to injury.",
-      "The manager makes a change: {substitutePlayer} comes on for the injured {injuredPlayer}.",
-      "Due to injury, {injuredPlayer} makes way for {substitutePlayer}.",
-      "Tactical change: {substitutePlayer} replaces the injured {injuredPlayer}."
+      "Oh no! Player is down injured! 🚑",
+      "That looks painful! The physio is on! 🏥",
+      "Player is signaling to the bench - he can't continue! 🤕",
+      "Serious injury! The stretcher is coming out! 🚨",
+      "Bad tackle! Player is hurt and needs treatment! ⚠️"
     ];
 
     function getRandomAction() {
@@ -1817,10 +1774,6 @@
 
     function getRandomInjuryPhrase() {
       return injuryPhrases[Math.floor(Math.random() * injuryPhrases.length)];
-    }
-
-    function getRandomSubstitutionPhrase() {
-      return substitutionPhrases[Math.floor(Math.random() * substitutionPhrases.length)];
     }
 
     function getTrophyIcon(trophies) {
@@ -1875,24 +1828,20 @@
         commentaryDiv.removeChild(commentaryDiv.lastChild);
       }
       
-      // Play sound for goal
+      // Play goal sound if it's a goal
       if (isGoal) {
         playGoalSound();
         createConfetti();
-        scoreDiv.style.animation = "bounce 0.5s";
-        setTimeout(() => {
-          scoreDiv.style.animation = "";
-        }, 500);
+        lastGoalTime = Date.now();
       }
     }
-
+    
     // Play goal sound
     function playGoalSound() {
-      const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3');
-      audio.volume = 0.3;
+      const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-soccer-goal-cheer-2069.mp3');
       audio.play().catch(e => console.log("Audio play failed:", e));
     }
-
+    
     // Create confetti effect
     function createConfetti() {
       const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
@@ -1900,26 +1849,34 @@
       for (let i = 0; i < 100; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.width = Math.random() * 10 + 5 + 'px';
         confetti.style.height = Math.random() * 10 + 5 + 'px';
         confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
         document.body.appendChild(confetti);
         
+        // Remove confetti after animation
         setTimeout(() => {
           confetti.remove();
         }, 5000);
       }
     }
-
+    
     // Send reaction
     function sendReaction(emoji) {
-      if (!playerName || !roomId) return;
+      if (!roomId || !playerName) return;
       
-      db.ref("commentary/" + roomId).push().set({
-        text: `${playerName} reacted: ${emoji}`,
-        time: 90 - Math.floor((Date.now() - matchStartTime) / 1000)
+      // Only allow reactions within 10 seconds of a goal
+      if (Date.now() - lastGoalTime > 10000) {
+        alert("Reactions are only allowed shortly after a goal!");
+        return;
+      }
+      
+      db.ref("reactions/" + roomId).push().set({
+        player: playerName,
+        emoji: emoji,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
       });
     }
 
@@ -1971,22 +1928,11 @@
         return;
       }
       
-      // Check if team is complete
-      if (!selectedPlayers.GK || !selectedPlayers.DEF || !selectedPlayers.MID || !selectedPlayers.FW) {
-        teamError.textContent = "Please select all 4 players in Team Manager first!";
-        teamError.style.display = "block";
-        setTimeout(() => {
-          teamError.style.display = "none";
-        }, 3000);
-        return;
-      }
-      
       joinBtn.disabled = true;
       statusDiv.textContent = "Searching for opponent...";
       commentaryDiv.innerHTML = "";
       scoreDiv.textContent = "";
       teamPowerDiv.style.display = "block";
-      reactionButtons.style.display = "none";
 
       // Add to online users
       addToOnlineUsers();
@@ -2070,11 +2016,8 @@
       });
     }
 
-    let matchStartTime = 0;
-
     function createMatch(opponentName, opponentPower, opponentTactic) {
       roomId = "room_" + Date.now();
-      matchStartTime = Date.now();
       
       const playerPower = calculateTeamPower();
       const powerDifference = Math.abs(playerPower - opponentPower);
@@ -2124,9 +2067,11 @@
       // Clean up any existing listeners
       if (matchRef) matchRef.off();
       if (commentaryRef) commentaryRef.off();
+      if (reactionRef) reactionRef.off();
       
       matchRef = db.ref("games/" + roomId);
       commentaryRef = db.ref("commentary/" + roomId);
+      reactionRef = db.ref("reactions/" + roomId);
       
       // Listen for match updates
       matchRef.on("value", snap => {
@@ -2146,12 +2091,12 @@
           </div>
           <div class="score-team">
             <div>${game.player1}</div>
-            <div class="score-number">${game.score1}</div>
+            <div class="score-number" id="score1">${game.score1}</div>
           </div>
           <div>vs</div>
           <div class="score-team">
             <div>${game.player2}</div>
-            <div class="score-number">${game.score2}</div>
+            <div class="score-number" id="score2">${game.score2}</div>
           </div>
         `;
 
@@ -2168,9 +2113,28 @@
         const comment = snap.val();
         if (comment) {
           const isGoal = comment.text.includes("GOAL") || comment.text.includes("scores");
-          const isImportant = isGoal || comment.text.includes("save") || comment.text.includes("miss") || 
-                            comment.text.includes("injured") || comment.text.includes("replaced");
+          const isImportant = isGoal || comment.text.includes("save") || comment.text.includes("miss") || comment.text.includes("injured");
           addCommentary(comment.text, comment.time, isImportant, isGoal);
+          
+          // Bounce score if it's a goal
+          if (isGoal) {
+            const score1 = document.getElementById("score1");
+            const score2 = document.getElementById("score2");
+            if (score1) score1.classList.add("bounce");
+            if (score2) score2.classList.add("bounce");
+            setTimeout(() => {
+              if (score1) score1.classList.remove("bounce");
+              if (score2) score2.classList.remove("bounce");
+            }, 1000);
+          }
+        }
+      });
+      
+      // Listen for reactions
+      reactionRef.limitToLast(5).on("child_added", snap => {
+        const reaction = snap.val();
+        if (reaction && reaction.player !== playerName) {
+          addCommentary(`${reaction.player} reacted: ${reaction.emoji}`, Math.floor(Math.random() * 90), true);
         }
       });
 
@@ -2181,9 +2145,6 @@
 
     function simulateMatch() {
       if (matchInterval) clearInterval(matchInterval);
-      
-      // Track injured players
-      let injuredPlayers = [];
       
       matchInterval = setInterval(() => {
         matchRef.once("value", snap => {
@@ -2204,30 +2165,14 @@
           const p1Prob = 0.05 * (1 + (powerRatio - 0.5) * 0.5 + game.advantage);
           const p2Prob = 0.05 * (1 + (1 - powerRatio - 0.5) * 0.5 - game.advantage);
 
-          // Random injury event (2% chance per minute)
-          if (Math.random() < 0.02 && game.time % 60 === 0) {
-            const teams = [game.player1, game.player2];
-            const injuredTeam = teams[Math.floor(Math.random() * teams.length)];
-            const injuredPlayer = `${injuredTeam}'s player`;
-            
-            newCommentary = getRandomInjuryPhrase().replace("{player}", injuredPlayer);
-            isImportant = true;
-            
-            // Add to injured players
-            injuredPlayers.push({
-              team: injuredTeam,
-              time: game.time
-            });
-          }
-          
           // Regular game action (80% chance)
-          if (Math.random() < 0.8 && !newCommentary) {
+          if (Math.random() < 0.8) {
             const player = Math.random() < 0.5 ? game.player1 : game.player2;
             newCommentary = `${player} ${getRandomAction()}.`;
           }
           
           // Player 1 scores
-          if (Math.random() < p1Prob && !newCommentary) {
+          if (Math.random() < p1Prob) {
             if (Math.random() < 0.7) { // 70% chance to score
               s1++;
               newCommentary = `${game.player1} ${getRandomGoalPhrase()}`;
@@ -2243,7 +2188,7 @@
           }
           
           // Player 2 scores
-          if (Math.random() < p2Prob && !newCommentary) {
+          if (Math.random() < p2Prob) {
             if (Math.random() < 0.7) { // 70% chance to score
               s2++;
               newCommentary = `${game.player2} ${getRandomGoalPhrase()}`;
@@ -2256,6 +2201,12 @@
               newCommentary = `${game.player2} ${getRandomMissPhrase()}`;
               isImportant = true;
             }
+          }
+          
+          // Random injury event (2% chance per second)
+          if (Math.random() < 0.02) {
+            newCommentary = getRandomInjuryPhrase();
+            isImportant = true;
           }
 
           // Half-time commentary
@@ -2329,6 +2280,9 @@
           ${winner}
         </div>
       `;
+      
+      // Hide reaction buttons
+      reactionButtons.style.display = "none";
 
       // Update user stats if this player was in the match
       if (game.player1 === playerName || game.player2 === playerName) {
@@ -2354,11 +2308,6 @@
         
         // Save match log
         saveMatchLog(game);
-        
-        // Show confetti for winner
-        if (isWinner) {
-          createConfetti();
-        }
       }
 
       // Reset game state
@@ -2369,7 +2318,7 @@
       roomId = "";
       matchRef = null;
       commentaryRef = null;
-      reactionButtons.style.display = "none";
+      reactionRef = null;
 
       // Update leaderboard
       updateLeaderboardDB(game);
@@ -2484,51 +2433,6 @@
         modal.style.display = "none";
       });
       saveUserData();
-    }
-    
-    // Top-up modal functions
-    function showTopupModal() {
-      if (!playerName) {
-        alert("Please login first!");
-        return;
-      }
-      topupModal.style.display = "flex";
-    }
-    
-    function closeTopupModal() {
-      topupModal.style.display = "none";
-    }
-    
-    function submitTopupRequest() {
-      const amount = document.getElementById("topupAmount").value.trim();
-      const trxId = document.getElementById("topupTrxId").value.trim();
-      
-      if (!amount || isNaN(amount)) {
-        alert("Please enter a valid amount!");
-        return;
-      }
-      
-      if (!trxId) {
-        alert("Please enter your transaction ID!");
-        return;
-      }
-      
-      const requestRef = db.ref("topupRequests").push();
-      requestRef.set({
-        username: playerName,
-        amount: parseInt(amount),
-        trxId: trxId,
-        status: "pending",
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      }, error => {
-        if (error) {
-          alert("Error submitting request. Please try again.");
-        } else {
-          alert("Top-up request submitted successfully! It will be processed soon.");
-          closeTopupModal();
-          addNotification(`Top-up request submitted for ${amount} BDT. Transaction ID: ${trxId}`);
-        }
-      });
     }
     
     function changeTab(tabId) {
@@ -2759,6 +2663,41 @@
       document.getElementById("stat-goals").textContent = userStats.goals;
       document.getElementById("stat-conceded").textContent = userStats.conceded;
     }
+    
+    // Submit top-up request
+    function submitTopupRequest() {
+      const amount = document.getElementById("topupAmount").value;
+      const txId = document.getElementById("topupTxId").value;
+      
+      if (!amount || !txId) {
+        alert("Please fill all fields!");
+        return;
+      }
+      
+      if (!playerName) {
+        alert("Please login first!");
+        return;
+      }
+      
+      const topupRef = db.ref("topupRequests").push();
+      topupRef.set({
+        player: playerName,
+        amount: amount,
+        txId: txId,
+        status: "pending",
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      }).then(() => {
+        alert("Top-up request submitted! We'll process it soon.");
+        closeModal();
+        document.getElementById("topupAmount").value = "";
+        document.getElementById("topupTxId").value = "";
+        
+        // Add notification
+        addNotification(`Top-up request submitted for ${amount} BDT`);
+      }).catch(error => {
+        alert("Error submitting request: " + error.message);
+      });
+    }
 
     // Load players from Firebase
     function loadPlayersFromFirebase() {
@@ -2769,16 +2708,21 @@
         } else {
           // Default players if none in Firebase
           TOP_PLAYERS = [
-            { id: 1, name: "David De Gea", position: "GK", attack: 60, defense: 90, stamina: 80, price: 5000 },
-            { id: 2, name: "Virgil van Dijk", position: "DEF", attack: 70, defense: 95, stamina: 85, price: 8000 },
-            { id: 3, name: "Kevin De Bruyne", position: "MID", attack: 95, defense: 75, stamina: 90, price: 10000 },
-            { id: 4, name: "Lionel Messi", position: "FW", attack: 99, defense: 60, stamina: 85, price: 12000 },
-            { id: 5, name: "N'Golo Kanté", position: "MID", attack: 75, defense: 90, stamina: 95, price: 8500 },
-            { id: 6, name: "Robert Lewandowski", position: "FW", attack: 95, defense: 65, stamina: 85, price: 11000 },
-            { id: 7, name: "Sergio Ramos", position: "DEF", attack: 80, defense: 90, stamina: 85, price: 9000 },
-            { id: 8, name: "Mohamed Salah", position: "FW", attack: 92, defense: 65, stamina: 90, price: 10500 },
-            { id: 9, name: "Manuel Neuer", position: "GK", attack: 70, defense: 92, stamina: 85, price: 7000 },
-            { id: 10, name: "Kylian Mbappé", position: "FW", attack: 97, defense: 60, stamina: 95, price: 11500 }
+            { id: 1, name: "Messi", position: "FW", attack: 95, defense: 35, stamina: 85, price: 5000 },
+            { id: 2, name: "Ronaldo", position: "FW", attack: 94, defense: 30, stamina: 90, price: 4800 },
+            { id: 3, name: "Neymar", position: "FW", attack: 90, defense: 30, stamina: 80, price: 4500 },
+            { id: 4, name: "Mbappé", position: "FW", attack: 92, defense: 35, stamina: 95, price: 4700 },
+            { id: 5, name: "Haaland", position: "FW", attack: 93, defense: 40, stamina: 85, price: 4600 },
+            { id: 6, name: "De Bruyne", position: "MID", attack: 90, defense: 65, stamina: 85, price: 4500 },
+            { id: 7, name: "Modrić", position: "MID", attack: 88, defense: 70, stamina: 80, price: 4200 },
+            { id: 8, name: "Kanté", position: "MID", attack: 70, defense: 90, stamina: 95, price: 4300 },
+            { id: 9, name: "Casemiro", position: "MID", attack: 75, defense: 88, stamina: 85, price: 4100 },
+            { id: 10, name: "Van Dijk", position: "DEF", attack: 70, defense: 95, stamina: 85, price: 4400 },
+            { id: 11, name: "Ramos", position: "DEF", attack: 75, defense: 90, stamina: 80, price: 4200 },
+            { id: 12, name: "Alaba", position: "DEF", attack: 80, defense: 85, stamina: 80, price: 4000 },
+            { id: 13, name: "Hernández", position: "DEF", attack: 75, defense: 85, stamina: 90, price: 3900 },
+            { id: 14, name: "Neuer", position: "GK", attack: 60, defense: 90, stamina: 70, price: 3800 },
+            { id: 15, name: "Courtois", position: "GK", attack: 55, defense: 92, stamina: 75, price: 3900 }
           ];
         }
       });
@@ -2786,8 +2730,16 @@
 
     // Initialize the app
     function init() {
+      // Start loading simulation
       simulateLoading();
-      updateLeaderboard();
+      
+      // Set up event listeners
+      loginBtn.addEventListener("click", login);
+      loginUsername.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") login();
+      });
+      
+      // Load data
       loadGlobalNotice();
       loadPlayersFromFirebase();
       
@@ -2795,29 +2747,12 @@
       window.addEventListener('click', (event) => {
         if (event.target.classList.contains('modal')) {
           closeModal();
-          closeTopupModal();
         }
         if (event.target === notificationPanel) {
           notificationPanel.style.display = "none";
         }
       });
-      
-      // Allow pressing Enter to login
-      loginUsername.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          login();
-        }
-      });
-      
-      // Check for saved username
-      const savedUsername = localStorage.getItem('footballSimUsername');
-      if (savedUsername) {
-        loginUsername.value = savedUsername;
-      }
     }
-
-    // Load leaderboard initially
-    init();
 
     // Cleanup when page unloads
     window.addEventListener('beforeunload', () => {
@@ -2838,9 +2773,13 @@
       
       if (commentaryRef) commentaryRef.off();
       if (matchRef) matchRef.off();
+      if (reactionRef) reactionRef.off();
       
       saveUserData();
     });
+
+    // Initialize the app
+    init();
   </script>
 </body>
 </html>
