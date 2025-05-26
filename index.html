@@ -1,2495 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ultimate Football Manager</title>
-<style>
-:root {
-  --primary: #158915;
-  --secondary: #0a620a;
-  --dark: #0d0d0d;
-  --light: #ffffff;
-  --accent: #4CAF50;
-  --danger: #f44336;
-  --warning: #ff9800;
-  --info: #2196F3;
-  --blue: #1976D2;
-  --gold: #FFD700;
-  --purple: #7B1FA2;
-}
-
-* {
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0f0f0f, #102020);
-  color: var(--light);
-  text-align: center;
-  overflow-x: hidden;
-  animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Glass effect for login */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-}
-
-.screen {
-  display: none;
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
-  animation: slideUp 0.4s ease-out;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(50px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.active {
-  display: block;
-}
-
-input, button, select {
-  padding: 12px 18px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  margin: 5px 0;
-  width: 100%;
-  max-width: 300px;
-}
-
-button {
-  cursor: pointer;
-  background: var(--primary);
-  color: var(--light);
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-button:after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  border-radius: 100%;
-  transform: scale(1, 1) translate(-50%);
-  transform-origin: 50% 50%;
-}
-
-button:focus:not(:active)::after {
-  animation: ripple 0.6s ease-out;
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(20, 20);
-    opacity: 0;
-  }
-}
-
-button.secondary {
-  background: var(--secondary);
-}
-
-button.danger {
-  background: var(--danger);
-}
-
-button.warning {
-  background: var(--warning);
-  color: #000;
-}
-
-button.info {
-  background: var(--info);
-}
-
-button.gold {
-  background: var(--gold);
-  color: #000;
-}
-
-button.purple {
-  background: var(--purple);
-}
-
-/* Pitch styling */
-#pitch {
-  width: 100%;
-  max-width: 400px;
-  height: 250px;
-  background: var(--secondary);
-  border: 3px solid var(--light);
-  margin: 12px auto;
-  position: relative;
-  border-radius: 5px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
-
-/* HUD styling */
-#hud {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  font-size: 20px;
-  margin: 10px 0;
-  font-weight: bold;
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
-  border-radius: 15px;
-}
-
-#timer {
-  font-size: 24px;
-  background: var(--dark);
-  padding: 5px 15px;
-  border-radius: 20px;
-  min-width: 60px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-/* Commentary box */
-#commentary {
-  height: 120px;
-  overflow-y: auto;
-  border: 1px solid #555;
-  margin: 15px 0;
-  padding: 10px;
-  text-align: left;
-  font-size: 14px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 8px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Leaderboard */
-#leader {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 13px;
-  text-align: left;
-  border: 1px solid #333;
-  max-width: 150px;
-  backdrop-filter: blur(5px);
-}
-
-/* Player stats */
-#playerStats {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 15px 0;
-  flex-wrap: wrap;
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.statBar {
-  width: 100px;
-  height: 10px;
-  background: #333;
-  border-radius: 5px;
-  margin-top: 5px;
-  overflow: hidden;
-}
-
-.statFill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 5px;
-  transition: width 0.5s ease;
-}
-
-/* Event popup */
-#eventPopup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--dark);
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px solid var(--primary);
-  z-index: 100;
-  display: none;
-  max-width: 300px;
-  width: 90%;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  animation: popIn 0.3s ease-out;
-}
-
-@keyframes popIn {
-  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
-  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
-/* Chat system */
-#chatBox {
-  height: 80px;
-  overflow-y: auto;
-  border: 1px solid #555;
-  margin: 10px 0;
-  padding: 8px;
-  text-align: left;
-  font-size: 12px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 8px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-}
-
-#chatInput {
-  width: calc(100% - 90px);
-  margin-right: 5px;
-  display: inline-block;
-  background: rgba(255,255,255,0.1);
-  color: white;
-}
-
-/* Lobby tiles */
-.tile-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.tile {
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  padding: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.tile:hover {
-  background: rgba(255,255,255,0.2);
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-}
-
-.tile img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
-
-.tile:nth-child(1) {
-  border-top: 3px solid var(--primary);
-}
-.tile:nth-child(2) {
-  border-top: 3px solid var(--blue);
-}
-.tile:nth-child(3) {
-  border-top: 3px solid var(--gold);
-}
-.tile:nth-child(4) {
-  border-top: 3px solid var(--purple);
-}
-
-/* Tactics dropdown */
-.tactics-dropdown {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 10px;
-  width: 100%;
-  max-width: 300px;
-}
-
-.tactics-dropdown-btn {
-  background: var(--primary);
-  color: white;
-  padding: 12px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  border-radius: 8px;
-  text-align: left;
-  position: relative;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.tactics-dropdown-btn::after {
-  content: "▼";
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-}
-
-.tactics-dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #222;
-  min-width: 100%;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  border-radius: 0 0 8px 8px;
-  overflow: hidden;
-}
-
-.tactics-dropdown-content div {
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  cursor: pointer;
-  text-align: left;
-  border-bottom: 1px solid #333;
-  transition: all 0.2s ease;
-}
-
-.tactics-dropdown-content div:hover {
-  background-color: var(--secondary);
-}
-
-.tactics-dropdown:hover .tactics-dropdown-content {
-  display: block;
-}
-
-.tactics-dropdown:hover .tactics-dropdown-btn {
-  border-radius: 8px 8px 0 0;
-}
-
-/* Weather effects */
-.weather-effect {
-  position: absolute;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* Profile card */
-.profile-card {
-  background: rgba(255,255,255,0.1);
-  border-radius: 15px;
-  padding: 15px;
-  margin: 15px auto;
-  max-width: 300px;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  animation: slideIn 0.5s ease-out;
-}
-
-.profile-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: var(--primary);
-  margin: 0 auto 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  font-weight: bold;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5);
-  transition: all 0.3s ease;
-}
-
-.profile-avatar:hover {
-  box-shadow: 0 0 0 5px rgba(76, 175, 80, 0.8);
-  transform: scale(1.05);
-}
-
-/* Match screen - FIFA mobile style */
-#match {
-  background: linear-gradient(135deg, #0a1e0a 0%, #0d0d0d 100%);
-  min-height: 100vh;
-  padding-bottom: 20px;
-}
-
-#hud {
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
-  border-radius: 0 0 15px 15px;
-  margin-top: 0;
-}
-
-#pitch {
-  border: 4px solid #fff;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  background: linear-gradient(to bottom, #0a620a, #158915);
-  margin-top: 10px;
-}
-
-#commentary {
-  background: rgba(0,0,0,0.5);
-  border: 1px solid #333;
-  border-radius: 10px;
-  height: 100px;
-}
-
-#playerStats {
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px auto;
-  max-width: 400px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 500px) {
-  #hud {
-    gap: 15px;
-    font-size: 16px;
-  }
-  
-  #timer {
-    font-size: 20px;
-    min-width: 50px;
-  }
-  
-  .tile-container {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  #pitch {
-    height: 200px;
-  }
-  
-  #leader {
-    position: static;
-    max-width: 100%;
-    margin: 10px 0;
-  }
-}
-
-/* Animations */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.pulse {
-  animation: pulse 2s infinite;
-}
-
-@keyframes slideIn {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.slide-in {
-  animation: slideIn 0.5s forwards;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 5px;
-}
-
-/* Goal animation */
-@keyframes goalFlash {
-  0% { background-color: transparent; }
-  50% { background-color: rgba(255,255,255,0.3); }
-  100% { background-color: transparent; }
-}
-
-.goal-animation {
-  animation: goalFlash 0.5s 3;
-}
-
-/* Toast notification */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.8);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  z-index: 1000;
-  animation: fadeInOut 2.5s ease forwards;
-  display: none;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; bottom: 0; }
-  10% { opacity: 1; bottom: 20px; }
-  90% { opacity: 1; bottom: 20px; }
-  100% { opacity: 0; bottom: 0; }
-}
-
-/* Loading spinner */
-.spinner {
-  width: 40px;
-  height: 40px;
-  margin: 10px auto;
-  border: 4px solid rgba(255,255,255,0.3);
-  border-radius: 50%;
-  border-top: 4px solid var(--accent);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Settings panel */
-.settings-panel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(5px);
-}
-
-.settings-content {
-  background: var(--dark);
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.settings-row {
-  display: flex;
-  justify-content: space-between;
-  margin: 15px 0;
-  align-items: center;
-}
-
-/* Rematch button */
-.rematch-btn {
-  background: var(--info);
-  margin-top: 10px;
-}
-
-/* Disconnected message */
-.disconnected-message {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.8);
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 1000;
-  text-align: center;
-  max-width: 300px;
-  width: 90%;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-/* Pre-match chat */
-.pre-match-chat {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
-  border-radius: 8px;
-  z-index: 100;
-  max-width: 200px;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-/* Achievement badge */
-.badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #ffd700, #ff9800);
-  color: #000;
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Countdown animation */
-.countdown {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 100px;
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 0 20px rgba(255,255,255,0.5);
-  z-index: 1000;
-  animation: countdownPulse 1s infinite;
-}
-
-@keyframes countdownPulse {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-}
-
-/* Match starting overlay */
-.match-start-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(5px);
-}
-
-.match-start-title {
-  font-size: 32px;
-  margin-bottom: 20px;
-  color: white;
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
-}
-
-.match-start-teams {
-  font-size: 24px;
-  margin-bottom: 30px;
-  color: white;
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
-}
-
-/* Switch toggle */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--accent);
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-/* Tooltip */
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* History section */
-.history-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  margin: 5px 0;
-  background: rgba(255,255,255,0.1);
-  border-radius: 8px;
-}
-
-.history-item.win {
-  border-left: 3px solid var(--accent);
-}
-
-.history-item.loss {
-  border-left: 3px solid var(--danger);
-}
-
-.history-item.draw {
-  border-left: 3px solid var(--warning);
-}
-
-/* XP progress bar */
-.xp-progress {
-  width: 100%;
-  height: 10px;
-  background: #333;
-  border-radius: 5px;
-  margin-top: 5px;
-  overflow: hidden;
-}
-
-.xp-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), #4CAF50);
-  border-radius: 5px;
-  transition: width 0.5s ease;
-}
-
-/* Rank icons */
-.rank-icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-left: 5px;
-}
-
-.rank-bronze {
-  background: linear-gradient(135deg, #cd7f32, #a67c52);
-}
-
-.rank-silver {
-  background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
-}
-
-.rank-gold {
-  background: linear-gradient(135deg, #ffd700, #daa520);
-}
-
-/* Pulse animation for buttons */
-@keyframes buttonPulse {
-  0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-}
-
-.pulse-button {
-  animation: buttonPulse 2s infinite;
-}
-
-/* Stadium background effect */
-.stadium-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
-  opacity: 0.1;
-  z-index: -1;
-}
-
-/* Input focus effect */
-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--accent);
-  background: rgba(255,255,255,0.15);
-}
-</style>
+  <meta charset="utf-8" />
+  <title>1v1 Firebase Football Battle</title>
+  <style>
+    :root {
+      --field: #2e7d32;
+      --line: #fafafa;
+      --p1: #1565c0;
+      --p2: #c62828;
+      --ball: #ffffff;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      background: #121212;
+      font-family: sans-serif;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.85);
+    }
+    #lobby { visibility: hidden; }
+    #popup { display: none; z-index: 50; }
+    #gameUI {
+      display: none;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      font-size: 20px;
+    }
+    #gameCanvas {
+      border: 5px solid var(--line);
+      background: var(--field);
+    }
+  </style>
 </head>
 <body>
-<div class="stadium-bg"></div>
+  <div id="username" class="screen">
+    <h2>Enter Name</h2>
+    <input id="nameInput" maxlength="12" placeholder="Name" style="padding:8px 12px;font-size:18px" />
+    <button id="startBtn" style="margin-top:10px;padding:8px 20px">Start</button>
+  </div>
+  <div id="lobby" class="screen"><h2 id="lobbyText">Waiting for opponent…</h2></div>
+  <div id="popup" class="screen"><h1 id="popupMsg"></h1><button onclick="location.reload()">Play Again</button></div>
+  <div id="gameUI">Score: <span id="score">0-0</span></div>
+  <canvas id="gameCanvas" width="900" height="550"></canvas>
 
- <!-- Splash/Login Screen -->
- <div id="login" class="screen active">
-   <div class="glass" style="padding: 30px; margin-top: 50px;">
-     <div style="font-size: 50px; margin-bottom: 20px; animation: bounce 2s infinite;">⚽</div>
-     <h1 style="margin-top: 0;">Ultimate Football Manager</h1>
-     <input id="uname" placeholder="Enter your username" maxlength="16" />
-     <button id="loginBtn" class="pulse-button">START</button>
-     <p id="lErr" style="color: var(--danger); min-height: 20px;"></p>
-   </div>
- </div>
-
- <!-- Lobby Screen -->
- <div id="lobby" class="screen">
-   <div class="profile-card slide-in">
-     <div class="profile-avatar" id="avatar">?</div>
-     <h3 id="profileName">Username</h3>
-     <div>Level: <span id="profileLevel">1</span> <span id="rankIcon" class="rank-icon rank-bronze"></span> | XP: <span id="profileXP">0</span></div>
-     <div class="xp-progress"><div id="xpProgressFill" class="xp-progress-fill" style="width:0%"></div></div>
-     <div>W: <span id="profileWins">0</span> | L: <span id="profileLosses">0</span> | D: <span id="profileDraws">0</span></div>
-     <div id="badgesContainer"></div>
-   </div>
-   
-   <button onclick="showSettings()" style="position: absolute; top: 10px; left: 10px; padding: 8px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">⚙️</button>
-   
-   <h3>Game Modes</h3>
-   <div class="tile-container">
-     <div class="tile" onclick="joinQueue()">
-       <div>⚡</div>
-       <h4>Quick Match</h4>
-       <small>Play 1v1 instantly</small>
-     </div>
-     <div class="tile" onclick="showFriendSection()">
-       <div>👥</div>
-       <h4>Friend Match</h4>
-       <small>Play with friends</small>
-     </div>
-     <div class="tile" onclick="showLeaderboard()">
-       <div>🏆</div>
-       <h4>Leaderboard</h4>
-       <small>Top players</small>
-     </div>
-     <div class="tile" onclick="showTournament()">
-       <div>🏅</div>
-       <h4>Tournament</h4>
-       <small>8-player knockout</small>
-     </div>
-   </div>
-   
-   <div id="friendSection" style="margin-top: 20px; display: none;">
-     <h4>Play with Friend</h4>
-     <input id="friendCode" placeholder="Enter friend's code" />
-     <button onclick="joinFriend()" class="info">Join</button>
-     <p>Your friend code: <strong id="myCode"></strong></p>
-     <button onclick="hideFriendSection()" class="secondary">Back</button>
-   </div>
-   
-   <div id="leaderboardSection" style="margin-top: 20px; display: none;">
-     <h4>Top Players</h4>
-     <div id="leaderboardList"></div>
-     <button onclick="hideLeaderboard()" class="secondary">Back</button>
-   </div>
-   
-   <div id="tournamentSection" style="margin-top: 20px; display: none;">
-     <h4>Tournament Mode</h4>
-     <p>Join an 8-player knockout tournament</p>
-     <button onclick="joinTournament()" class="purple">Join Tournament</button>
-     <div id="tournamentStatus" style="margin-top: 10px;"></div>
-     <button onclick="hideTournament()" class="secondary">Back</button>
-   </div>
-   
-   <div id="historySection" style="margin-top: 20px; display: none;">
-     <h4>Match History</h4>
-     <div id="historyList"></div>
-     <button onclick="hideHistory()" class="secondary">Back</button>
-   </div>
-   
-   <div id="preMatchChat" class="pre-match-chat" style="display: none;">
-     <div id="preMatchChatBox" style="max-height: 100px; overflow-y: auto;"></div>
-     <input id="preMatchChatInput" placeholder="Type message..." style="width: 100%; margin-top: 5px;" />
-     <button onclick="sendPreMatchChat()" style="margin-top: 5px; width: 100%; padding: 5px;">Send</button>
-   </div>
- </div>
-
- <!-- Queue Screen -->
- <div id="queue" class="screen">
-   <div class="glass" style="padding: 30px; margin-top: 50px;">
-     <h3>Finding Opponent...</h3>
-     <div class="spinner"></div>
-     <p id="queueStatus">Searching for players</p>
-     <div id="estimatedTime" style="font-size: 12px; margin: 10px 0;"></div>
-     <button onclick="cancelQueue()" class="danger">Cancel</button>
-   </div>
- </div>
-
- <!-- Match Starting Screen -->
- <div id="matchStarting" class="match-start-overlay" style="display: none;">
-   <div class="match-start-title">Match Starting</div>
-   <div class="match-start-teams" id="matchTeams"></div>
-   <div class="countdown" id="countdown">3</div>
- </div>
-
- <!-- Match Screen -->
- <div id="match" class="screen" style="position:relative">
-   <div id="leader"></div>
-   
-   <div id="weatherContainer"></div>
-   
-   <div id="hud">
-     <span id="leftName" style="text-align: right; flex: 1;">Player A</span>
-     <span id="timer">90'</span>
-     <span id="rightName" style="text-align: left; flex: 1;">Player B</span>
-   </div>
-   
-   <div id="hud">
-     <span id="leftScore" style="font-size: 28px; flex: 1; text-align: right;">0</span>
-     <span style="font-size: 28px;">-</span>
-     <span id="rightScore" style="font-size: 28px; flex: 1; text-align: left;">0</span>
-   </div>
-   
-   <div id="playerStats">
-     <div>
-       <div>Stamina <span id="leftStamina">100</span>%</div>
-       <div class="statBar"><div id="leftStaminaBar" class="statFill" style="width:100%"></div></div>
-       <small id="leftSubs">Subs: 3</small>
-     </div>
-     <div>
-       <div>Stamina <span id="rightStamina">100</span>%</div>
-       <div class="statBar"><div id="rightStaminaBar" class="statFill" style="width:100%"></div></div>
-       <small id="rightSubs">Subs: 3</small>
-     </div>
-   </div>
-   
-   <!-- Tactics Dropdown -->
-   <div class="tactics-dropdown" id="tacticsDropdown" style="display: none;">
-     <button class="tactics-dropdown-btn">Current Tactic: Balanced</button>
-     <div class="tactics-dropdown-content">
-       <div onclick="selectTactic('attack')">
-         <span>⚔️</span> Attack (+20% attack, -10% defense)
-       </div>
-       <div onclick="selectTactic('balanced')">
-         <span>⚖️</span> Balanced (Standard play)
-       </div>
-       <div onclick="selectTactic('defend')">
-         <span>🛡️</span> Defend (-10% attack, +20% defense)
-       </div>
-       <div onclick="selectTactic('highpress')">
-         <span>💨</span> High Press (+15% attack, -15% stamina)
-       </div>
-       <div onclick="selectTactic('counter')">
-         <span>↩️</span> Counter Attack (+25% attack when defending)
-       </div>
-       <div onclick="selectTactic('parkbus')">
-         <span>🚌</span> Park the Bus (+30% defense, -20% attack)
-       </div>
-     </div>
-   </div>
-   
-   <canvas id="pitch" width="400" height="250"></canvas>
-   
-   <div id="commentary"></div>
-   
-   <div id="chatBox"></div>
-   <div>
-     <input id="chatInput" placeholder="Type message..." />
-     <button onclick="sendChat()" style="padding:10px; width: 80px;">Send</button>
-   </div>
-   
-   <button onclick="makeSubstitution()" style="margin-top: 10px;">Make Substitution</button>
- </div>
-
- <!-- Event Popup -->
- <div id="eventPopup">
-   <h3 id="eventTitle" style="margin-top: 0;">Special Event!</h3>
-   <p id="eventText">This is a special event description</p>
-   <button onclick="closeEvent()" style="margin-top:10px; width: 100%;">OK</button>
- </div>
-
- <!-- Match End Screen -->
- <div id="matchEnd" class="screen" style="display: none;">
-   <div class="glass" style="padding: 30px; margin-top: 50px;">
-     <h2 id="matchResult">Match Ended</h2>
-     <div id="matchScore" style="font-size: 24px; margin: 15px 0;">0 - 0</div>
-     
-     <h3>Match Highlights</h3>
-     <div id="highlights" style="text-align: left; margin: 10px 0; max-height: 150px; overflow-y: auto;"></div>
-     
-     <div id="xpEarned" style="margin: 15px 0; font-size: 18px;"></div>
-     
-     <div id="achievementsEarned" style="margin: 15px 0;"></div>
-     
-     <button onclick="returnToLobby()">Back to Lobby</button>
-     <button onclick="requestRematch()" class="rematch-btn">Rematch</button>
-   </div>
- </div>
-
- <!-- Settings Panel -->
- <div class="settings-panel" id="settingsPanel">
-   <div class="settings-content">
-     <h2 style="margin-top: 0;">Settings</h2>
-     
-     <div class="settings-row">
-       <span>Sound Effects</span>
-       <label class="switch">
-         <input type="checkbox" id="soundToggle" checked>
-         <span class="slider round"></span>
-       </label>
-     </div>
-     
-     <div class="settings-row">
-       <span>Pitch Theme</span>
-       <select id="pitchTheme">
-         <option value="default">Default</option>
-         <option value="night">Night</option>
-         <option value="winter">Winter</option>
-         <option value="desert">Desert</option>
-       </select>
-     </div>
-     
-     <div class="settings-row">
-       <span>Commentary Speed</span>
-       <select id="commentarySpeed">
-         <option value="slow">Slow</option>
-         <option value="normal" selected>Normal</option>
-         <option value="fast">Fast</option>
-       </select>
-     </div>
-     
-     <button onclick="hideSettings()" style="margin-top: 20px; width: 100%;">Save Settings</button>
-   </div>
- </div>
-
- <!-- Toast Notification -->
- <div class="toast" id="toast"></div>
-
- <!-- Disconnected Message -->
- <div class="disconnected-message" id="disconnectedMessage" style="display: none;">
-   <h3>Opponent Disconnected</h3>
-   <p>Your opponent has left the match.</p>
-   <button onclick="returnToLobby()">Return to Lobby</button>
- </div>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
-<script>
-const cfg={apiKey:"AIzaSyDX7Z8o5xVJa8cSHvaurZg4FkJvN8mJuto",authDomain:"free-fire-kingdom.firebaseapp.com",databaseURL:"https://free-fire-kingdom-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"free-fire-kingdom"};
-firebase.initializeApp(cfg);
-const db=firebase.database(),auth=firebase.auth();
-const $=id=>document.getElementById(id);
-let uid,user,roomId,isHost=false,mySide='l',tournamentId=null;
-let playerStats = {
-  l: { stamina: 100, speed: 80, accuracy: 75, injured: false, subsLeft: 3 },
-  r: { stamina: 100, speed: 80, accuracy: 75, injured: false, subsLeft: 3 }
-};
-let highlights = [];
-let weatherType = 'clear';
-let currentTactic = 'balanced';
-let matchInterval;
-let soundEnabled = true;
-let pitchTheme = 'default';
-let achievements = [];
-let opponentDisconnected = false;
-let rematchRequested = false;
-let rematchAccepted = false;
-let roomRef = null;
-
-// Initialize settings from localStorage
-function loadSettings() {
-  const settings = JSON.parse(localStorage.getItem('ufm_settings')) || {};
-  soundEnabled = settings.sound !== false;
-  pitchTheme = settings.pitchTheme || 'default';
-  $('soundToggle').checked = soundEnabled;
-  $('pitchTheme').value = pitchTheme;
-  $('commentarySpeed').value = settings.commentarySpeed || 'normal';
-}
-
-function saveSettings() {
-  const settings = {
-    sound: soundEnabled,
-    pitchTheme: pitchTheme,
-    commentarySpeed: $('commentarySpeed').value
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDX7Z8o5xVJa8cSHvaurZg4FkJvN8mJuto",
+    authDomain: "free-fire-kingdom.firebaseapp.com",
+    databaseURL: "https://free-fire-kingdom-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "free-fire-kingdom",
+    storageBucket: "free-fire-kingdom.firebasestorage.app",
+    messagingSenderId: "889375613179",
+    appId: "1:889375613179:web:b36bd72dd208b101e0d05e"
   };
-  localStorage.setItem('ufm_settings', JSON.stringify(settings));
-}
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database(), auth = firebase.auth();
 
-function showSettings() {
-  $('settingsPanel').style.display = 'flex';
-}
+  const $ = id => document.getElementById(id);
+  const canvas = $("gameCanvas"), ctx = canvas.getContext("2d");
+  const usernameScreen = $("username"), lobbyScreen = $("lobby"), popup = $("popup");
+  const nameInput = $("nameInput"), startBtn = $("startBtn"), lobbyText = $("lobbyText");
+  const scoreSpan = $("score"), popupMsg = $("popupMsg"), gameUI = $("gameUI");
 
-function hideSettings() {
-  soundEnabled = $('soundToggle').checked;
-  pitchTheme = $('pitchTheme').value;
-  saveSettings();
-  $('settingsPanel').style.display = 'none';
-}
+  const W = canvas.width, H = canvas.height, GOAL_W = 12, GOAL_H = 180, CENTER_R = 70;
+  const SIZE = 50, SPEED = 5, BALL_R = 18, KICK_FORCE = 8, MAX_GOALS = 3;
 
-function showToast(message) {
-  const toast = $('toast');
-  toast.textContent = message;
-  toast.style.display = 'block';
-  
-  setTimeout(() => {
-    toast.style.display = 'none';
-  }, 2500);
-}
+  let uid, playerRef, oppRef, ballRef, matchRef, isP1 = false, authoritative = false;
+  let player = { x: 0, y: 0, angle: 0, color: '', name: '' };
+  let opp = { x: 0, y: 0, angle: 0, color: '', name: 'Opp' };
+  let ball = { x: W / 2, y: H / 2, vx: 0, vy: 0 };
+  let score = { p1: 0, p2: 0 };
+  let keys = {}, lastSend = 0, running = false;
 
-function show(s){document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));$(s).classList.add('active');}
-
-// Login function
-$('loginBtn').onclick=async()=>{
-  user=$('uname').value.trim();
-  if(!user){$('lErr').textContent='Enter name';return;}
-  
-  try {
-    // Show loading state
-    $('loginBtn').textContent = 'Loading...';
-    $('loginBtn').disabled = true;
-    
-    const userCred = await auth.signInAnonymously();
-    uid = userCred.user.uid;
-    
-    // Check if user exists, if not create new
-    const userRef = await db.ref(`users/${uid}`).once('value');
-    if(!userRef.exists()) {
-      await db.ref(`users/${uid}`).set({
-        name: user,
-        xp: 0,
-        wins: 0,
-        losses: 0,
-        draws: 0,
-        joined: Date.now(),
-        achievements: [],
-        history: []
-      });
-    } else {
-      // Update name if changed
-      await db.ref(`users/${uid}/name`).set(user);
-    }
-    
-    // Load settings
-    loadSettings();
-    
-    // Set profile code
-    $('myCode').textContent = uid.slice(0,6);
-    
-    // Update profile display
-    updateProfileDisplay();
-    
-    // Go to lobby
-    show('lobby');
-  } catch (error) {
-    $('lErr').textContent = 'Login failed. Try again.';
-    $('loginBtn').textContent = 'START';
-    $('loginBtn').disabled = false;
-    console.error(error);
-  }
-};
-
-// Profile functions
-function updateProfileDisplay() {
-  db.ref(`users/${uid}`).once('value').then(snap => {
-    const userData = snap.val();
-    if(userData) {
-      $('profileName').textContent = userData.name;
-      const level = Math.floor(userData.xp / 10) + 1;
-      $('profileLevel').textContent = level;
-      $('profileXP').textContent = userData.xp;
-      $('profileWins').textContent = userData.wins || 0;
-      $('profileLosses').textContent = userData.losses || 0;
-      $('profileDraws').textContent = userData.draws || 0;
-      $('avatar').textContent = userData.name.charAt(0).toUpperCase();
-      
-      // Update XP progress
-      const xpProgress = (userData.xp % 10) * 10;
-      $('xpProgressFill').style.width = `${xpProgress}%`;
-      
-      // Update rank icon based on level
-      const rankIcon = $('rankIcon');
-      rankIcon.className = 'rank-icon';
-      if(level >= 10) {
-        rankIcon.classList.add('rank-gold');
-      } else if(level >= 5) {
-        rankIcon.classList.add('rank-silver');
-      } else {
-        rankIcon.classList.add('rank-bronze');
-      }
-      
-      // Display achievements
-      achievements = userData.achievements || [];
-      const badgesContainer = $('badgesContainer');
-      badgesContainer.innerHTML = '';
-      
-      if(achievements.length > 0) {
-        achievements.forEach(ach => {
-          const badge = document.createElement('span');
-          badge.className = 'badge';
-          badge.textContent = ach;
-          badgesContainer.appendChild(badge);
-        });
-      }
-      
-      // Update match history
-      if(userData.history) {
-        updateHistoryDisplay(userData.history);
-      }
-    }
+  document.addEventListener('keydown', e => keys[e.key] = true);
+  document.addEventListener('keyup', e => keys[e.key] = false);
+  const mouse = { x: W / 2, y: H / 2 };
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
   });
-}
-
-function updateHistoryDisplay(history) {
-  const historyList = $('historyList');
-  historyList.innerHTML = '';
-  
-  // Show last 5 matches
-  const recentHistory = history.slice(-5).reverse();
-  
-  if(recentHistory.length === 0) {
-    historyList.innerHTML = '<p>No match history yet</p>';
-    return;
-  }
-  
-  recentHistory.forEach(match => {
-    const item = document.createElement('div');
-    item.className = `history-item ${match.result}`;
-    
-    const opponent = match.opponent || 'Opponent';
-    const score = match.score || '0-0';
-    const date = new Date(match.timestamp).toLocaleDateString();
-    
-    item.innerHTML = `
-      <div>${opponent}</div>
-      <div>${score}</div>
-      <div>${date}</div>
-    `;
-    
-    historyList.appendChild(item);
+  canvas.addEventListener('mousedown', () => {
+    if (running) kickBall();
   });
-}
 
-function showProfile() {
-  $('friendSection').style.display = 'none';
-  $('leaderboardSection').style.display = 'none';
-  $('tournamentSection').style.display = 'none';
-  $('historySection').style.display = 'none';
-  updateProfileDisplay();
-}
-
-function showFriendSection() {
-  $('friendSection').style.display = 'block';
-  $('leaderboardSection').style.display = 'none';
-  $('tournamentSection').style.display = 'none';
-  $('historySection').style.display = 'none';
-}
-
-function hideFriendSection() {
-  $('friendSection').style.display = 'none';
-}
-
-function showLeaderboard() {
-  $('friendSection').style.display = 'none';
-  $('leaderboardSection').style.display = 'block';
-  $('tournamentSection').style.display = 'none';
-  $('historySection').style.display = 'none';
-  updateLeaderboard(true);
-}
-
-function hideLeaderboard() {
-  $('leaderboardSection').style.display = 'none';
-}
-
-function showTournament() {
-  $('friendSection').style.display = 'none';
-  $('leaderboardSection').style.display = 'none';
-  $('tournamentSection').style.display = 'block';
-  $('historySection').style.display = 'none';
-  updateTournamentStatus();
-}
-
-function hideTournament() {
-  $('tournamentSection').style.display = 'none';
-}
-
-function showHistory() {
-  $('friendSection').style.display = 'none';
-  $('leaderboardSection').style.display = 'none';
-  $('tournamentSection').style.display = 'none';
-  $('historySection').style.display = 'block';
-}
-
-function hideHistory() {
-  $('historySection').style.display = 'none';
-}
-
-// Tournament functions
-function joinTournament() {
-  show('queue');
-  $('queueStatus').textContent = 'Joining tournament...';
-  
-  // Find existing tournament with open slots
-  db.ref('tournaments').orderByChild('status').equalTo('waiting').limitToFirst(1).once('value', snap => {
-    const tournaments = snap.val();
-    
-    if(tournaments) {
-      // Join existing tournament
-      tournamentId = Object.keys(tournaments)[0];
-      const tournament = tournaments[tournamentId];
-      
-      if(tournament.players && Object.keys(tournament.players).length < 8) {
-        db.ref(`tournaments/${tournamentId}/players/${uid}`).set({
-          name: user,
-          joined: Date.now(),
-          ready: false
-        });
-        
-        listenTournament();
-      } else {
-        // Tournament is full, create new one
-        createTournament();
-      }
-    } else {
-      // No tournaments waiting, create new one
-      createTournament();
-    }
-  });
-}
-
-function createTournament() {
-  tournamentId = 'tournament_' + Date.now();
-  
-  db.ref(`tournaments/${tournamentId}`).set({
-    status: 'waiting',
-    players: {
-      [uid]: {
-        name: user,
-        joined: Date.now(),
-        ready: false
-      }
-    },
-    created: Date.now()
-  });
-  
-  listenTournament();
-}
-
-function listenTournament() {
-  db.ref(`tournaments/${tournamentId}`).on('value', snap => {
-    const tournament = snap.val();
-    if(!tournament) {
-      // Tournament deleted
-      show('lobby');
-      return;
-    }
-    
-    const playerCount = tournament.players ? Object.keys(tournament.players).length : 0;
-    $('tournamentStatus').innerHTML = `Players joined: ${playerCount}/8`;
-    
-    if(tournament.status === 'started') {
-      // Tournament started - find our match
-      findTournamentMatch();
-    }
-  });
-}
-
-function findTournamentMatch() {
-  // In a real implementation, this would find the current match in the tournament bracket
-  // For now, we'll just create a normal match with the first opponent
-  db.ref(`tournaments/${tournamentId}/players`).once('value', snap => {
-    const players = snap.val();
-    const playerIds = Object.keys(players);
-    const opponentId = playerIds.find(id => id !== uid);
-    
-    if(opponentId) {
-      createRoom(uid, opponentId, players[opponentId].name, true);
-    } else {
-      $('queueStatus').textContent = 'Waiting for more players...';
-    }
-  });
-}
-
-function leaveTournament() {
-  if(tournamentId) {
-    db.ref(`tournaments/${tournamentId}/players/${uid}`).remove();
-    tournamentId = null;
-  }
-  show('lobby');
-}
-
-// Queue functions
-function joinQueue(){
-  show('queue');
-  $('queueStatus').textContent = 'Searching for players...';
-  
-  // Show estimated time
-  const waitTimes = [15, 30, 45, 60];
-  const estimatedTime = waitTimes[Math.floor(Math.random() * waitTimes.length)];
-  $('estimatedTime').textContent = `Estimated wait time: ${estimatedTime} seconds`;
-  
-  db.ref(`queue/${uid}`).set({
-    name: user,
-    ts: Date.now(),
-    rating: getPlayerRating()
-  });
-  
-  db.ref(`queue/${uid}`).onDisconnect().remove();
-  
-  // Find opponent
-  db.ref('queue').orderByChild('ts').limitToFirst(2).on('value', snap => {
-    const players = snap.val();
-    if(players && Object.keys(players).length >= 2) {
-      const playerIds = Object.keys(players);
-      if(playerIds.includes(uid)) {
-        const opponentId = playerIds.find(id => id !== uid);
-        if(opponentId) {
-          db.ref('queue').off();
-          createRoom(uid, opponentId, players[opponentId].name);
-        }
-      }
-    }
-  });
-}
-
-function getPlayerRating() {
-  // Simple rating based on wins/losses
-  return (playerStats.wins || 0) * 10 - (playerStats.losses || 0) * 5;
-}
-
-function joinFriend(){
-  const friendId = $('friendCode').value.trim();
-  if(friendId.length < 6) {
-    alert('Please enter a valid friend code');
-    return;
-  }
-  
-  $('queueStatus').textContent = 'Connecting to friend...';
-  show('queue');
-  
-  db.ref('queue').off();
-  db.ref(`queue/${uid}`).remove();
-  
-  // Lookup full UID from code
-  db.ref('users').orderByKey().startAt(friendId).endAt(friendId + '\uf8ff').once('value').then(snap => {
-    const users = snap.val();
-    if(users) {
-      const fullUid = Object.keys(users)[0];
-      if(fullUid) {
-        // Use deterministic room ID based on sorted UIDs
-        const sortedUids = [uid, fullUid].sort();
-        roomId = `friend_${sortedUids[0]}_${sortedUids[1]}`;
-        
-        // Check if room already exists
-        db.ref(`rooms/${roomId}`).once('value').then(roomSnap => {
-          if(roomSnap.exists()) {
-            // Join existing room
-            isHost = false;
-            listenRoom();
-          } else {
-            // Create new room
-            isHost = true;
-            createRoom(uid, fullUid, users[fullUid].name);
-          }
-        });
-      } else {
-        $('queueStatus').textContent = 'Friend not found';
-      }
-    } else {
-      $('queueStatus').textContent = 'Friend not found';
-    }
-  });
-}
-
-function cancelQueue(){
-  db.ref(`queue/${uid}`).remove();
-  if(tournamentId) {
-    leaveTournament();
-  } else {
-    show('lobby');
-  }
-}
-
-// Room functions
-async function createRoom(a, b, bName, isTournament = false){
-  roomId = isTournament ? `tournament_${tournamentId}` : 
-           roomId || `room_${Date.now()}`;
-  isHost = a === uid;
-  
-  // Random weather
-  const weatherOptions = ['clear', 'rain', 'fog'];
-  weatherType = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
-  
-  await db.ref(`rooms/${roomId}`).set({
-    meta:{
-      started: false,
-      timer: 90,
-      score: {l:0, r:0},
-      commentary: {},
-      events: {},
-      dayNight: Math.random() > 0.5 ? 'day' : 'night',
-      weather: weatherType,
-      tournament: isTournament,
-      rematch: {}, // Track rematch requests
-      playersReady: {} // Track ready status
-    },
-    players:{
-      [a]: {
-        name: user,
-        side: 'l',
-        tactic: 'balanced',
-        uid: a,
-        stats: {
-          speed: 80 + Math.floor(Math.random() * 20),
-          accuracy: 75 + Math.floor(Math.random() * 20)
-        }
-      },
-      [b]: {
-        name: bName,
-        side: 'r',
-        tactic: 'balanced',
-        uid: b,
-        stats: {
-          speed: 80 + Math.floor(Math.random() * 20),
-          accuracy: 75 + Math.floor(Math.random() * 20)
-        }
-      }
-    },
-    chat: {},
-    preMatchChat: {} // Chat before match starts
-  });
-  
-  db.ref('queue').off();
-  db.ref('queue').remove();
-  listenRoom();
-  
-  // Show pre-match chat
-  $('preMatchChat').style.display = 'block';
-  
-  // Mark player as ready
-  db.ref(`rooms/${roomId}/meta/playersReady/${uid}`).set(true);
-  
-  // Show match starting screen
-  showMatchStartingScreen(bName);
-}
-
-// Show match starting countdown
-function showMatchStartingScreen(opponentName) {
-  $('matchTeams').textContent = `${user} vs ${opponentName}`;
-  $('matchStarting').style.display = 'flex';
-  
-  let count = 3;
-  $('countdown').textContent = count;
-  
-  const countdownInterval = setInterval(() => {
-    count--;
-    if(count > 0) {
-      $('countdown').textContent = count;
-    } else {
-      clearInterval(countdownInterval);
-      $('matchStarting').style.display = 'none';
-      
-      // Only start match if host
-      if(isHost) {
-        // Check if both players are ready
-        db.ref(`rooms/${roomId}/meta/playersReady`).once('value').then(snap => {
-          const playersReady = snap.val();
-          if(playersReady && Object.keys(playersReady).length === 2) {
-            startMatch();
-          } else {
-            log('Waiting for opponent to be ready...');
-          }
-        });
-      }
-    }
-  }, 1000);
-}
-
-// Tactics functions
-function selectTactic(tactic) {
-  currentTactic = tactic;
-  $('tacticsDropdown').querySelector('.tactics-dropdown-btn').textContent = `Current Tactic: ${getTacticName(tactic)}`;
-  db.ref(`rooms/${roomId}/players/${uid}/tactic`).set(tactic);
-  log(`Tactic changed to ${getTacticName(tactic)}`);
-}
-
-function getTacticName(tactic) {
-  const names = {
-    'attack': 'Attack',
-    'balanced': 'Balanced',
-    'defend': 'Defend',
-    'highpress': 'High Press',
-    'counter': 'Counter',
-    'parkbus': 'Park Bus'
+  startBtn.onclick = () => {
+    const n = nameInput.value.trim().substring(0, 12);
+    if (!n) return;
+    player.name = n;
+    usernameScreen.style.display = 'none';
+    lobbyScreen.style.visibility = 'visible';
+    auth.signInAnonymously().then(r => {
+      uid = r.user.uid;
+      joinLobby();
+    });
   };
-  return names[tactic] || tactic;
-}
 
-// Player substitution
-function makeSubstitution() {
-  if(playerStats[mySide].subsLeft <= 0) {
-    log(`No substitutions left for ${user}!`);
-    return;
-  }
-  
-  playerStats[mySide].subsLeft--;
-  playerStats[mySide].stamina = 100;
-  playerStats[mySide].injured = false;
-  
-  // Random stat boost for substitution
-  const statBoost = Math.random() * 10 + 5;
-  if(Math.random() > 0.5) {
-    playerStats[mySide].speed += statBoost;
-    log(`⚡ ${user} substituted for fresh legs! Speed +${Math.round(statBoost)}`);
-  } else {
-    playerStats[mySide].accuracy += statBoost;
-    log(`🎯 ${user} substituted for sharper skills! Accuracy +${Math.round(statBoost)}`);
-  }
-  
-  updatePlayerStats();
-}
-
-function updatePlayerStats() {
-  $('leftStamina').textContent = Math.round(playerStats.l.stamina);
-  $('leftStaminaBar').style.width = playerStats.l.stamina + '%';
-  $('leftSubs').textContent = `Subs: ${playerStats.l.subsLeft}`;
-  
-  $('rightStamina').textContent = Math.round(playerStats.r.stamina);
-  $('rightStaminaBar').style.width = playerStats.r.stamina + '%';
-  $('rightSubs').textContent = `Subs: ${playerStats.r.subsLeft}`;
-  
-  if(playerStats.l.injured) {
-    $('leftStaminaBar').style.background = 'var(--danger)';
-    $('leftStamina').innerHTML += ' <span style="color:var(--danger)">(INJURED)</span>';
-  }
-  if(playerStats.r.injured) {
-    $('rightStaminaBar').style.background = 'var(--danger)';
-    $('rightStamina').innerHTML += ' <span style="color:var(--danger)">(INJURED)</span>';
-  }
-}
-
-// Room listener
-function listenRoom(){
-  // Clean up any existing listeners
-  if(roomRef) {
-    roomRef.off();
-  }
-  
-  roomRef = db.ref(`rooms/${roomId}`);
-  
-  roomRef.on('value', snap => {
-    const d = snap.val();
-    if(!d) {
-      // Room deleted, return to lobby
-      returnToLobby();
-      return;
-    }
-    
-    const pls = d.players;
-    if(!pls[uid]?.name) db.ref(`rooms/${roomId}/players/${uid}/name`).set(user);
-    
-    mySide = pls[uid]?.side || 'l';
-    $('leftName').textContent = Object.values(pls).find(p => p.side === 'l')?.name || 'L';
-    $('rightName').textContent = Object.values(pls).find(p => p.side === 'r')?.name || 'R';
-    $('leftScore').textContent = d.meta.score.l;
-    $('rightScore').textContent = d.meta.score.r;
-    $('timer').textContent = d.meta.timer + "'";
-    
-    // Check if opponent disconnected
-    if(d.meta.started && Object.keys(pls).length < 2) {
-      opponentDisconnected = true;
-      $('disconnectedMessage').style.display = 'block';
-      clearInterval(matchInterval);
-      
-      // Auto return to lobby after 15 seconds
-      setTimeout(() => {
-        if(opponentDisconnected) {
-          returnToLobby();
-        }
-      }, 15000);
-      return;
-    }
-    
-    // Update current tactic display
-    currentTactic = pls[uid]?.tactic || 'balanced';
-    $('tacticsDropdown').querySelector('.tactics-dropdown-btn').textContent = `Current Tactic: ${getTacticName(currentTactic)}`;
-    
-    // Update pitch appearance based on day/night and weather
-    updatePitchAppearance(d.meta.dayNight, d.meta.weather);
-    
-    if(d.meta.commentary) renderComm(d.meta.commentary);
-    if(d.meta.events) checkEvents(d.meta.events);
-    if(d.meta.chat) renderChat(d.meta.chat);
-    if(d.meta.preMatchChat) renderPreMatchChat(d.meta.preMatchChat);
-    
-    // Check rematch status
-    if(d.meta.rematch) {
-      const rematchRequests = Object.values(d.meta.rematch);
-      if(rematchRequests.length === 2) {
-        // Both players want rematch
-        if(isHost) {
-          // Host creates new room
-          const opponent = Object.values(pls).find(p => p.uid !== uid);
-          if(opponent) {
-            rematchAccepted = true;
-            createRoom(uid, opponent.uid, opponent.name, d.meta.tournament);
+  function joinLobby() {
+    const lobby = db.ref('footballLobby');
+    lobby.once('value').then(s => {
+      const v = s.val();
+      if (!v) {
+        lobby.set({ p1: uid });
+        authoritative = true;
+        isP1 = true;
+        lobby.on('value', snap => {
+          const d = snap.val();
+          if (d && d.p2) {
+            beginMatch(`${d.p1}_${d.p2}`);
+            lobby.remove();
           }
-        }
-      } else if(rematchRequests.length === 1 && rematchRequests[0].uid === uid) {
-        // Waiting for opponent to accept rematch
-        $('matchResult').innerHTML += '<p>Waiting for opponent to accept rematch...</p>';
-      } else if(rematchRequests.length === 1) {
-        // Opponent requested rematch
-        $('matchResult').innerHTML += '<p>Opponent wants a rematch!</p>';
-      }
-    }
-    
-    if(d.meta.started) {
-      show('match');
-      $('tacticsDropdown').style.display = 'block';
-      $('preMatchChat').style.display = 'none';
-    } else {
-      $('tacticsDropdown').style.display = 'none';
-    }
-    
-    updateLeaderboard();
-  });
-  
-  // Handle disconnections
-  roomRef.child('players').on('child_removed', () => {
-    if(!opponentDisconnected) {
-      opponentDisconnected = true;
-      $('disconnectedMessage').style.display = 'block';
-      clearInterval(matchInterval);
-      
-      // Log the disconnection
-      log('Opponent has disconnected from the match!');
-      
-      // Auto return to lobby after 15 seconds
-      setTimeout(() => {
-        if(opponentDisconnected) {
-          returnToLobby();
-        }
-      }, 15000);
-    }
-  });
-}
-
-// Weather effects
-function createWeatherEffect(type) {
-  const container = $('weatherContainer');
-  container.innerHTML = '';
-  
-  if(type === 'rain') {
-    for(let i=0; i<50; i++) {
-      const drop = document.createElement('div');
-      drop.className = 'weather-effect';
-      drop.style.left = Math.random() * 100 + '%';
-      drop.style.top = Math.random() * 100 + '%';
-      drop.style.width = '1px';
-      drop.style.height = Math.random() * 10 + 5 + 'px';
-      drop.style.background = 'rgba(150, 200, 255, 0.5)';
-      drop.style.animation = `rainFall ${Math.random() * 0.5 + 0.5}s linear infinite`;
-      container.appendChild(drop);
-      
-      // Add animation style
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes rainFall {
-          0% { transform: translateY(-100px); }
-          100% { transform: translateY(250px); }
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  } else if(type === 'fog') {
-    for(let i=0; i<10; i++) {
-      const fog = document.createElement('div');
-      fog.className = 'weather-effect';
-      fog.style.left = Math.random() * 100 + '%';
-      fog.style.top = Math.random() * 100 + '%';
-      fog.style.width = Math.random() * 100 + 50 + 'px';
-      fog.style.height = Math.random() * 50 + 30 + 'px';
-      fog.style.background = 'rgba(200, 200, 200, ' + (Math.random() * 0.2 + 0.1) + ')';
-      fog.style.borderRadius = '50%';
-      fog.style.filter = 'blur(5px)';
-      fog.style.animation = `fogMove ${Math.random() * 10 + 5}s linear infinite`;
-      container.appendChild(fog);
-      
-      // Add animation style
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes fogMove {
-          0% { transform: translateX(0) translateY(0); opacity: ${Math.random() * 0.3 + 0.2}; }
-          50% { transform: translateX(${Math.random() * 100 - 50}px) translateY(${Math.random() * 50 - 25}px); opacity: ${Math.random() * 0.3 + 0.2}; }
-          100% { transform: translateX(0) translateY(0); opacity: ${Math.random() * 0.3 + 0.2}; }
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }
-}
-
-function updatePitchAppearance(time, weather) {
-  const c = $('pitch'), ctx = c.getContext('2d');
-  
-  // Clear canvas
-  ctx.clearRect(0, 0, c.width, c.height);
-  
-  // Base pitch color based on theme
-  if(pitchTheme === 'night') {
-    ctx.fillStyle = '#052905';
-    ctx.strokeStyle = '#aaa';
-  } else if(pitchTheme === 'winter') {
-    ctx.fillStyle = '#c0e0c0';
-    ctx.strokeStyle = '#555';
-  } else if(pitchTheme === 'desert') {
-    ctx.fillStyle = '#b0a050';
-    ctx.strokeStyle = '#555';
-  } else {
-    // Default theme
-    if(time === 'night') {
-      ctx.fillStyle = '#052905';
-      ctx.strokeStyle = '#aaa';
-    } else {
-      ctx.fillStyle = '#0a620a';
-      ctx.strokeStyle = '#fff';
-    }
-  }
-  
-  // Draw pitch
-  ctx.fillRect(0, 0, c.width, c.height);
-  ctx.strokeRect(0, 0, c.width, c.height);
-  
-  // Center line
-  ctx.beginPath();
-  ctx.moveTo(c.width/2, 0);
-  ctx.lineTo(c.width/2, c.height);
-  ctx.stroke();
-  
-  // Center circle
-  ctx.beginPath();
-  ctx.arc(c.width/2, c.height/2, 40, 0, Math.PI*2);
-  ctx.stroke();
-  
-  // Weather effects
-  createWeatherEffect(weather);
-  
-  // Weather impact on gameplay
-  if(weather === 'rain') {
-    ctx.fillStyle = 'rgba(150, 200, 255, 0.1)';
-    ctx.fillRect(0, 0, c.width, c.height);
-  } else if(weather === 'fog') {
-    ctx.fillStyle = 'rgba(200, 200, 200, 0.1)';
-    ctx.fillRect(0, 0, c.width, c.height);
-  }
-}
-
-// Commentary and chat
-function renderComm(c){
-  $('commentary').innerHTML='';
-  Object.values(c).sort((a,b)=>a.ts-b.ts).forEach(e=>{
-    const p=document.createElement('div');
-    p.textContent=e.txt;
-    $('commentary').appendChild(p);
-    $('commentary').scrollTop=$('commentary').scrollHeight;
-    
-    // Add to highlights if it's a goal
-    if(e.txt.includes('⚽') || e.txt.includes('Penalty') || e.txt.includes('Red Card')) {
-      highlights.push(e.txt);
-      
-      // Show toast for goals
-      if(e.txt.includes('⚽')) {
-        showToast('GOAL!');
-      }
-    }
-  });
-}
-
-function renderChat(c) {
-  $('chatBox').innerHTML = '';
-  Object.values(c).sort((a,b)=>a.ts-b.ts).forEach(e=>{
-    const p = document.createElement('div');
-    p.innerHTML = `<b>${e.sender}:</b> ${e.text}`;
-    $('chatBox').appendChild(p);
-    $('chatBox').scrollTop = $('chatBox').scrollHeight;
-    
-    // Show toast for new messages
-    if(e.sender !== user) {
-      showToast(`New message from ${e.sender}`);
-    }
-  });
-}
-
-function renderPreMatchChat(c) {
-  $('preMatchChatBox').innerHTML = '';
-  Object.values(c).sort((a,b)=>a.ts-b.ts).forEach(e=>{
-    const p = document.createElement('div');
-    p.innerHTML = `<b>${e.sender}:</b> ${e.text}`;
-    $('preMatchChatBox').appendChild(p);
-    $('preMatchChatBox').scrollTop = $('preMatchChatBox').scrollHeight;
-  });
-}
-
-function sendChat() {
-  const message = $('chatInput').value.trim();
-  if(message && message.length > 0) {
-    db.ref(`rooms/${roomId}/chat`).push({
-      sender: user,
-      text: message,
-      ts: Date.now()
-    });
-    $('chatInput').value = '';
-  }
-}
-
-function sendPreMatchChat() {
-  const message = $('preMatchChatInput').value.trim();
-  if(message && message.length > 0) {
-    db.ref(`rooms/${roomId}/preMatchChat`).push({
-      sender: user,
-      text: message,
-      ts: Date.now()
-    });
-    $('preMatchChatInput').value = '';
-  }
-}
-
-// Events system
-function checkEvents(events) {
-  Object.values(events).forEach(e => {
-    if(!e.seen) {
-      showEvent(e.title, e.text);
-      db.ref(`rooms/${roomId}/meta/events/${e.key}/seen`).set(true);
-    }
-  });
-}
-
-function showEvent(title, text) {
-  $('eventTitle').textContent = title;
-  $('eventText').textContent = text;
-  $('eventPopup').style.display = 'block';
-  
-  // Play sound if enabled
-  if(soundEnabled && typeof Audio !== 'undefined') {
-    const sound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
-    sound.volume = 0.3;
-    sound.play().catch(e => console.log('Audio error:', e));
-  }
-  
-  // Auto-close after 3 seconds
-  setTimeout(() => {
-    if($('eventPopup').style.display === 'block') {
-      closeEvent();
-    }
-  }, 3000);
-}
-
-function closeEvent() {
-  $('eventPopup').style.display = 'none';
-}
-
-// Match logic
-function startMatch(){
-  db.ref(`rooms/${roomId}/meta`).update({started:true});
-  let t=90, scoreL=0, scoreR=0;
-  
-  // Get player data
-  db.ref(`rooms/${roomId}/players`).once('value').then(snap => {
-    const players = snap.val();
-    const ids = Object.keys(players);
-    
-    // Initialize player stats
-    playerStats = {
-      l: { 
-        stamina: 100, 
-        speed: players[ids[0]].stats.speed,
-        accuracy: players[ids[0]].stats.accuracy,
-        injured: false, 
-        subsLeft: 3 
-      },
-      r: { 
-        stamina: 100, 
-        speed: players[ids[1]].stats.speed,
-        accuracy: players[ids[1]].stats.accuracy,
-        injured: false, 
-        subsLeft: 3 
-      }
-    };
-    
-    // Get weather type
-    db.ref(`rooms/${roomId}/meta/weather`).once('value').then(weatherSnap => {
-      const weather = weatherSnap.val();
-      
-      // Weather effects on stats
-      if(weather === 'rain') {
-        playerStats.l.accuracy *= 0.9;
-        playerStats.r.accuracy *= 0.9;
-        log('Rain is making the pitch slippery! Accuracy decreased for both teams.');
-      } else if(weather === 'fog') {
-        playerStats.l.speed *= 0.9;
-        playerStats.r.speed *= 0.9;
-        log('Fog is reducing visibility! Speed decreased for both teams.');
-      }
-      
-      updatePlayerStats();
-      highlights = []; // Reset highlights
-      
-      matchInterval = setInterval(async()=>{
-        t--;
-        db.ref(`rooms/${roomId}/meta/timer`).set(t);
-        
-        // Update stamina
-        playerStats.l.stamina = Math.max(0, playerStats.l.stamina - 0.5);
-        playerStats.r.stamina = Math.max(0, playerStats.r.stamina - 0.5);
-        updatePlayerStats();
-        
-        // Check for injuries
-        if(t > 10 && t % 25 === 0) {
-          if(Math.random() < 0.1 && !playerStats.l.injured && playerStats.l.stamina < 40) {
-            playerStats.l.injured = true;
-            log(`🤕 ${$('leftName').textContent} is injured!`);
-          }
-          if(Math.random() < 0.1 && !playerStats.r.injured && playerStats.r.stamina < 40) {
-            playerStats.r.injured = true;
-            log(`🤕 ${$('rightName').textContent} is injured!`);
-          }
-        }
-        
-        // Special events
-        if(t === 45) {
-          const event = {
-            key: 'halftime',
-            title: 'Half Time!',
-            text: 'The first half ends. Time for a team talk!',
-            seen: false
-          };
-          db.ref(`rooms/${roomId}/meta/events/${event.key}`).set(event);
-        }
-        
-        if(t === 75 && Math.random() < 0.3) {
-          const events = [
-            { title: 'Penalty!', text: 'The referee awards a penalty after a foul in the box!' },
-            { title: 'Red Card!', text: 'A player gets sent off for a dangerous tackle!' },
-            { title: 'Weather Change', text: 'Heavy rain starts falling, affecting player control!' }
-          ];
-          const randomEvent = events[Math.floor(Math.random() * events.length)];
-          db.ref(`rooms/${roomId}/meta/events/event_${t}`).set({
-            key: `event_${t}`,
-            title: randomEvent.title,
-            text: randomEvent.text,
-            seen: false
-          });
-          
-          if(randomEvent.title === 'Penalty!') {
-            // Higher chance to score from penalty
-            if(Math.random() > 0.3) {
-              scoreL++;
-              log('⚽ Penalty goal!');
-              animateGoal('l');
-            } else {
-              log('The penalty was saved!');
-            }
-          } else if(randomEvent.title === 'Red Card!') {
-            // Randomly assign to a player
-            if(Math.random() > 0.5) {
-              playerStats.l.speed *= 0.8;
-              log(`🟥 ${$('leftName').textContent} gets a red card! Speed decreased.`);
-            } else {
-              playerStats.r.speed *= 0.8;
-              log(`🟥 ${$('rightName').textContent} gets a red card! Speed decreased.`);
-            }
-          }
-        }
-        
-        // Match events every 5 minutes
-        if(t%5===0){
-          const pv=(await db.ref(`rooms/${roomId}/players`).once('value')).val();
-          const lP=Object.values(pv).find(p=>p.side==='l');
-          const rP=Object.values(pv).find(p=>p.side==='r');
-          
-          // Calculate base chances with tactics
-          let lChance = 0.5;
-          let rChance = 0.5;
-          
-          // Apply tactic modifiers
-          switch(lP.tactic) {
-            case 'attack': lChance = 0.6; break;
-            case 'defend': lChance = 0.4; break;
-            case 'highpress': lChance = 0.55; break;
-            case 'counter': lChance = 0.45; break;
-            case 'parkbus': lChance = 0.35; break;
-          }
-          
-          switch(rP.tactic) {
-            case 'attack': rChance = 0.6; break;
-            case 'defend': rChance = 0.4; break;
-            case 'highpress': rChance = 0.55; break;
-            case 'counter': rChance = 0.45; break;
-            case 'parkbus': rChance = 0.35; break;
-          }
-          
-          // Apply stamina modifiers
-          lChance *= (playerStats.l.stamina / 100) * (playerStats.l.injured ? 0.7 : 1);
-          rChance *= (playerStats.r.stamina / 100) * (playerStats.r.injured ? 0.7 : 1);
-          
-          // Apply random player skill modifiers
-          lChance *= (playerStats.l.speed / 100) * (playerStats.l.accuracy / 100);
-          rChance *= (playerStats.r.speed / 100) * (playerStats.r.accuracy / 100);
-          
-          // Weather modifiers
-          if(weather === 'rain') {
-            lChance *= 0.95;
-            rChance *= 0.95;
-          } else if(weather === 'fog') {
-            lChance *= 0.9;
-            rChance *= 0.9;
-          }
-          
-          const rnd=Math.random();
-          if(rnd < lChance){
-            scoreL++;
-            log(`⚽ ${lP.name} scores!`);
-            animateGoal('l');
-          } else if(rnd > 1 - rChance){
-            scoreR++;
-            log(`⚽ ${rP.name} scores!`);
-            animateGoal('r');
-          } else {
-            log('Midfield battle.');
-          }
-          
-          db.ref(`rooms/${roomId}/meta/score`).set({l:scoreL,r:scoreR});
-        }
-        
-        // Match end
-        if(t<=0){
-          clearInterval(matchInterval);
-          log('Full‑time!');
-          awardXP(scoreL,scoreR,ids);
-          updatePlayerRecords(scoreL, scoreR, ids);
-          checkAchievements(scoreL, scoreR, ids);
-          showMatchEnd(scoreL, scoreR);
-        }
-      },1000);
-    });
-  });
-}
-
-function animateGoal(side) {
-  const c = $('pitch'), ctx = c.getContext('2d');
-  const x = side === 'l' ? 100 : 300;
-  const y = 125;
-  
-  // Flash effect
-  $('pitch').classList.add('goal-animation');
-  setTimeout(() => {
-    $('pitch').classList.remove('goal-animation');
-  }, 1500);
-  
-  // Add cheering sound effect
-  if(soundEnabled && typeof Audio !== 'undefined') {
-    const cheer = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3');
-    cheer.volume = 0.3;
-    cheer.play().catch(e => console.log('Audio playback failed:', e));
-  }
-}
-
-// Match end functions
-function showMatchEnd(leftScore, rightScore) {
-  show('matchEnd');
-  $('matchScore').textContent = `${leftScore} - ${rightScore}`;
-  
-  // Determine result
-  const isWinner = (mySide === 'l' && leftScore > rightScore) || 
-                  (mySide === 'r' && rightScore > leftScore);
-  const isDraw = leftScore === rightScore;
-  
-  if(isDraw) {
-    $('matchResult').textContent = 'Match Drawn!';
-    $('matchResult').style.color = 'var(--warning)';
-    $('xpEarned').textContent = '+1 XP for the draw';
-  } else if(isWinner) {
-    $('matchResult').textContent = 'You Win!';
-    $('matchResult').style.color = 'var(--accent)';
-    $('xpEarned').textContent = '+3 XP for the win';
-  } else {
-    $('matchResult').textContent = 'You Lose';
-    $('matchResult').style.color = 'var(--danger)';
-    $('xpEarned').textContent = '+0 XP for losing';
-  }
-  
-  // Show highlights
-  $('highlights').innerHTML = '';
-  const uniqueHighlights = [...new Set(highlights)]; // Remove duplicates
-  uniqueHighlights.slice(0, 3).forEach(highlight => {
-    const p = document.createElement('p');
-    p.textContent = highlight;
-    $('highlights').appendChild(p);
-  });
-  
-  // Show achievements earned
-  $('achievementsEarned').innerHTML = '';
-  if(achievements.length > 0) {
-    $('achievementsEarned').innerHTML = '<h4>Achievements Earned</h4>';
-    achievements.forEach(ach => {
-      const p = document.createElement('p');
-      p.innerHTML = `🏅 ${ach}`;
-      $('achievementsEarned').appendChild(p);
-    });
-  }
-  
-  // Clean up room after delay
-  setTimeout(() => {
-    if(!rematchAccepted) {
-      db.ref(`rooms/${roomId}`).remove();
-    }
-  }, 30000); // Delete room after 30 seconds
-}
-
-function returnToLobby() {
-  if(roomRef) {
-    roomRef.off();
-  }
-  
-  if(matchInterval) {
-    clearInterval(matchInterval);
-  }
-  
-  db.ref(`rooms/${roomId}`).remove();
-  updateProfileDisplay();
-  show('lobby');
-  opponentDisconnected = false;
-  rematchRequested = false;
-  rematchAccepted = false;
-}
-
-function requestRematch() {
-  rematchRequested = true;
-  db.ref(`rooms/${roomId}/meta/rematch`).push({
-    uid: uid,
-    ts: Date.now()
-  });
-  $('matchResult').innerHTML += '<p>Rematch requested!</p>';
-}
-
-// XP and leaderboard
-function awardXP(l,r,ids){
-  const winner=r>l?ids.find(k=>k!==uid):l>r?uid:null;
-  if(!winner){
-    // Draw - both get 1 XP
-    db.ref(`users/${ids[0]}/xp`).transaction(x=>(x||0)+1);
-    db.ref(`users/${ids[1]}/xp`).transaction(x=>(x||0)+1);
-    return;
-  }
-  db.ref(`users/${winner}/xp`).transaction(x=>(x||0)+3);
-}
-
-function updatePlayerRecords(l, r, ids) {
-  const leftPlayer = ids.find(k => k !== uid);
-  const rightPlayer = uid;
-  
-  // Add to match history
-  const historyEntry = {
-    opponent: leftPlayer === uid ? $('rightName').textContent : $('leftName').textContent,
-    score: `${l}-${r}`,
-    result: l > r && leftPlayer === uid || r > l && rightPlayer === uid ? 'win' : 
-            l === r ? 'draw' : 'loss',
-    timestamp: Date.now()
-  };
-  
-  db.ref(`users/${uid}/history`).transaction(history => {
-    const updatedHistory = history || [];
-    updatedHistory.push(historyEntry);
-    return updatedHistory.slice(-10); // Keep last 10 matches
-  });
-  
-  if(l > r) {
-    // Left player wins
-    db.ref(`users/${leftPlayer}/wins`).transaction(w=>(w||0)+1);
-    db.ref(`users/${rightPlayer}/losses`).transaction(l=>(l||0)+1);
-  } else if(r > l) {
-    // Right player wins
-    db.ref(`users/${rightPlayer}/wins`).transaction(w=>(w||0)+1);
-    db.ref(`users/${leftPlayer}/losses`).transaction(l=>(l||0)+1);
-  } else {
-    // Draw
-    db.ref(`users/${leftPlayer}/draws`).transaction(d=>(d||0)+1);
-    db.ref(`users/${rightPlayer}/draws`).transaction(d=>(d||0)+1);
-  }
-}
-
-function checkAchievements(l, r, ids) {
-  const myScore = mySide === 'l' ? l : r;
-  const opponentScore = mySide === 'l' ? r : l;
-  const newAchievements = [];
-  
-  // Check for achievements
-  if(myScore >= 3 && opponentScore === 0) {
-    newAchievements.push('Clean Sheet');
-  }
-  
-  if(myScore - opponentScore >= 3) {
-    newAchievements.push('Dominant Victory');
-  }
-  
-  if(myScore >= 5) {
-    newAchievements.push('Goal Machine');
-  }
-  
-  if(opponentScore >= 3 && myScore > opponentScore) {
-    newAchievements.push('Thriller Win');
-  }
-  
-  if(myScore === opponentScore && myScore >= 3) {
-    newAchievements.push('Goal Fest');
-  }
-  
-  // Add new achievements to user profile
-  if(newAchievements.length > 0) {
-    db.ref(`users/${uid}/achievements`).transaction(current => {
-      const existing = current || [];
-      const combined = [...new Set([...existing, ...newAchievements])]; // Remove duplicates
-      achievements = combined;
-      return combined;
-    });
-  }
-}
-
-function updateLeaderboard(fullView = false) {
-  db.ref('users').orderByChild('xp').limitToLast(10).once('value', s => {
-    const list = Object.entries(s.val() || {}).map(([id, u]) => ({...u, id})).sort((a,b) => b.xp - a.xp);
-    
-    if(fullView) {
-      // Full leaderboard view
-      let html = '';
-      list.forEach((u, i) => {
-        const level = Math.floor(u.xp / 10) + 1;
-        let rankClass = 'rank-bronze';
-        if(level >= 10) rankClass = 'rank-gold';
-        else if(level >= 5) rankClass = 'rank-silver';
-        
-        html += `
-          <div style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #333;">
-            <div>${i+1}. ${u.name} <span class="rank-icon ${rankClass}"></span></div>
-            <div>XP: ${u.xp} (W:${u.wins||0} L:${u.losses||0} D:${u.draws||0})</div>
-          </div>
-        `;
-      });
-      $('leaderboardList').innerHTML = html;
-    } else {
-      // Mini leaderboard
-      let html = '<b>Top Players</b><br>';
-      list.slice(0, 5).forEach((u,i) => {
-        html += `${i+1}. ${u.name} (XP:${u.xp})<br>`;
-      });
-      $('leader').innerHTML = html;
-    }
-  });
-}
-
-function updateTournamentStatus() {
-  if(tournamentId) {
-    db.ref(`tournaments/${tournamentId}`).once('value').then(snap => {
-      const tournament = snap.val();
-      if(tournament) {
-        const playerCount = tournament.players ? Object.keys(tournament.players).length : 0;
-        $('tournamentStatus').innerHTML = `Players joined: ${playerCount}/8`;
+        });
+      } else if (!v.p2) {
+        lobby.update({ p2: uid });
+        isP1 = false;
+        beginMatch(`${v.p1}_${uid}`);
+        lobby.remove();
+      } else {
+        lobbyText.textContent = 'Lobby full';
       }
     });
   }
-}
 
-function log(txt){
-  db.ref(`rooms/${roomId}/meta/commentary`).push({txt,ts:Date.now()});
-}
-
-// Initialize pitch
-const c=$('pitch'),ctx=c.getContext('2d');
-function drawPitch(){
-  ctx.fillStyle='#0a620a';
-  ctx.fillRect(0,0,c.width,c.height);
-  ctx.strokeStyle='#fff';
-  ctx.strokeRect(0,0,c.width,c.height);
-  ctx.beginPath();
-  ctx.moveTo(c.width/2,0);
-  ctx.lineTo(c.width/2,c.height);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(c.width/2,c.height/2,40,0,Math.PI*2);
-  ctx.stroke();
-}
-drawPitch();
-
-// Add keyboard shortcut for chat
-$('chatInput').addEventListener('keypress', (e) => {
-  if(e.key === 'Enter') {
-    sendChat();
+  function beginMatch(id) {
+    lobbyScreen.style.display = 'none';
+    gameUI.style.display = 'block';
+    matchRef = db.ref('footballMatches/' + id);
+    playerRef = matchRef.child(isP1 ? 'p1' : 'p2');
+    oppRef = matchRef.child(isP1 ? 'p2' : 'p1');
+    ballRef = matchRef.child('ball');
+    player.color = getComputedStyle(document.documentElement).getPropertyValue(isP1 ? '--p1' : '--p2');
+    opp.color = getComputedStyle(document.documentElement).getPropertyValue(isP1 ? '--p2' : '--p1');
+    player.x = isP1 ? 100 : W - 100 - SIZE;
+    player.y = H / 2 - SIZE / 2;
+    opp.x = isP1 ? W - 100 - SIZE : 100;
+    opp.y = H / 2 - SIZE / 2;
+    playerRef.set({ ...player, uid });
+    playerRef.onDisconnect().remove();
+    oppRef.on('value', s => { if (s.exists()) opp = Object.assign(opp, s.val()); });
+    ballRef.on('value', s => {
+      const d = s.val();
+      console.log('Ball from Firebase:', d);
+      if (d && d.x !== undefined && d.y !== undefined) {
+        ball = { ...ball, ...d };
+      }
+    });
+    matchRef.child('score').on('value', s => {
+      if (s.exists()) {
+        score = s.val();
+        updateScore();
+        if (score.p1 >= MAX_GOALS || score.p2 >= MAX_GOALS) finish();
+      }
+    });
+    if (authoritative) {
+      ballRef.set(ball);
+      matchRef.child('score').set(score);
+    }
+    running = true;
+    requestAnimationFrame(loop);
   }
-});
 
-$('preMatchChatInput').addEventListener('keypress', (e) => {
-  if(e.key === 'Enter') {
-    sendPreMatchChat();
+  function updateScore() {
+    scoreSpan.textContent = `${score.p1}-${score.p2}`;
   }
-});
 
-// Initialize settings
-loadSettings();
-</script>
+  function resetPositions() {
+    ball = { x: W / 2, y: H / 2, vx: 0, vy: 0 };
+    if (authoritative) ballRef.set(ball);
+    player.x = isP1 ? 100 : W - 100 - SIZE;
+    player.y = H / 2 - SIZE / 2;
+    opp.y = H / 2 - SIZE / 2;
+    playerRef.update({ x: player.x, y: player.y });
+  }
+
+  function movePlayer(ts) {
+    let moved = false;
+    if (keys['w'] || keys['ArrowUp']) { player.y -= SPEED; moved = true; }
+    if (keys['s'] || keys['ArrowDown']) { player.y += SPEED; moved = true; }
+    if (keys['a'] || keys['ArrowLeft']) { player.x -= SPEED; moved = true; }
+    if (keys['d'] || keys['ArrowRight']) { player.x += SPEED; moved = true; }
+    player.x = Math.max(0, Math.min(W - SIZE, player.x));
+    player.y = Math.max(0, Math.min(H - SIZE, player.y));
+    const cx = player.x + SIZE / 2, cy = player.y + SIZE / 2;
+    const ang = Math.atan2(mouse.y - cy, mouse.x - cx);
+    if (Math.abs(ang - player.angle) > .02) { player.angle = ang; moved = true; }
+    if (moved && ts - lastSend > 80) {
+      lastSend = ts;
+      playerRef.update({ x: player.x, y: player.y, angle: player.angle });
+    }
+  }
+
+  function kickBall() {
+    const cx = player.x + SIZE / 2, cy = player.y + SIZE / 2;
+    const dist = Math.hypot(ball.x - cx, ball.y - cy);
+    if (dist < BALL_R + SIZE / 2 + 10) {
+      ball.vx = Math.cos(player.angle) * KICK_FORCE;
+      ball.vy = Math.sin(player.angle) * KICK_FORCE;
+      if (authoritative) ballRef.set(ball);
+    }
+  }
+
+  function physics() {
+    if (!authoritative) return;
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+    ball.vx *= 0.99;
+    ball.vy *= 0.99;
+
+    const players = [player, opp];
+    players.forEach(p => {
+      const cx = p.x + SIZE / 2, cy = p.y + SIZE / 2;
+      const dx = ball.x - cx, dy = ball.y - cy;
+      const dist = Math.hypot(dx, dy);
+      if (dist < BALL_R + SIZE / 2) {
+        const angle = Math.atan2(dy, dx);
+        ball.vx = Math.cos(angle) * KICK_FORCE;
+        ball.vy = Math.sin(angle) * KICK_FORCE;
+      }
+    });
+
+    if (ball.y - BALL_R < 0 || ball.y + BALL_R > H) ball.vy *= -1;
+    if (ball.x - BALL_R < 0 || ball.x + BALL_R > W) ball.vx *= -1;
+
+    if (ball.x - BALL_R < GOAL_W && ball.y > H / 2 - GOAL_H / 2 && ball.y < H / 2 + GOAL_H / 2) {
+      score.p2++;
+      matchRef.child('score').set(score);
+      resetPositions();
+    }
+    if (ball.x + BALL_R > W - GOAL_W && ball.y > H / 2 - GOAL_H / 2 && ball.y < H / 2 + GOAL_H / 2) {
+      score.p1++;
+      matchRef.child('score').set(score);
+      resetPositions();
+    }
+
+    ballRef.set(ball);
+  }
+
+  function drawPlayer(p) {
+    ctx.save();
+    ctx.translate(p.x + SIZE / 2, p.y + SIZE / 2);
+    ctx.rotate(p.angle);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-SIZE / 2, -SIZE / 2, SIZE, SIZE);
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = 'var(--line)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke();
+    ctx.beginPath(); ctx.arc(W / 2, H / 2, CENTER_R, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.fillRect(0, H / 2 - GOAL_H / 2, GOAL_W, GOAL_H);
+    ctx.fillRect(W - GOAL_W, H / 2 - GOAL_H / 2, GOAL_W, GOAL_H);
+    drawPlayer(player);
+    drawPlayer(opp);
+    ctx.fillStyle = 'var(--ball)';
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, BALL_R, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function loop(ts) {
+    if (!running) return;
+    movePlayer(ts);
+    physics();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function finish() {
+    running = false;
+    popup.style.display = 'flex';
+    const win = (isP1 && score.p1 > score.p2) || (!isP1 && score.p2 > score.p1);
+    popupMsg.textContent = win ? 'YOU WIN!' : 'YOU LOSE';
+  }
+  </script>
 </body>
 </html>
